@@ -1,0 +1,27 @@
+{
+  "id": "./drive-dj-finder.html",
+  "name": "Drive DJ Finder",
+  "short_name": "Drive DJ",
+  "description": "BPM・Camelotキー・Energyで次曲を探し、お気に入りと手動修正を許可ユーザー間で共有できるDJツール",
+  "lang": "ja",
+  "start_url": "./drive-dj-finder.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f3f1eb",
+  "theme_color": "#10182c",
+  "icons": [
+    {
+      "src": "pwa-icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "pwa-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
