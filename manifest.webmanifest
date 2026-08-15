@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "BPM・Camelotキー・Energyで次曲を探し、お気に入りと手動修正を許可ユーザー間で共有できるDJツール",
+  "description": "BPM・Camelotキー・Energyで次曲を探し、Spotify画面録画から曲を一括追加できるDJツール",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",
