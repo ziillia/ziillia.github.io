@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="pwa-icon-180.png">
-<title>Drive DJ Finder v1.3.8</title>
+<title>Drive DJ Finder v1.3.9</title>
   <style>
 
 :root{--ink:#10182c;--paper:#f3f1eb;--cyan:#19a8b5;--orange:#f47a36;--muted:#687287;--line:#d8d8d2}
@@ -26,6 +26,7 @@
 @media(max-width:800px){.quality-control{justify-content:space-between}.quality-control select{flex:1}}
 .track-top .quality-auto{background:#e4f7f8;color:#14737b}.data-tools{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);display:flex;align-items:center;gap:9px;flex-wrap:wrap}.data-tools button,.import-actions button,.file-button{border:0;background:var(--ink);color:#fff;padding:11px 14px;font-size:11px;font-weight:900;cursor:pointer}.data-tools button.secondary,.import-actions button.secondary,.file-button.secondary{background:#e8ebef;color:var(--ink)}.data-tools button.danger{background:#fff0e9;color:#aa461d}.data-tools span{margin-left:auto;color:var(--muted);font-size:10px;font-weight:800}.importer{background:#fff;border:1px solid #d8d8d2;box-shadow:0 12px 35px rgba(16,24,44,.08);margin-top:18px;padding:25px}.importer[hidden]{display:none}.import-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:18px}.importer h2{margin:0 0 6px;font-size:19px}.importer p{margin:0;color:var(--muted);font-size:11px;line-height:1.7}.importer textarea{width:100%;min-height:160px;margin-top:14px;border:1px solid #cfd3da;background:#f8f8f6;padding:13px;font:12px/1.6 Consolas,monospace;resize:vertical}.drop-zone{border:1px dashed #aeb5c1;background:#f7f8f9;padding:20px;display:grid;place-items:center;text-align:center;min-height:160px}.drop-zone.drag{border-color:var(--cyan);background:#eaf8f9}.drop-zone input{display:none}.drop-zone strong{display:block;font-size:13px;margin-bottom:8px}.file-button{display:inline-block;margin-top:12px}.import-note{margin-top:12px!important;color:#7d8490!important}.import-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.import-actions button:disabled{opacity:.4;cursor:not-allowed}.import-status{margin-top:14px;padding:11px 13px;background:#eef1f4;color:#435069;font-size:11px;font-weight:800}.import-status.ok{background:#e6f6ee;color:#126b48}.import-status.error{background:#fff0e9;color:#a94319}.preview-wrap{overflow:auto;margin-top:16px;border:1px solid #d9dce2;max-height:430px}.preview-table{border-collapse:collapse;width:100%;min-width:910px;font-size:10px}.preview-table th{position:sticky;top:0;z-index:1;background:var(--ink);color:#fff;text-align:left;padding:9px}.preview-table td{border-top:1px solid #e2e4e8;padding:7px;vertical-align:top}.preview-table input,.preview-table select{width:100%;border:1px solid #d4d7dc;background:#fff;padding:6px;font-size:10px}.preview-table .check{width:18px}.preview-table .stack{display:grid;gap:5px}.preview-table .bpm-edit{display:grid;grid-template-columns:1fr auto;gap:4px}.preview-table .bpm-edit button{border:0;background:#e8ebef;font-size:9px;font-weight:900;cursor:pointer}.row-ready{color:#14734f;font-weight:900}.row-warn{color:#b14b1d;font-weight:900}.row-duplicate{color:#8b5260;font-weight:900}.source-note{font-size:9px!important;margin-top:8px!important}.user-badge{display:inline-block;background:#e4f7f8;color:#14737b;padding:3px 6px;font-size:8px;font-weight:900}.toast{position:fixed;right:18px;bottom:18px;background:var(--ink);color:#fff;padding:13px 16px;font-size:11px;font-weight:800;z-index:10;box-shadow:0 8px 24px rgba(16,24,44,.24);opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:none}
 @media(max-width:800px){.import-grid{grid-template-columns:1fr}.data-tools span{width:100%;margin-left:0}.importer{padding:18px}}
+.preview-wrap{max-height:560px}.preview-table th{z-index:2}.preview-group-row td{position:sticky;top:33px;z-index:1;padding:9px 12px!important;background:#edf1f5!important;color:#445067!important;font-size:9px;letter-spacing:.08em}.preview-group-row.review td{background:#fff0e5!important;color:#a94818!important}.preview-group-row.ready td{background:#e8f6ef!important;color:#126b48!important}.preview-review-action{display:block;margin-top:7px;border:0;background:#fff;color:#9f481d;box-shadow:inset 0 0 0 1px #e3a37d;padding:6px 8px;font-size:8px;font-weight:900;cursor:pointer}.preview-table tr.ocr-reviewed td{background:#f2faf6}
 .video-import-card{margin-top:18px;border:1px solid #cfd5de;background:linear-gradient(135deg,#10192d 0%,#17223b 100%);color:#fff;padding:18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px 18px;align-items:center}.video-import-card h3{margin:0 0 6px;font-size:16px}.video-import-card p{margin:0;color:#bec8d9;font-size:10px;line-height:1.7}.video-import-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.video-file-button{background:var(--orange)!important;color:#fff!important;margin:0}.video-import-actions button{border:0;background:#fff;color:var(--ink);padding:11px 14px;font-size:11px;font-weight:900;cursor:pointer}.video-import-actions button:disabled{opacity:.42;cursor:not-allowed}.video-import-status{grid-column:1/-1;display:grid;gap:8px}.video-progress{height:6px;background:#2a3751;overflow:hidden}.video-progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--orange),#f5c842);transition:width .2s ease}.video-progress-label{font-size:9px;color:#d7deea;font-weight:800}.video-import-card.is-working .video-progress i{box-shadow:0 0 16px rgba(255,102,31,.55)}.video-import-card video,.video-import-card canvas{display:none}.video-privacy{color:#8e9ab0!important}.video-file-name{display:inline-block;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;color:#c8d2e3}.ocr-warning{color:#ffd6ae!important}.preview-table tr.ocr-low td{background:#fff9ef}@media(max-width:800px){.video-import-card{grid-template-columns:1fr}.video-import-actions{justify-content:flex-start}.video-import-status{grid-column:auto}.video-file-name{max-width:210px}}
 .version-badge{display:inline-block;margin-left:9px;padding:4px 7px;background:rgba(255,255,255,.1);color:#55d1d9;font-size:9px;letter-spacing:.08em;vertical-align:middle}.video-debug-panel{grid-column:1/-1;border:1px solid #34425d;background:#0c1426;color:#dbe4f1}.video-debug-panel summary{cursor:pointer;padding:10px 12px;font-size:10px;font-weight:900;letter-spacing:.08em}.video-debug-panel summary b{color:#55d1d9}.video-debug-body{border-top:1px solid #34425d;padding:12px;display:grid;gap:11px}.video-debug-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}.video-debug-actions label{font-size:10px;font-weight:900}.video-debug-actions input{accent-color:var(--orange)}.video-debug-actions button{border:0;background:#e8ebef;color:var(--ink);padding:8px 11px;font-size:9px;font-weight:900;cursor:pointer}.video-debug-actions button:disabled{opacity:.4}.video-debug-metrics{display:grid;grid-template-columns:repeat(6,minmax(72px,1fr));gap:6px}.video-debug-metrics div{background:#18243a;padding:8px}.video-debug-metrics b{display:block;font-size:16px;color:#fff}.video-debug-metrics span{font-size:7px;color:#9eabc0;letter-spacing:.06em}.video-debug-gallery{display:grid;gap:7px;max-height:360px;overflow:auto}.video-debug-row{display:grid;grid-template-columns:78px 1fr;gap:8px;background:#151f33;padding:8px}.video-debug-crops{display:grid;gap:4px}.video-debug-crops img{display:block;width:100%;min-height:18px;object-fit:contain;background:#202b3f}.video-debug-copy{font-size:9px;line-height:1.55;color:#aeb9cb}.video-debug-copy b{color:#fff}.video-debug-copy em{font-style:normal;color:#70d6dc}.video-debug-empty{font-size:9px;color:#8491a7}.debug-corrected{color:#ffd28f!important}@media(max-width:800px){.video-debug-metrics{grid-template-columns:repeat(3,1fr)}.video-debug-row{grid-template-columns:64px 1fr}}
 .dataset-summary{margin-top:16px;border-top:1px solid var(--line);padding-top:16px;display:grid;grid-template-columns:repeat(5,minmax(82px,1fr)) minmax(210px,1.6fr);gap:10px;align-items:stretch}.dataset-summary>div{background:#f3f5f6;border-left:3px solid var(--cyan);padding:10px 12px;display:grid;gap:2px}.dataset-summary>div:nth-child(2),.dataset-summary>div:nth-child(3){border-left-color:var(--orange)}.dataset-summary>div:nth-child(4){border-left-color:#8a5aa0}.dataset-summary>div:nth-child(5){border-left-color:#8d95a3}.dataset-summary b{font-size:20px}.dataset-summary span{font-size:8px;color:var(--muted);font-weight:900;letter-spacing:.08em}.dataset-summary p{margin:0;background:#fff7ef;color:#8f481f;padding:10px 12px;font-size:9px;line-height:1.5;font-weight:800;display:flex;align-items:center}.row-partial{color:#7b5d1a;font-weight:900}.track-top .quality-confirmed{background:#e1f5ec;color:#137451}.track-top .quality-auto{background:#e4f7f8;color:#14737b}.track-top .quality-review{background:#fff0e5;color:#b84f18}@media(max-width:800px){.dataset-summary{grid-template-columns:repeat(2,1fr)}.dataset-summary p{grid-column:1/-1}}
@@ -77,7 +78,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 </head>
 <body>
 <main>
-  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.3.8 GUARDED</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard全曲を有名度順に探索。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
+  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.3.9 REVIEW FIRST</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard全曲を有名度順に探索。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
   <div class="shell">
     <nav id="djFocusBar" class="dj-focus-bar" aria-label="DJフォーカスバー">
       <div class="focus-now"><span>NOW PLAYING</span><b id="focusTrack">手動入力</b></div>
@@ -124,7 +125,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
     <section id="importer" class="importer" hidden aria-label="曲の一括追加">
       <div class="import-grid"><div><h2>曲をまとめて追加</h2><p>CSV・TSV・JSON、分析マスターCSV、またはSpotify曲URLを貼り付け。部分解析データも保存できます。</p><textarea id="importText" spellcheck="false" placeholder="title,artist,year,genre,bpm,camelot,energy\n曲名,アーティスト,2026,J-POP,128,8B,80"></textarea></div><div id="dropZone" class="drop-zone"><div><strong>CSV / TSV / JSONをドロップ</strong><p>一般列名と分析マスター列名に対応</p><label class="file-button secondary">ファイルを選択<input id="importFile" type="file" accept=".csv,.tsv,.json,text/csv,application/json"></label><p class="source-note">追加データはこのブラウザ内に保存。Camelot未確定曲は検索候補から除外されます。</p></div></div></div>
       <section id="videoImportCard" class="video-import-card" aria-label="Spotify画面録画の読み取り"><div><h3>Spotify画面録画から追加</h3><p>Spotifyのミックス表示に特化。BPMと色付きKeyで行を固定し、曲名・アーティストを1行ずつ独立して読み取ります。</p></div><div class="video-import-actions"><label class="file-button video-file-button">画面録画を選択<input id="videoImportFile" type="file" accept="video/mp4,video/quicktime,video/*"></label><span id="videoFileName" class="video-file-name">未選択</span><button id="analyzeVideo" type="button" disabled>動画を読み取る</button><button id="cancelVideo" type="button" hidden>中止</button></div><div class="video-import-status"><div class="video-progress" aria-hidden="true"><i id="videoProgressBar"></i></div><span id="videoProgressLabel" class="video-progress-label">Spotifyの「ミックス」を開き、止めずに一定方向へスクロールしてください。行単位OCRのため前版より時間がかかります。</span><p class="video-privacy">動画は端末内で処理します。初回のみ日本語OCRエンジンを取得するためネット接続が必要です。</p></div><details id="videoDebugPanel" class="video-debug-panel" open><summary>OCR DIAGNOSTICS · <b id="videoDebugSummary">待機中</b></summary><div class="video-debug-body"><div class="video-debug-actions"><label><input id="videoDebugMode" type="checkbox" checked> 診断データを保存</label><button id="downloadVideoDebug" type="button" disabled>診断HTMLを保存</button></div><div id="videoDebugMetrics" class="video-debug-metrics"></div><div id="videoDebugGallery" class="video-debug-gallery"><span class="video-debug-empty">動画を読み取ると、重複除外数・色判定数・OCR補正前後・元画像がここに出ます。</span></div></div></details><video id="videoAnalyzer" muted playsinline preload="metadata"></video><canvas id="videoFrameCanvas"></canvas><canvas id="videoAnalysisCanvas"></canvas></section>
-      <div class="import-actions"><label class="import-collection"><span>追加先プレイリスト</span><select id="importCollection"></select><input id="newPlaylistName" class="new-playlist-name" type="text" maxlength="60" placeholder="新しいプレイリスト名" hidden></label><button id="parseImport">内容を読み込む</button><button id="autoEnrich" class="secondary" disabled>BPM・キーを自動補完</button><button id="commitImport" disabled>選択曲を追加</button><button id="downloadSample" class="secondary">サンプルCSV</button><button id="closeImporter" class="secondary">閉じる</button></div>
+      <div class="import-actions"><label class="import-collection"><span>追加先プレイリスト</span><select id="importCollection"></select><input id="newPlaylistName" class="new-playlist-name" type="text" maxlength="60" placeholder="新しいプレイリスト名" hidden></label><button id="parseImport">内容を読み込む</button><button id="autoEnrich" class="secondary" disabled>BPM・キーを自動補完</button><button id="commitImport" disabled>選択曲を追加</button><button id="downloadOcrCorrections" class="secondary" disabled>OCR教師データCSV</button><button id="downloadSample" class="secondary">サンプルCSV</button><button id="closeImporter" class="secondary">閉じる</button></div>
       <div id="importStatus" class="import-status">貼り付けるか、ファイルを選んでください。</div>
       <div id="previewWrap" class="preview-wrap" hidden><table class="preview-table"><thead><tr><th>追加</th><th>曲 / アーティスト</th><th>DJ BPM</th><th>KEY</th><th>ENERGY</th><th>年 / ジャンル</th><th>判定</th></tr></thead><tbody id="previewBody"></tbody></table></div>
     </section>
@@ -153,7 +154,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
       <div id="results" class="track-list view-compact"></div>
       <nav id="pagination" class="pagination" aria-label="ページ移動"><button id="prevPage" type="button">← 前へ</button><span id="pageIndicator">1 / 1</span><button id="nextPage" type="button">次へ →</button></nav>
     </section>
-    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard広域プールはノイズを含む可能性があるため、重要な接続は事前試聴してください。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.3.8 GUARDED · LOCAL</span></footer>
+    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard広域プールはノイズを含む可能性があるため、重要な接続は事前試聴してください。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.3.9 REVIEW FIRST · LOCAL</span></footer>
   </div>
 </main>
 
@@ -182,8 +183,9 @@ const OVERRIDE_STORAGE_KEY='driveDjTrackOverridesV1';
 const FAVORITES_STORAGE_KEY='driveDjFavoritesV1';
 const SHARED_TOMBSTONES_STORAGE_KEY='driveDjSharedTombstonesV1';
 const CUSTOM_COLLECTIONS_STORAGE_KEY='driveDjCustomCollectionsV1';
+const OCR_CORRECTIONS_STORAGE_KEY='driveDjOcrCorrectionsV1';
 const SHARED_STATE_URL='./api/shared-state';
-const APP_VERSION='1.3.8-guarded';
+const APP_VERSION='1.3.9-review-first';
 const APP_BUILD_DATE='2026-08-15';
 const camelots=Array.from({length:12},(_,i)=>[(i+1)+'A',(i+1)+'B']).flat();
 const commonGenres=['J-POP','ロック','アイドル','K-POP','アニソン','ダンスポップ','R&B','ヒップホップ','バラード','洋楽','映画音楽','演歌／歌謡曲','コミック'];
@@ -193,6 +195,7 @@ let userTracks=loadUserTracks();
 let customCollections=loadCustomCollections();
 let trackOverrides=loadTrackOverrides();
 let favoriteKeys=loadFavoriteKeys();
+let ocrCorrections=loadOcrCorrections();
 let sharedTombstones=loadSharedTombstones();
 let tracks=buildTracks();
 let editingTrackKey='';
@@ -303,14 +306,18 @@ function trackOverrideKey(track){
 function loadFavoriteKeys(){
   try{const parsed=JSON.parse(localStorage.getItem(FAVORITES_STORAGE_KEY)||'{}');return parsed&&typeof parsed==='object'&&!Array.isArray(parsed)?parsed:{};}catch(error){return{};}
 }
+function loadOcrCorrections(){
+  try{const parsed=JSON.parse(localStorage.getItem(OCR_CORRECTIONS_STORAGE_KEY)||'{}');return parsed&&typeof parsed==='object'&&!Array.isArray(parsed)?parsed:{};}catch(error){return{};}
+}
 function loadSharedTombstones(){
-  try{const parsed=JSON.parse(localStorage.getItem(SHARED_TOMBSTONES_STORAGE_KEY)||'{}');return Object.fromEntries(['favorites','trackOverrides','userTracks','customCollections'].map(scope=>[scope,parsed?.[scope]&&typeof parsed[scope]==='object'?parsed[scope]:{}]));}catch(error){return{favorites:{},trackOverrides:{},userTracks:{},customCollections:{}};}
+  try{const parsed=JSON.parse(localStorage.getItem(SHARED_TOMBSTONES_STORAGE_KEY)||'{}');return Object.fromEntries(['favorites','trackOverrides','userTracks','customCollections','ocrCorrections'].map(scope=>[scope,parsed?.[scope]&&typeof parsed[scope]==='object'?parsed[scope]:{}]));}catch(error){return{favorites:{},trackOverrides:{},userTracks:{},customCollections:{},ocrCorrections:{}};}
 }
 function persistSharedLocalCopies(){
   localStorage.setItem(FAVORITES_STORAGE_KEY,JSON.stringify(favoriteKeys));
   localStorage.setItem(OVERRIDE_STORAGE_KEY,JSON.stringify(trackOverrides));
   localStorage.setItem(STORAGE_KEY,JSON.stringify(userTracks));
   localStorage.setItem(CUSTOM_COLLECTIONS_STORAGE_KEY,JSON.stringify(customCollections));
+  localStorage.setItem(OCR_CORRECTIONS_STORAGE_KEY,JSON.stringify(ocrCorrections));
   localStorage.setItem(SHARED_TOMBSTONES_STORAGE_KEY,JSON.stringify(sharedTombstones));
 }
 function sharedStateEnabled(){return location.protocol==='https:';}
@@ -323,7 +330,8 @@ function localSharedItems(){
   for(const [key,value]of Object.entries(trackOverrides)){const updatedAt=sharedTimestamp(value?.updatedAt);map.set(`trackOverrides\n${key}`,{scope:'trackOverrides',key,value,deleted:false,updatedAt});}
   for(const value of userTracks){const key=userTrackSyncKey(value),updatedAt=sharedTimestamp(value?.updatedAt||value?.addedAt);map.set(`userTracks\n${key}`,{scope:'userTracks',key,value:{...value,syncKey:key},deleted:false,updatedAt});}
   for(const [key,value]of Object.entries(customCollections)){const updatedAt=sharedTimestamp(value?.updatedAt||value?.createdAt);map.set(`customCollections\n${key}`,{scope:'customCollections',key,value,deleted:false,updatedAt});}
-  for(const scope of['favorites','trackOverrides','userTracks','customCollections'])for(const [key,time]of Object.entries(sharedTombstones[scope]||{})){const updatedAt=sharedTimestamp(time),mapKey=`${scope}\n${key}`,current=map.get(mapKey);if(!current||updatedAt>=current.updatedAt)map.set(mapKey,{scope,key,value:null,deleted:true,updatedAt});}
+  for(const [key,value]of Object.entries(ocrCorrections)){const updatedAt=sharedTimestamp(value?.updatedAt);map.set(`ocrCorrections\n${key}`,{scope:'ocrCorrections',key,value,deleted:false,updatedAt});}
+  for(const scope of['favorites','trackOverrides','userTracks','customCollections','ocrCorrections'])for(const [key,time]of Object.entries(sharedTombstones[scope]||{})){const updatedAt=sharedTimestamp(time),mapKey=`${scope}\n${key}`,current=map.get(mapKey);if(!current||updatedAt>=current.updatedAt)map.set(mapKey,{scope,key,value:null,deleted:true,updatedAt});}
   return map;
 }
 function setSharedSyncStatus(kind,text,title=''){
@@ -334,10 +342,10 @@ async function sharedRequest(options={}){
   const data=await response.json().catch(()=>({}));if(!response.ok){const error=new Error(data.error||`共有API ${response.status}`);error.code=data.code||'';throw error;}return data;
 }
 function applySharedServerItems(items){
-  const nextFavorites={},nextOverrides={},nextUserTracks=[],nextCustomCollections={},nextTombstones={favorites:{},trackOverrides:{},userTracks:{},customCollections:{}};
-  for(const item of items||[]){if(!['favorites','trackOverrides','userTracks','customCollections'].includes(item.scope)||!item.key)continue;const updatedAt=sharedTimestamp(item.updatedAt);if(item.deleted){nextTombstones[item.scope][item.key]=updatedAt;continue;}if(!item.value||typeof item.value!=='object'||Array.isArray(item.value))continue;if(item.scope==='favorites')nextFavorites[item.key]={...item.value,savedAt:sharedTimestamp(item.value.savedAt,updatedAt)};else if(item.scope==='trackOverrides')nextOverrides[item.key]={...item.value,updatedAt:sharedTimestamp(item.value.updatedAt,updatedAt)};else if(item.scope==='userTracks')nextUserTracks.push({...item.value,syncKey:item.key,updatedAt});else nextCustomCollections[item.key]={...item.value,id:item.key,updatedAt};}
-  const changed=JSON.stringify(nextFavorites)!==JSON.stringify(favoriteKeys)||JSON.stringify(nextOverrides)!==JSON.stringify(trackOverrides)||JSON.stringify(nextUserTracks)!==JSON.stringify(userTracks)||JSON.stringify(nextCustomCollections)!==JSON.stringify(customCollections);
-  favoriteKeys=nextFavorites;trackOverrides=nextOverrides;userTracks=nextUserTracks;customCollections=nextCustomCollections;sharedTombstones=nextTombstones;syncCustomCollectionCatalog();persistSharedLocalCopies();
+  const nextFavorites={},nextOverrides={},nextUserTracks=[],nextCustomCollections={},nextOcrCorrections={},nextTombstones={favorites:{},trackOverrides:{},userTracks:{},customCollections:{},ocrCorrections:{}};
+  for(const item of items||[]){if(!['favorites','trackOverrides','userTracks','customCollections','ocrCorrections'].includes(item.scope)||!item.key)continue;const updatedAt=sharedTimestamp(item.updatedAt);if(item.deleted){nextTombstones[item.scope][item.key]=updatedAt;continue;}if(!item.value||typeof item.value!=='object'||Array.isArray(item.value))continue;if(item.scope==='favorites')nextFavorites[item.key]={...item.value,savedAt:sharedTimestamp(item.value.savedAt,updatedAt)};else if(item.scope==='trackOverrides')nextOverrides[item.key]={...item.value,updatedAt:sharedTimestamp(item.value.updatedAt,updatedAt)};else if(item.scope==='userTracks')nextUserTracks.push({...item.value,syncKey:item.key,updatedAt});else if(item.scope==='ocrCorrections')nextOcrCorrections[item.key]={...item.value,updatedAt};else nextCustomCollections[item.key]={...item.value,id:item.key,updatedAt};}
+  const changed=JSON.stringify(nextFavorites)!==JSON.stringify(favoriteKeys)||JSON.stringify(nextOverrides)!==JSON.stringify(trackOverrides)||JSON.stringify(nextUserTracks)!==JSON.stringify(userTracks)||JSON.stringify(nextCustomCollections)!==JSON.stringify(customCollections)||JSON.stringify(nextOcrCorrections)!==JSON.stringify(ocrCorrections);
+  favoriteKeys=nextFavorites;trackOverrides=nextOverrides;userTracks=nextUserTracks;customCollections=nextCustomCollections;ocrCorrections=nextOcrCorrections;sharedTombstones=nextTombstones;syncCustomCollectionCatalog();persistSharedLocalCopies();
   if(changed){rebuildTracks();refreshImportCollectionOptions();refreshCollectionFilter();refreshFilters();updateCounters();updateFavoriteControls();render();}
 }
 async function syncSharedState({announce=false}={}){
@@ -554,12 +562,13 @@ function updateCounters(){
   $('statSelected').textContent=selected.length.toLocaleString();
   const selectedName=state.collection==='all'?'全データ':state.collection==='spotify_all'?'Spotifyプレイリスト全体':collectionLabel(state.collection);
   $('sourcePolicy').textContent=state.collection==='retro_top1000'?'正規に投入したレトロTop 1000を検索中。既存曲は重複せず、この所属だけが追加されます。':state.collection==='billboard_fame_84plus'?'Spotify厳選外から、Billboard有名度84点以上の412曲だけを優先検索しています。':state.collection==='billboard_hot100_analyzed'?'Billboard全曲プールを検索中。「全曲探索」でBPM・キー条件を外せます。':state.collection==='all'?'全データを検索中。Spotify所属曲を優先順位で上位表示します。':`${selectedName}を検索中。別ソースの曲は候補から除外しています。`;
-  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} GUARDED · ${selectedName} · ${selectedReady}/${selected.length}`;
+  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} REVIEW FIRST · ${selectedName} · ${selectedReady}/${selected.length}`;
   const correctionTotal=Object.keys(trackOverrides).length;
   $('correctionCount').textContent=`修正 ${correctionTotal}曲`;
   $('userTrackCount').textContent=`追加曲 ${userTracks.length} / 全${tracks.length}曲`;
   $('clearUser').disabled=userTracks.length===0;
   $('exportUser').disabled=userTracks.length===0;
+  $('downloadOcrCorrections').disabled=Object.keys(ocrCorrections).length===0;
   $('exportCorrections').disabled=correctionTotal===0;
   $('clearCorrections').disabled=correctionTotal===0;
   updateDiscoveryControls();
@@ -821,27 +830,33 @@ function rowStatus(row,index){
   const missing=[];
   if(!(row.bpm>=40&&row.bpm<=300))missing.push('BPM');
   if(!camelots.includes(row.camelot))missing.push('KEY');
-  if(missing.length)return{kind:'partial',label:'保存可・DJ候補外: '+missing.join('・')};
-  if(row._keyConflict)return{kind:'warn',label:'KEY色・文字が不一致・色を採用'};
-  if(row._videoOcr&&finiteNumber(row._ocrConfidence)!==null&&row._ocrConfidence<58)return{kind:'warn',label:'OCR要確認・追加可'};
-  if(row._conflict)return{kind:'warn',label:'解析差あり・追加可'};
-  return{kind:'ready',label:row._enriched?'自動補完済み':'追加可能'};
+  if(missing.length)return{kind:'partial',label:(row._userReviewed?'確認済み・':'')+'保存可・DJ候補外: '+missing.join('・')};
+  if(row._keyConflict&&!row._userReviewed)return{kind:'warn',label:'KEY色・文字が不一致・色を採用'};
+  if(row._videoOcr&&finiteNumber(row._ocrConfidence)!==null&&row._ocrConfidence<58&&!row._userReviewed)return{kind:'warn',label:'OCR要確認・追加可'};
+  if(row._videoOcr&&!row._canonicalMatch&&!row._ocrLearned&&!row._userReviewed)return{kind:'warn',label:'候補未確定・OCR要確認'};
+  if(row._conflict&&!row._userReviewed)return{kind:'warn',label:'解析差あり・追加可'};
+  return{kind:'ready',label:row._userReviewed?'手動確認済み':row._ocrLearned?'過去の修正を自動採用':row._enriched?'自動補完済み':'追加可能'};
 }
+function rowNeedsReview(row,index){const status=rowStatus(row,index);return status.kind!=='duplicate'&&!row._userReviewed&&status.kind!=='ready';}
 function renderPreview(){
   $('previewWrap').hidden=previewRows.length===0;
-  $('previewBody').innerHTML=previewRows.map((row,index)=>{
-    const status=rowStatus(row,index),disabled=status.kind==='duplicate';if(disabled)row.selected=false;
+  const entries=previewRows.map((row,index)=>({row,index,status:rowStatus(row,index)}));
+  const groups=[{key:'review',label:'要確認',items:entries.filter(item=>rowNeedsReview(item.row,item.index))},{key:'ready',label:'確認不要・確認済み',items:entries.filter(item=>item.status.kind!=='duplicate'&&!rowNeedsReview(item.row,item.index))},{key:'duplicate',label:'重複・追加対象外',items:entries.filter(item=>item.status.kind==='duplicate')}];
+  $('previewBody').innerHTML=groups.filter(group=>group.items.length).map(group=>`<tr class="preview-group-row ${group.key}"><td colspan="7">${group.label} · ${group.items.length}曲</td></tr>`+group.items.map(({row,index,status})=>{
+    const disabled=status.kind==='duplicate',review=rowNeedsReview(row,index);if(disabled)row.selected=false;
     const energy=row.energy===null?'':row.energy,year=row.year||'';
-    return `<tr data-index="${index}"${row._videoOcr&&row._ocrConfidence<58?' class="ocr-low"':''}><td><input class="check" data-field="selected" type="checkbox" ${row.selected&&!disabled?'checked':''} ${disabled?'disabled':''}></td><td><div class="stack"><input data-field="title" value="${esc(row.title)}" placeholder="曲名"><input data-field="artist" value="${esc(row.artist)}" placeholder="アーティスト"></div></td><td><div class="bpm-edit"><input data-field="bpm" type="number" min="40" max="300" step="0.1" value="${row.bpm??''}"><button type="button" data-action="toggle-bpm">原速/×2</button></div>${row.rawBpm?`<small>解析 ${row.rawBpm}</small>`:''}</td><td><select data-field="camelot"><option value="">未設定</option>${camelots.map(key=>`<option${key===row.camelot?' selected':''}>${key}</option>`).join('')}</select></td><td><input data-field="energy" type="number" min="0" max="100" value="${energy}" placeholder="50"></td><td><div class="stack"><input data-field="year" type="number" min="1900" max="2100" value="${year}" placeholder="年"><input data-field="genre" value="${esc(row.genre)}" placeholder="ジャンル"></div></td><td class="row-${status.kind}">${esc(status.label)}${row._error?`<small><br>${esc(row._error)}</small>`:''}</td></tr>`;
-  }).join('');
+    const classes=[row._videoOcr&&row._ocrConfidence<58&&!row._userReviewed?'ocr-low':'',row._userReviewed?'ocr-reviewed':''].filter(Boolean).join(' ');
+    return `<tr data-index="${index}"${classes?` class="${classes}"`:''}><td><input class="check" data-field="selected" type="checkbox" ${row.selected&&!disabled?'checked':''} ${disabled?'disabled':''}></td><td><div class="stack"><input data-field="title" value="${esc(row.title)}" placeholder="曲名"><input data-field="artist" value="${esc(row.artist)}" placeholder="アーティスト"></div></td><td><div class="bpm-edit"><input data-field="bpm" type="number" min="40" max="300" step="0.1" value="${row.bpm??''}"><button type="button" data-action="toggle-bpm">原速/×2</button></div>${row.rawBpm?`<small>解析 ${row.rawBpm}</small>`:''}</td><td><select data-field="camelot"><option value="">未設定</option>${camelots.map(key=>`<option${key===row.camelot?' selected':''}>${key}</option>`).join('')}</select></td><td><input data-field="energy" type="number" min="0" max="100" value="${energy}" placeholder="50"></td><td><div class="stack"><input data-field="year" type="number" min="1900" max="2100" value="${year}" placeholder="年"><input data-field="genre" value="${esc(row.genre)}" placeholder="ジャンル"></div></td><td class="row-${status.kind}">${esc(status.label)}${row._error?`<small><br>${esc(row._error)}</small>`:''}${review&&row.title&&row.artist?'<button type="button" class="preview-review-action" data-action="mark-reviewed">確認済みにする</button>':''}</td></tr>`;
+  }).join('')).join('');
   updatePreviewSummary();
 }
 function updatePreviewSummary(message=''){
   const ready=previewRows.filter((row,index)=>row.selected&&['ready','warn','partial'].includes(rowStatus(row,index).kind)&&row.title&&row.artist).length;
   const duplicates=previewRows.filter((row,index)=>rowStatus(row,index).kind==='duplicate').length;
+  const review=previewRows.filter((row,index)=>rowNeedsReview(row,index)).length;
   $('autoEnrich').disabled=enriching||previewRows.length===0;
   $('commitImport').disabled=enriching||ready===0;
-  if(message)setImportStatus(message,'ok');else setImportStatus(`${previewRows.length}曲を読込・追加可能 ${ready}曲・重複 ${duplicates}曲`,'ok');
+  if(message)setImportStatus(message,'ok');else setImportStatus(`${previewRows.length}曲を読込・要確認 ${review}曲・追加可能 ${ready}曲・重複 ${duplicates}曲`,'ok');
 }
 function setImportStatus(message,type=''){$('importStatus').textContent=message;$('importStatus').className='import-status'+(type?' '+type:'');}
 function showToast(message){const toast=$('toast');toast.textContent=message;toast.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>toast.classList.remove('show'),2500);}
@@ -1059,8 +1074,19 @@ function canonicalArtistFromOcr(value){
 function spotifyArtistPunctuation(value){return String(value||'').replace(/\s*;\s*/g,'、').trim();}
 function exactKnownSpotifyArtist(value){const needle=normalText(value);if(!needle)return'';if(!videoArtistDictionary)canonicalArtistFromOcr(value);return videoArtistDictionary?.find(item=>item.key===needle)?.label||'';}
 const SPOTIFY_OCR_REVIEWED_OVERRIDES={'nee|190|提':'一揆','nee|190|採':'一揆','nee|190|掘':'一揆','nee|190|一採':'一揆','nee|190|一扶':'一揆'};
+function ocrCorrectionKey(row){
+  const bpm=finiteNumber(row?.bpm),camelot=String(row?.camelot||'').toUpperCase();return[normalText(row?._ocrRawTitle||row?.title),normalText(row?._ocrRawArtist||row?.artist),bpm===null?'':Math.round(bpm),camelot].join('|');
+}
+function applyLearnedOcrCorrection(row){
+  const learned=ocrCorrections[ocrCorrectionKey(row)];if(!learned?.title||!learned?.artist)return null;
+  return{...row,title:learned.title,artist:learned.artist,bpm:finiteNumber(learned.bpm)??row.bpm,camelot:camelots.includes(learned.camelot)?learned.camelot:row.camelot,confidence:99,canonicalMatch:true,canonicalReason:'manual feedback',_ocrLearned:true};
+}
+function rememberOcrCorrection(row){
+  if(!row?._videoOcr||!row._userReviewed||!row.title||!row.artist)return'';const key=ocrCorrectionKey(row);if(!normalText(row._ocrRawTitle||row.title))return'';
+  ocrCorrections[key]={rawTitle:row._ocrRawTitle||row.title,rawArtist:row._ocrRawArtist||row.artist,title:row.title.trim(),artist:row.artist.trim(),bpm:finiteNumber(row.bpm),camelot:camelots.includes(row.camelot)?row.camelot:'',ocrConfidence:finiteNumber(row._ocrConfidence),updatedAt:new Date().toISOString()};return key;
+}
 function canonicalizeSpotifyOcrRow(row){
-  const bpm=finiteNumber(row.bpm);if(!row.title||bpm===null)return row;const knownArtist=exactKnownSpotifyArtist(row.artist),versionedTitle=/(?:replica|self\s*cover|remix|re-edit|edit|live|version|ver\.?)/i.test(String(row.title||'')),candidates=tracks.map(track=>{const value=finiteNumber(track.bpm);if(value===null)return null;const bpmError=Math.min(Math.abs(Math.round(value)-bpm),Math.abs(Math.round(value*2)-bpm),Math.abs(Math.round(value/2)-bpm));if(bpmError>3)return null;const titleScore=editTextScore(row.title,track.title),artistScore=row.artist?editTextScore(row.artist,track.artist):0,keyMatch=Boolean(row.camelot&&track.camelot===row.camelot),keyBonus=keyMatch?0.08:0,score=titleScore*.72+artistScore*.18+keyBonus+Math.max(0,.02-bpmError*.006);return{track,titleScore,artistScore,keyMatch,bpmError,score};}).filter(Boolean).sort((a,b)=>b.score-a.score),best=candidates[0],second=candidates[1];
+  row={...row,_ocrRawTitle:row._ocrRawTitle||row.title,_ocrRawArtist:row._ocrRawArtist||row.artist};const bpm=finiteNumber(row.bpm);if(!row.title||bpm===null)return row;const learned=applyLearnedOcrCorrection(row);if(learned)return learned;const knownArtist=exactKnownSpotifyArtist(row.artist),versionedTitle=/(?:replica|self\s*cover|remix|re-edit|edit|live|version|ver\.?)/i.test(String(row.title||'')),candidates=tracks.map(track=>{const value=finiteNumber(track.bpm);if(value===null)return null;const bpmError=Math.min(Math.abs(Math.round(value)-bpm),Math.abs(Math.round(value*2)-bpm),Math.abs(Math.round(value/2)-bpm));if(bpmError>3)return null;const titleScore=editTextScore(row.title,track.title),artistScore=row.artist?editTextScore(row.artist,track.artist):0,keyMatch=Boolean(row.camelot&&track.camelot===row.camelot),keyBonus=keyMatch?0.08:0,score=titleScore*.72+artistScore*.18+keyBonus+Math.max(0,.02-bpmError*.006);return{track,titleScore,artistScore,keyMatch,bpmError,score};}).filter(Boolean).sort((a,b)=>b.score-a.score),best=candidates[0],second=candidates[1];
   const exactIdentity=candidates.filter(item=>item.artistScore>=.96&&item.keyMatch&&item.bpmError<=1.1),uniqueIdentity=[...new Map(exactIdentity.map(item=>[`${normalText(item.track.title)}|${normalText(item.track.artist)}`,item])).values()],identityBest=uniqueIdentity.sort((a,b)=>b.titleScore-a.titleScore)[0];let selected=null,reason='';
   const reviewedTitle=SPOTIFY_OCR_REVIEWED_OVERRIDES[`${normalText(knownArtist||row.artist)}|${Math.round(bpm)}|${normalText(row.title)}`],reviewedTrack=reviewedTitle?tracks.find(track=>normalText(track.title)===normalText(reviewedTitle)&&editTextScore(knownArtist||row.artist,track.artist)>=.96):null;
   if(reviewedTrack){selected={track:reviewedTrack,titleScore:editTextScore(row.title,reviewedTrack.title),artistScore:1,score:.82};reason='reviewed OCR override';}
@@ -1102,7 +1128,7 @@ function ocrRowSimilarity(a,b){const sameTempo=Math.abs(Number(a.bpm)-Number(b.b
 function mergeVideoOcrRows(rows){
   const merged=[];for(const row of rows){const found=merged.find(item=>ocrRowSimilarity(item,row));if(!found){merged.push(row);continue;}if(videoDebugReport&&ocrVisualRowMatch(found,row))videoDebugReport.metrics.visualMerges++;const previous={...found},previousRank=(previous.canonicalMatch?1000:0)+(previous.confidence||0),rowRank=(row.canonicalMatch?1000:0)+(row.confidence||0);if(rowRank>previousRank){Object.assign(found,row);if(!found.artist)found.artist=previous.artist;if(!found.camelot)found.camelot=previous.camelot;}else{if(!found.artist)found.artist=row.artist;if(!found.camelot)found.camelot=row.camelot;}const keyBest=[previous,row].filter(item=>item.camelot).sort((a,b)=>Number(b.keySource==='color')-Number(a.keySource==='color')||(b.keyConfidence||0)-(a.keyConfidence||0))[0];if(keyBest){found.camelot=keyBest.camelot;found.keySource=keyBest.keySource;found.keyConfidence=keyBest.keyConfidence;}}
   const artists=merged.map(row=>row.artist).filter(value=>value&&!isOcrUiLine(value)),counts={};artists.forEach(value=>counts[value]=(counts[value]||0)+1);const majority=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0],fallbackArtist=majority&&majority[1]>=Math.max(3,Math.ceil(merged.length*.6))?majority[0]:'';
-  return merged.map(row=>{const collection=resolveImportCollection({create:false})||'local_import';return{...normalizeRecord({title:row.title,artist:spotifyArtistPunctuation(row.artist||fallbackArtist),bpm:row.bpm,camelot:row.camelot,source:'Spotify画面録画OCR',tags:'Spotify画面録画OCR',collection}),_videoOcr:true,_ocrConfidence:row.confidence??0,_keyConfidence:row.keyConfidence??0,_keySource:row.keySource||'',_keyConflict:Boolean(row.keyConflict),confidence:'review',selected:true};}).filter(row=>row.title&&row.bpm);
+  return merged.map(row=>{const collection=resolveImportCollection({create:false})||'local_import',artist=spotifyArtistPunctuation(row.artist||fallbackArtist);return{...normalizeRecord({title:row.title,artist,bpm:row.bpm,camelot:row.camelot,source:'Spotify画面録画OCR',tags:'Spotify画面録画OCR',collection}),_videoOcr:true,_ocrRawTitle:row._ocrRawTitle||row.title,_ocrRawArtist:spotifyArtistPunctuation(row._ocrRawArtist||artist),_ocrConfidence:row.confidence??0,_keyConfidence:row.keyConfidence??0,_keySource:row.keySource||'',_keyConflict:Boolean(row.keyConflict),_canonicalMatch:Boolean(row.canonicalMatch),_ocrLearned:Boolean(row._ocrLearned),confidence:'review',selected:true};}).filter(row=>row.title&&row.bpm);
 }
 async function analyzeVideoImport(){
   if(!videoImportFile)return;videoImportAbort=false;resetVideoDebug(videoImportFile);setVideoWorking(true);setVideoProgress(0,'動画を準備しています…');
@@ -1214,7 +1240,8 @@ function sceneForEnergy(energy){return energy>=90?'ピーク':energy>=72?'ビル
 function commitPreview(){
   let destination;try{destination=resolveImportCollection();}catch(error){setImportStatus(error.message||'追加先プレイリストを作成できませんでした。','error');return;}
   const now=new Date().toISOString();
-  const additions=previewRows.filter((row,index)=>row.selected&&!isDuplicate(row,index)&&row.title&&row.artist).map(row=>{
+  const selectedRows=previewRows.filter((row,index)=>row.selected&&!isDuplicate(row,index)&&row.title&&row.artist),correctionKeys=[...new Set(selectedRows.map(rememberOcrCorrection).filter(Boolean))];
+  const additions=selectedRows.map(row=>{
     const energy=row.energy===null?null:Math.round(clamp(row.energy??50,0,100));
     const searchable=Boolean(row.bpm&&camelots.includes(row.camelot));
     const collections=[destination],retro=Boolean(row.retro)||collections.includes('retro_top1000');
@@ -1222,10 +1249,13 @@ function commitPreview(){
     const item={year:row.year?Number(row.year):null,chartRank:row.chartRank?Number(row.chartRank):null,title:row.title.trim(),artist:row.artist.trim(),albumName:row.albumName||'',genre:row.genre||'未分類',bpm:row.bpm?Number(row.bpm):null,rawBpm:row.rawBpm?Number(row.rawBpm):null,camelot:row.camelot||'',energy,scene:row.scene||sceneForEnergy(energy??50),tags,confidence:row.confidence||'review',spotifyId:row.spotifyId||'',isrc:row.isrc||'',source:row.source||'import',analysisStatus:row.analysisStatus||(searchable?'complete':'unresolved'),qualityTier:row.qualityTier||(searchable?'A':'D'),bpmEstimated:Boolean(row.bpmEstimated),energyEstimated:Boolean(row.energyEstimated),camelotCandidate:row.camelotCandidate||'',camelotCandidateConfidence:row.camelotCandidateConfidence??null,collections,sourcePrimary:destination,sourcePriority:collectionCatalog[destination]?.priority||85,searchable,retro,retroRank:row.retroRank??null,retroReleaseYear:row.retroReleaseYear??row.year??null,retroFameScore:row.retroFameScore??null,retroPeakRank:row.retroPeakRank??null,retroWeeksCharted:row.retroWeeksCharted??null,retroAnnualPeak:row.retroAnnualPeak??null,riajLevel:row.riajLevel||'',fameSource:row.fameSource||'',fameConfidence:row.fameConfidence||'',retroSourceUrl:row.retroSourceUrl||'',retroSourceRights:row.retroSourceRights||'',userAdded:true,addedAt:now,updatedAt:now};return{...item,syncKey:userTrackSyncKey(item)};
   });
   if(!additions.length)return setImportStatus('追加できる曲がありません。','error');
-  try{userTracks.push(...additions);recordSharedUpsertBatch('userTracks',additions.map(item=>item.syncKey));saveUserTracks();previewRows=[];renderPreview();$('importText').value='';setImportStatus(`${additions.length}曲を「${collectionLabel(destination)}」へ追加しました。全データ・候補・統計へ反映済みです。`,'ok');showToast(`${additions.length}曲を「${collectionLabel(destination)}」へ保存しました`);}
+  try{userTracks.push(...additions);recordSharedUpsertBatch('userTracks',additions.map(item=>item.syncKey));if(correctionKeys.length)recordSharedUpsertBatch('ocrCorrections',correctionKeys);saveUserTracks();previewRows=[];renderPreview();$('importText').value='';setImportStatus(`${additions.length}曲を「${collectionLabel(destination)}」へ追加しました。${correctionKeys.length?` OCR教師データ${correctionKeys.length}件も保存しました。`:''}`,'ok');showToast(`${additions.length}曲を「${collectionLabel(destination)}」へ保存しました`);}
   catch(error){userTracks.splice(userTracks.length-additions.length,additions.length);setImportStatus('ブラウザへの保存に失敗しました。バックアップを書き出してください。','error');}
 }
 function csvCell(value){const text=String(value??'');return/[",\n]/.test(text)?'"'+text.replace(/"/g,'""')+'"':text;}
+function ocrCorrectionsToCsv(){
+  const fields=['raw_title','raw_artist','corrected_title','corrected_artist','bpm','camelot','ocr_confidence','updated_at'],rows=Object.values(ocrCorrections).sort((a,b)=>String(b.updatedAt||'').localeCompare(String(a.updatedAt||''))).map(item=>[item.rawTitle,item.rawArtist,item.title,item.artist,item.bpm,item.camelot,item.ocrConfidence,item.updatedAt]);return'\uFEFF'+[fields.join(','),...rows.map(row=>row.map(csvCell).join(','))].join('\r\n');
+}
 function tracksToCsv(list){
   const fields=['title','artist','albumName','year','chartRank','genre','bpm','rawBpm','camelot','energy','scene','tags','confidence','confidenceGrade','confidenceLabel','confidenceReason','manualLocked','reviewPriority','bpmAuditState','keyAuditState','qualityAuditVersion','fameRank','spotifyId','isrc','source','analysisStatus','qualityTier','bpmEstimated','energyEstimated','camelotCandidate','camelotCandidateConfidence','searchable','collections','sourcePrimary','sourcePriority','retro','retroRank','retroReleaseYear','retroFameScore','retroPeakRank','retroWeeksCharted','retroAnnualPeak','riajLevel','fameSource','fameConfidence','retroSourceUrl','retroSourceRights'];
   return'\uFEFF'+[fields.join(','),...list.map(track=>fields.map(field=>csvCell(track[field])).join(','))].join('\r\n');
@@ -1299,18 +1329,20 @@ $('importFile').addEventListener('change',event=>{if(event.target.files[0])readF
 $('videoImportFile').addEventListener('change',event=>{videoImportFile=event.target.files[0]||null;$('videoFileName').textContent=videoImportFile?videoImportFile.name:'未選択';$('analyzeVideo').disabled=!videoImportFile;if(videoImportFile)setVideoProgress(0,`${videoImportFile.name}を選択しました。「動画を読み取る」を押してください。`);});
 $('analyzeVideo').addEventListener('click',analyzeVideoImport);
 $('downloadVideoDebug').addEventListener('click',()=>{if(!videoDebugReport)return;download(`drive-dj-ocr-diagnostics-${dateStamp()}-${APP_VERSION}.html`,videoDebugHtml(),'text/html;charset=utf-8');});
+$('downloadOcrCorrections').addEventListener('click',()=>{if(!Object.keys(ocrCorrections).length)return;download(`drive-dj-ocr-training-${dateStamp()}.csv`,ocrCorrectionsToCsv(),'text/csv;charset=utf-8');});
 $('cancelVideo').addEventListener('click',()=>{videoImportAbort=true;$('cancelVideo').disabled=true;setVideoProgress(Number.parseFloat($('videoProgressBar').style.width)||0,'中止処理中…');setTimeout(()=>$('cancelVideo').disabled=false,500);});
 ['dragenter','dragover'].forEach(name=>$('dropZone').addEventListener(name,event=>{event.preventDefault();$('dropZone').classList.add('drag');}));
 ['dragleave','drop'].forEach(name=>$('dropZone').addEventListener(name,event=>{event.preventDefault();$('dropZone').classList.remove('drag');}));
 $('dropZone').addEventListener('drop',event=>{const file=event.dataTransfer.files[0];if(file)readFile(file);});
 $('previewBody').addEventListener('change',event=>{
   const tr=event.target.closest('tr'),field=event.target.dataset.field;if(!tr||!field)return;const row=previewRows[Number(tr.dataset.index)];
-  if(field==='selected')row.selected=event.target.checked;else if(['bpm','energy','year'].includes(field))row[field]=finiteNumber(event.target.value);else row[field]=event.target.value;
+  if(field==='selected')row.selected=event.target.checked;else{if(row._videoOcr)row._userReviewed=true;if(['bpm','energy','year'].includes(field))row[field]=finiteNumber(event.target.value);else row[field]=event.target.value;}
   renderPreview();
 });
 $('previewBody').addEventListener('click',event=>{
-  const button=event.target.closest('[data-action="toggle-bpm"]');if(!button)return;const tr=button.closest('tr'),row=previewRows[Number(tr.dataset.index)];
-  const raw=row.rawBpm||row.bpm;if(!raw)return;row.rawBpm=raw;row.bpm=Math.abs(row.bpm-raw)<.2?Math.round(raw*2*10)/10:raw;renderPreview();
+  const button=event.target.closest('[data-action]');if(!button)return;const tr=button.closest('tr'),row=previewRows[Number(tr.dataset.index)];if(!row)return;
+  if(button.dataset.action==='mark-reviewed'){row._userReviewed=true;renderPreview();return;}
+  if(button.dataset.action!=='toggle-bpm')return;const raw=row.rawBpm||row.bpm;if(!raw)return;row.rawBpm=raw;row.bpm=Math.abs(row.bpm-raw)<.2?Math.round(raw*2*10)/10:raw;if(row._videoOcr)row._userReviewed=true;renderPreview();
 });
 
 $('results').addEventListener('click',event=>{const favoriteButton=event.target.closest('.favorite-toggle');if(favoriteButton){toggleFavorite(favoriteButton.dataset.favoriteKey,favoriteButton);return;}const editButton=event.target.closest('.edit-track');if(editButton)openTrackEditor(editButton.dataset.trackKey);});
