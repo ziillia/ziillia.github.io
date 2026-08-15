@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="pwa-icon-180.png">
-<title>Drive DJ Finder v1.3.6</title>
+<title>Drive DJ Finder v1.3.7</title>
   <style>
 
 :root{--ink:#10182c;--paper:#f3f1eb;--cyan:#19a8b5;--orange:#f47a36;--muted:#687287;--line:#d8d8d2}
@@ -77,7 +77,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 </head>
 <body>
 <main>
-  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.3.6 FULL GLYPH</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard全曲を有名度順に探索。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
+  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.3.7 CONSENSUS</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard全曲を有名度順に探索。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
   <div class="shell">
     <nav id="djFocusBar" class="dj-focus-bar" aria-label="DJフォーカスバー">
       <div class="focus-now"><span>NOW PLAYING</span><b id="focusTrack">手動入力</b></div>
@@ -153,7 +153,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
       <div id="results" class="track-list view-compact"></div>
       <nav id="pagination" class="pagination" aria-label="ページ移動"><button id="prevPage" type="button">← 前へ</button><span id="pageIndicator">1 / 1</span><button id="nextPage" type="button">次へ →</button></nav>
     </section>
-    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard広域プールはノイズを含む可能性があるため、重要な接続は事前試聴してください。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.3.6 FULL GLYPH · LOCAL</span></footer>
+    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard広域プールはノイズを含む可能性があるため、重要な接続は事前試聴してください。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.3.7 CONSENSUS · LOCAL</span></footer>
   </div>
 </main>
 
@@ -183,7 +183,7 @@ const FAVORITES_STORAGE_KEY='driveDjFavoritesV1';
 const SHARED_TOMBSTONES_STORAGE_KEY='driveDjSharedTombstonesV1';
 const CUSTOM_COLLECTIONS_STORAGE_KEY='driveDjCustomCollectionsV1';
 const SHARED_STATE_URL='./api/shared-state';
-const APP_VERSION='1.3.6-full-glyph';
+const APP_VERSION='1.3.7-consensus';
 const APP_BUILD_DATE='2026-08-15';
 const camelots=Array.from({length:12},(_,i)=>[(i+1)+'A',(i+1)+'B']).flat();
 const commonGenres=['J-POP','ロック','アイドル','K-POP','アニソン','ダンスポップ','R&B','ヒップホップ','バラード','洋楽','映画音楽','演歌／歌謡曲','コミック'];
@@ -554,7 +554,7 @@ function updateCounters(){
   $('statSelected').textContent=selected.length.toLocaleString();
   const selectedName=state.collection==='all'?'全データ':state.collection==='spotify_all'?'Spotifyプレイリスト全体':collectionLabel(state.collection);
   $('sourcePolicy').textContent=state.collection==='retro_top1000'?'正規に投入したレトロTop 1000を検索中。既存曲は重複せず、この所属だけが追加されます。':state.collection==='billboard_fame_84plus'?'Spotify厳選外から、Billboard有名度84点以上の412曲だけを優先検索しています。':state.collection==='billboard_hot100_analyzed'?'Billboard全曲プールを検索中。「全曲探索」でBPM・キー条件を外せます。':state.collection==='all'?'全データを検索中。Spotify所属曲を優先順位で上位表示します。':`${selectedName}を検索中。別ソースの曲は候補から除外しています。`;
-  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} FULL GLYPH · ${selectedName} · ${selectedReady}/${selected.length}`;
+  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} CONSENSUS · ${selectedName} · ${selectedReady}/${selected.length}`;
   const correctionTotal=Object.keys(trackOverrides).length;
   $('correctionCount').textContent=`修正 ${correctionTotal}曲`;
   $('userTrackCount').textContent=`追加曲 ${userTracks.length} / 全${tracks.length}曲`;
@@ -1045,7 +1045,7 @@ function spotifySingleFieldCrop(source,anchor,field,mode='grayText'){const geome
 async function recognizeSpotifySingleField(worker,source,anchor,field){
   await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'',preserve_interword_spaces:'1'});const read=async mode=>{const result=await worker.recognize(spotifySingleFieldCrop(source,anchor,field,mode));if(videoDebugReport)videoDebugReport.metrics.rowOcrCalls++;const raw=compactOcrJapanese(result.data?.text||''),text=field==='title'?cleanOcrTitle(raw):cleanOcrArtist(raw),confidence=Math.round(finiteNumber(result.data?.confidence)||0);return{raw,text,confidence,mode};},primary=await read('grayText'),mustRetry=field==='title'||!primary.text||primary.confidence<72||looksLikeSpotifyMetadata(primary.raw);if(!mustRetry)return{...primary,alternatives:[primary.raw]};if(videoDebugReport)videoDebugReport.metrics.retryPasses++;const secondary=await read('lightText'),chosen=chooseFieldCandidate(primary,secondary);return{...chosen,alternatives:[primary.raw,secondary.raw].filter(Boolean)};
 }
-async function recognizeSpotifyKeyFallback(worker,source,anchor){const crop=cropForOcr(source,source.width*.64,anchor.top-source.width*.005,source.width*.23,source.width*.14,5,'pill');await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'0123456789AB84'});const result=await worker.recognize(crop);if(videoDebugReport)videoDebugReport.metrics.rowOcrCalls++;return camelotFromOcr(result.data?.text||'');}
+async function recognizeSpotifyKeyFallback(worker,source,anchor){const crop=cropForOcr(source,source.width*.69,anchor.top+source.width*.035,source.width*.15,source.width*.075,5,'pill');await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'0123456789AB84'});const result=await worker.recognize(crop);if(videoDebugReport)videoDebugReport.metrics.rowOcrCalls++;return camelotFromOcr(result.data?.text||'');}
 function spotifyVideoMarker(value){const text=String(value||''),match=text.match(/[ビピヒ][ビデヂチテ]{1,5}[オォ]/);if(!match||match.index>8)return null;const suffix=text.slice((match.index||0)+match[0].length,match.index+match[0].length+1);return!suffix||/[\s・·。.:：«»<>|▶▷▻▸▹□▣▢A-Za-z0-9]/.test(suffix)?match:null;}
 function stripSpotifyVideoPrefix(value){let text=String(value||'').trim(),marker=spotifyVideoMarker(text);if(marker)text=text.slice((marker.index||0)+marker[0].length);return text.replace(/^[\s・·。.。:：«»<>|/\\\-—_▶▷▻▸▹□▣▢凸凹①-⑳]+/,'').trim();}
 function looksLikeSpotifyMetadata(value){return Boolean(spotifyVideoMarker(value))||/(?:^|[^一-龠々ぁ-んァ-ヶ])動画\s*[・·:]/i.test(String(value||''))||/^[□▣▢凸凹]\s*/.test(String(value||''));
@@ -1056,14 +1056,17 @@ function editTextScore(aValue,bValue){
 function canonicalArtistFromOcr(value){
   const cleaned=String(value||'').trim(),needle=normalText(cleaned);if(!needle)return'';if(!videoArtistDictionary)videoArtistDictionary=[...new Set(tracks.map(track=>String(track.artist||'').trim()).filter(Boolean))].map(label=>({label,key:normalText(label)})).filter(item=>item.key.length>=3).sort((a,b)=>b.key.length-a.key.length);const included=videoArtistDictionary.find(item=>needle.includes(item.key));if(included)return included.label;const ranked=videoArtistDictionary.map(item=>({item,score:editTextScore(cleaned,item.label)})).sort((a,b)=>b.score-a.score),best=ranked[0],second=ranked[1],shortUnique=needle.length>=3&&needle.length<=5&&best?.item.key.length===needle.length&&best.score>=.66&&best.score-(second?.score||0)>=.20;return best&&(best.score>=.84||shortUnique)?best.item.label:cleaned;
 }
+function spotifyArtistPunctuation(value){return String(value||'').replace(/\s*;\s*/g,'、').trim();}
 function canonicalizeSpotifyOcrRow(row){
   const bpm=finiteNumber(row.bpm);if(!row.title||bpm===null)return row;const candidates=tracks.map(track=>{const value=finiteNumber(track.bpm);if(value===null)return null;const bpmError=Math.min(Math.abs(Math.round(value)-bpm),Math.abs(Math.round(value*2)-bpm),Math.abs(Math.round(value/2)-bpm));if(bpmError>3)return null;const titleScore=editTextScore(row.title,track.title),artistScore=row.artist?editTextScore(row.artist,track.artist):0,keyMatch=Boolean(row.camelot&&track.camelot===row.camelot),keyBonus=keyMatch?0.08:0,score=titleScore*.72+artistScore*.18+keyBonus+Math.max(0,.02-bpmError*.006);return{track,titleScore,artistScore,keyMatch,bpmError,score};}).filter(Boolean).sort((a,b)=>b.score-a.score),best=candidates[0],second=candidates[1];
   const exactIdentity=candidates.filter(item=>item.artistScore>=.96&&item.keyMatch&&item.bpmError<=1.1),uniqueIdentity=[...new Map(exactIdentity.map(item=>[`${normalText(item.track.title)}|${normalText(item.track.artist)}`,item])).values()],identityBest=uniqueIdentity.sort((a,b)=>b.titleScore-a.titleScore)[0];let selected=null,reason='';
-  if(uniqueIdentity.length===1&&identityBest.titleScore>=.16){selected=identityBest;reason='artist+bpm+key unique';}
+  if(uniqueIdentity.length===1&&(identityBest.titleScore>=.16||(row.keySource==='color'&&(row.keyConfidence||0)>=80))){selected=identityBest;reason=identityBest.titleScore>=.16?'artist+bpm+key unique':'artist+bpm+color key unique';}
   else if(identityBest&&identityBest.titleScore>=.42&&(!uniqueIdentity[1]||identityBest.titleScore-uniqueIdentity[1].titleScore>=.10)){selected=identityBest;reason='artist+bpm+key ranked';}
   else if(best&&best.titleScore>=.67&&best.score>=.61&&(!second||best.score-second.score>=.045||best.titleScore>=.84)){selected=best;reason='title similarity';}
+  if(!selected){const exactTitle=[...new Map(tracks.filter(track=>normalText(track.title)===normalText(row.title)).map(track=>[`${normalText(track.title)}|${normalText(track.artist)}`,track])).values()];if(exactTitle.length===1){selected={track:exactTitle[0],titleScore:1,artistScore:row.artist?editTextScore(row.artist,exactTitle[0].artist):0,score:.82};reason='global exact title';}}
+  if(!selected&&row.artist){const tempoArtist=[...new Map(candidates.filter(item=>item.artistScore>=.96&&item.bpmError<=1.1).map(item=>[`${normalText(item.track.title)}|${normalText(item.track.artist)}`,item])).values()];if(tempoArtist.length===1&&(tempoArtist[0].titleScore>=.35||(row.keySource==='color'&&(row.keyConfidence||0)>=80))){selected=tempoArtist[0];reason='artist+bpm unique';}}
   if(!selected&&row.artist){const byArtist=tracks.map(track=>({track,artistScore:editTextScore(row.artist,track.artist),titleScore:editTextScore(row.title,track.title)})).filter(item=>item.artistScore>=.96).sort((a,b)=>b.titleScore-a.titleScore),artistBest=byArtist[0],artistSecond=byArtist[1];if(artistBest&&artistBest.titleScore>=.52&&(!artistSecond||artistBest.titleScore-artistSecond.titleScore>=.12)){selected={...artistBest,score:artistBest.titleScore};reason='artist title dictionary';}}
-  if(!selected)return{...row,canonicalCandidates:candidates.slice(0,3).map(item=>({title:item.track.title,artist:item.track.artist,score:Math.round(item.score*100),titleScore:Math.round(item.titleScore*100)}))};return{...row,title:selected.track.title,artist:selected.track.artist||row.artist,camelot:row.camelot||selected.track.camelot,confidence:Math.max(row.confidence||0,Math.round(70+selected.score*25)),canonicalMatch:true,canonicalReason:reason,canonicalCandidates:candidates.slice(0,3).map(item=>({title:item.track.title,artist:item.track.artist,score:Math.round(item.score*100),titleScore:Math.round(item.titleScore*100)}))};
+  if(!selected)return{...row,artist:spotifyArtistPunctuation(row.artist),canonicalCandidates:candidates.slice(0,3).map(item=>({title:item.track.title,artist:spotifyArtistPunctuation(item.track.artist),score:Math.round(item.score*100),titleScore:Math.round(item.titleScore*100)}))};return{...row,title:selected.track.title,artist:spotifyArtistPunctuation(selected.track.artist||row.artist),camelot:row.camelot||selected.track.camelot,confidence:Math.max(row.confidence||0,Math.round(70+selected.score*25)),canonicalMatch:true,canonicalReason:reason,canonicalCandidates:candidates.slice(0,3).map(item=>({title:item.track.title,artist:spotifyArtistPunctuation(item.track.artist),score:Math.round(item.score*100),titleScore:Math.round(item.titleScore*100)}))};
 }
 async function recognizeSpotifyPanorama(worker,blob,panoramaIndex=0){
   const source=await imageSourceFromBlob(blob);try{
@@ -1091,11 +1094,11 @@ function rowsFromOcrData(data,imageWidth){
   const textLines=String(data.text).split(/\r?\n/).map(line=>line.trim()).filter(Boolean);for(let index=0;index<textLines.length;index++){const match=textLines[index].toUpperCase().match(/\b(\d{2,3})\s*[B8]PM\b/);if(!match)continue;const bpm=Number(match[1]),title=cleanOcrTitle(textLines[index]),next=textLines[index+1]||'';if(title&&bpm>=40&&bpm<=300)rows.push({title,artist:cleanOcrArtist(next),bpm,camelot:camelotFromOcr(` ${next} `),confidence:45});}return rows;
 }
 function ocrVisualRowMatch(a,b){return Number(a.bpm)===Number(b.bpm)&&(!a.camelot||!b.camelot||a.camelot===b.camelot)&&visualHashDistance(a.visualHash,b.visualHash)<=12;}
-function ocrRowSimilarity(a,b){const sameTempo=Math.abs(Number(a.bpm)-Number(b.bpm))<=1,sameKey=!a.camelot||!b.camelot||a.camelot===b.camelot;return ocrVisualRowMatch(a,b)||(sameTempo&&sameKey&&editTextScore(a.title,b.title)>=.72&&(!a.artist||!b.artist||editTextScore(a.artist,b.artist)>=.68));}
+function ocrRowSimilarity(a,b){const sameTempo=Math.abs(Number(a.bpm)-Number(b.bpm))<=1,sameKey=!a.camelot||!b.camelot||a.camelot===b.camelot,weakKeyConflict=Number(a.bpm)===Number(b.bpm)&&editTextScore(a.title,b.title)>=.96&&(a.keySource!=='color'||b.keySource!=='color');return weakKeyConflict||ocrVisualRowMatch(a,b)||(sameTempo&&sameKey&&editTextScore(a.title,b.title)>=.72&&(!a.artist||!b.artist||editTextScore(a.artist,b.artist)>=.68));}
 function mergeVideoOcrRows(rows){
-  const merged=[];for(const row of rows){const found=merged.find(item=>ocrRowSimilarity(item,row));if(!found){merged.push(row);continue;}if(videoDebugReport&&ocrVisualRowMatch(found,row))videoDebugReport.metrics.visualMerges++;if((row.confidence||0)>(found.confidence||0)){const previous={...found};Object.assign(found,row);if(!found.artist)found.artist=previous.artist;if(!found.camelot)found.camelot=previous.camelot;}else{if(!found.artist)found.artist=row.artist;if(!found.camelot)found.camelot=row.camelot;}}
+  const merged=[];for(const row of rows){const found=merged.find(item=>ocrRowSimilarity(item,row));if(!found){merged.push(row);continue;}if(videoDebugReport&&ocrVisualRowMatch(found,row))videoDebugReport.metrics.visualMerges++;const previous={...found},previousRank=(previous.canonicalMatch?1000:0)+(previous.confidence||0),rowRank=(row.canonicalMatch?1000:0)+(row.confidence||0);if(rowRank>previousRank){Object.assign(found,row);if(!found.artist)found.artist=previous.artist;if(!found.camelot)found.camelot=previous.camelot;}else{if(!found.artist)found.artist=row.artist;if(!found.camelot)found.camelot=row.camelot;}const keyBest=[previous,row].filter(item=>item.camelot).sort((a,b)=>Number(b.keySource==='color')-Number(a.keySource==='color')||(b.keyConfidence||0)-(a.keyConfidence||0))[0];if(keyBest){found.camelot=keyBest.camelot;found.keySource=keyBest.keySource;found.keyConfidence=keyBest.keyConfidence;}}
   const artists=merged.map(row=>row.artist).filter(value=>value&&!isOcrUiLine(value)),counts={};artists.forEach(value=>counts[value]=(counts[value]||0)+1);const majority=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0],fallbackArtist=majority&&majority[1]>=Math.max(3,Math.ceil(merged.length*.6))?majority[0]:'';
-  return merged.map(row=>{const collection=resolveImportCollection({create:false})||'local_import';return{...normalizeRecord({title:row.title,artist:row.artist||fallbackArtist,bpm:row.bpm,camelot:row.camelot,source:'Spotify画面録画OCR',tags:'Spotify画面録画OCR',collection}),_videoOcr:true,_ocrConfidence:row.confidence??0,_keyConfidence:row.keyConfidence??0,_keySource:row.keySource||'',_keyConflict:Boolean(row.keyConflict),confidence:'review',selected:true};}).filter(row=>row.title&&row.bpm);
+  return merged.map(row=>{const collection=resolveImportCollection({create:false})||'local_import';return{...normalizeRecord({title:row.title,artist:spotifyArtistPunctuation(row.artist||fallbackArtist),bpm:row.bpm,camelot:row.camelot,source:'Spotify画面録画OCR',tags:'Spotify画面録画OCR',collection}),_videoOcr:true,_ocrConfidence:row.confidence??0,_keyConfidence:row.keyConfidence??0,_keySource:row.keySource||'',_keyConflict:Boolean(row.keyConflict),confidence:'review',selected:true};}).filter(row=>row.title&&row.bpm);
 }
 async function analyzeVideoImport(){
   if(!videoImportFile)return;videoImportAbort=false;resetVideoDebug(videoImportFile);setVideoWorking(true);setVideoProgress(0,'動画を準備しています…');
