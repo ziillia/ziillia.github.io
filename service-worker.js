@@ -1,4 +1,4 @@
-const CACHE_NAME='drive-dj-finder-v1.3.7-consensus';
+const CACHE_NAME='drive-dj-finder-v1.3.8-guarded';
 const APP_SHELL=['./','./drive-dj-finder.html','./manifest.webmanifest','./pwa-icon.svg','./pwa-icon-180.png','./pwa-icon-512.png'];
 
 self.addEventListener('install',event=>{
