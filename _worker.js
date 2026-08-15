@@ -1,7 +1,7 @@
 let schemaReady;
 let accessKeysCache;
 
-const SCOPES = new Set(['favorites', 'trackOverrides']);
+const SCOPES = new Set(['favorites', 'trackOverrides', 'userTracks', 'customCollections']);
 const MAX_OPERATIONS = 2000;
 const MAX_KEY_LENGTH = 500;
 const MAX_PAYLOAD_BYTES = 12000;
