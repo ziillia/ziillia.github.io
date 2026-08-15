@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "BPM・Camelotキー・Energyで次曲を探し、Spotify画面録画を色判定して任意のプレイリストへ追加できるDJツール",
+  "description": "BPM・Camelotキー・Energyで次曲を探し、Spotify画面録画の色判定とOCR診断から任意のプレイリストへ追加できるDJツール v1.3.3",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",
