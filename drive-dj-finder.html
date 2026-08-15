@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="pwa-icon-180.png">
-<title>Drive DJ Finder v1.3.5</title>
+<title>Drive DJ Finder v1.3.6</title>
   <style>
 
 :root{--ink:#10182c;--paper:#f3f1eb;--cyan:#19a8b5;--orange:#f47a36;--muted:#687287;--line:#d8d8d2}
@@ -77,7 +77,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 </head>
 <body>
 <main>
-  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.3.5 SAFE CROP</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard全曲を有名度順に探索。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
+  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.3.6 FULL GLYPH</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard全曲を有名度順に探索。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
   <div class="shell">
     <nav id="djFocusBar" class="dj-focus-bar" aria-label="DJフォーカスバー">
       <div class="focus-now"><span>NOW PLAYING</span><b id="focusTrack">手動入力</b></div>
@@ -153,7 +153,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
       <div id="results" class="track-list view-compact"></div>
       <nav id="pagination" class="pagination" aria-label="ページ移動"><button id="prevPage" type="button">← 前へ</button><span id="pageIndicator">1 / 1</span><button id="nextPage" type="button">次へ →</button></nav>
     </section>
-    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard広域プールはノイズを含む可能性があるため、重要な接続は事前試聴してください。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.3.5 SAFE CROP · LOCAL</span></footer>
+    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard広域プールはノイズを含む可能性があるため、重要な接続は事前試聴してください。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.3.6 FULL GLYPH · LOCAL</span></footer>
   </div>
 </main>
 
@@ -183,7 +183,7 @@ const FAVORITES_STORAGE_KEY='driveDjFavoritesV1';
 const SHARED_TOMBSTONES_STORAGE_KEY='driveDjSharedTombstonesV1';
 const CUSTOM_COLLECTIONS_STORAGE_KEY='driveDjCustomCollectionsV1';
 const SHARED_STATE_URL='./api/shared-state';
-const APP_VERSION='1.3.5-safe-crop';
+const APP_VERSION='1.3.6-full-glyph';
 const APP_BUILD_DATE='2026-08-15';
 const camelots=Array.from({length:12},(_,i)=>[(i+1)+'A',(i+1)+'B']).flat();
 const commonGenres=['J-POP','ロック','アイドル','K-POP','アニソン','ダンスポップ','R&B','ヒップホップ','バラード','洋楽','映画音楽','演歌／歌謡曲','コミック'];
@@ -554,7 +554,7 @@ function updateCounters(){
   $('statSelected').textContent=selected.length.toLocaleString();
   const selectedName=state.collection==='all'?'全データ':state.collection==='spotify_all'?'Spotifyプレイリスト全体':collectionLabel(state.collection);
   $('sourcePolicy').textContent=state.collection==='retro_top1000'?'正規に投入したレトロTop 1000を検索中。既存曲は重複せず、この所属だけが追加されます。':state.collection==='billboard_fame_84plus'?'Spotify厳選外から、Billboard有名度84点以上の412曲だけを優先検索しています。':state.collection==='billboard_hot100_analyzed'?'Billboard全曲プールを検索中。「全曲探索」でBPM・キー条件を外せます。':state.collection==='all'?'全データを検索中。Spotify所属曲を優先順位で上位表示します。':`${selectedName}を検索中。別ソースの曲は候補から除外しています。`;
-  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} SAFE CROP · ${selectedName} · ${selectedReady}/${selected.length}`;
+  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} FULL GLYPH · ${selectedName} · ${selectedReady}/${selected.length}`;
   const correctionTotal=Object.keys(trackOverrides).length;
   $('correctionCount').textContent=`修正 ${correctionTotal}曲`;
   $('userTrackCount').textContent=`追加曲 ${userTracks.length} / 全${tracks.length}曲`;
@@ -1025,7 +1025,7 @@ function detectSpotifyKeyColor(source,anchor){
   for(let py=0;py<height;py+=2)for(let px=0;px<width;px+=2){const index=(py*width+px)*4,r=pixels[index],g=pixels[index+1],b=pixels[index+2],max=Math.max(r,g,b),min=Math.min(r,g,b);if(max<70||max-min<28)continue;const lab=rgbLab(r,g,b);let bestKey='',bestDistance=Infinity;for(const[key,reference]of Object.entries(SPOTIFY_KEY_LAB)){const distance=spotifyLabDistance(lab,reference);if(distance<bestDistance){bestDistance=distance;bestKey=key;}}if(bestDistance>28)continue;const weight=Math.max(1,29-bestDistance);votes[bestKey]=(votes[bestKey]||0)+weight;(ys[bestKey]??=[]).push(py);}
   const ranked=Object.entries(votes).sort((a,b)=>b[1]-a[1]),best=ranked[0],second=ranked[1];if(!best||best[1]<95)return{key:'',confidence:0,centerY:null};const dominance=best[1]/Math.max(1,second?.[1]||0),positions=ys[best[0]].sort((a,b)=>a-b),confidence=Math.round(clamp(55+Math.min(30,(dominance-1)*28)+Math.min(15,positions.length/10),0,99));return{key:dominance>=1.12?best[0]:'',candidate:best[0],confidence,centerY:y+positions[Math.floor(positions.length/2)],dominance};
 }
-function fieldCropGeometry(source,anchor,field){const color=anchor.keyColor,center=color?.centerY,baseWidth=source.width;if(field==='title')return{y:center!==null&&center!==undefined?center-baseWidth*.064:anchor.top-baseWidth*.014,height:baseWidth*.044};return{y:center!==null&&center!==undefined?center-baseWidth*.022:anchor.top+baseWidth*.028,height:baseWidth*.038};}
+function fieldCropGeometry(source,anchor,field){const color=anchor.keyColor,center=color?.centerY,baseWidth=source.width;if(field==='title')return{y:center!==null&&center!==undefined?center-baseWidth*.078:anchor.top-baseWidth*.028,height:baseWidth*.058};return{y:center!==null&&center!==undefined?center-baseWidth*.032:anchor.top+baseWidth*.018,height:baseWidth*.052};}
 function buildSpotifyFieldSheet(source,anchors,field,mode='lightText'){
   const scale=2.35,cropX=source.width*.095,cropWidth=source.width*.56,sample=fieldCropGeometry(source,anchors[0]||{top:0},field),contentHeight=Math.round(sample.height*scale),gap=30,bandHeight=contentHeight+gap,canvas=makeCanvas(cropWidth*scale,Math.max(1,anchors.length*bandHeight)),context=canvas.getContext('2d');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);
   anchors.forEach((anchor,index)=>{const geometry=fieldCropGeometry(source,anchor,field),crop=cropForOcr(source,cropX,geometry.y,cropWidth,geometry.height,scale,mode);context.drawImage(crop,0,index*bandHeight);});return{canvas,bandHeight};
@@ -1041,7 +1041,7 @@ function spotifyFieldFromBand(lines,field){
   const usable=lines.map(line=>({...line,text:compactOcrJapanese(line.text)})).filter(line=>line.text&&!isOcrUiLine(line.text)&&!/[B8]\s*PM/i.test(line.text)&&!/^\d{1,2}:\d{2}/.test(line.text)&&!/^[-|>]+$/.test(line.text)).map(line=>({...line,raw:line.text,cleaned:field==='title'?cleanOcrTitle(line.text):cleanOcrArtist(line.text)})).filter(line=>line.cleaned&&(field!=='title'||!looksLikeSpotifyMetadata(line.cleaned))).sort((a,b)=>b.confidence-a.confidence||b.cleaned.length-a.cleaned.length),best=usable[0];return{text:best?.cleaned||'',raw:best?.raw||'',confidence:best?.confidence||0};
 }
 function chooseFieldCandidate(primary,secondary){if(!primary.text)return secondary;if(!secondary.text)return primary;const same=editTextScore(primary.text,secondary.text);if(same>=.78)return primary.confidence>=secondary.confidence?primary:secondary;const primaryBad=looksLikeSpotifyMetadata(primary.text),secondaryBad=looksLikeSpotifyMetadata(secondary.text);if(primaryBad!==secondaryBad)return primaryBad?secondary:primary;return primary.confidence>=secondary.confidence+8?primary:secondary;}
-function spotifySingleFieldCrop(source,anchor,field,mode='grayText'){const geometry=fieldCropGeometry(source,anchor,field),cropX=source.width*.145,cropWidth=source.width*.515,core=cropForOcr(source,cropX,geometry.y,cropWidth,geometry.height,3,mode),padX=30,padY=18,canvas=makeCanvas(core.width+padX*2,core.height+padY*2),context=canvas.getContext('2d');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(core,padX,padY);return canvas;}
+function spotifySingleFieldCrop(source,anchor,field,mode='grayText'){const geometry=fieldCropGeometry(source,anchor,field),cropX=source.width*.145,cropWidth=source.width*.515,scale=3,core=cropForOcr(source,cropX,geometry.y,cropWidth,geometry.height,scale,mode),padX=30,padY=18,canvas=makeCanvas(core.width+padX*2,core.height+padY*2),context=canvas.getContext('2d'),leftUiMask=Math.round(source.width*.026*scale);context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(core,padX,padY);context.fillRect(padX,padY,leftUiMask,core.height);return canvas;}
 async function recognizeSpotifySingleField(worker,source,anchor,field){
   await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'',preserve_interword_spaces:'1'});const read=async mode=>{const result=await worker.recognize(spotifySingleFieldCrop(source,anchor,field,mode));if(videoDebugReport)videoDebugReport.metrics.rowOcrCalls++;const raw=compactOcrJapanese(result.data?.text||''),text=field==='title'?cleanOcrTitle(raw):cleanOcrArtist(raw),confidence=Math.round(finiteNumber(result.data?.confidence)||0);return{raw,text,confidence,mode};},primary=await read('grayText'),mustRetry=field==='title'||!primary.text||primary.confidence<72||looksLikeSpotifyMetadata(primary.raw);if(!mustRetry)return{...primary,alternatives:[primary.raw]};if(videoDebugReport)videoDebugReport.metrics.retryPasses++;const secondary=await read('lightText'),chosen=chooseFieldCandidate(primary,secondary);return{...chosen,alternatives:[primary.raw,secondary.raw].filter(Boolean)};
 }
@@ -1090,9 +1090,10 @@ function rowsFromOcrData(data,imageWidth){
   if(rows.length||!data?.text)return rows;
   const textLines=String(data.text).split(/\r?\n/).map(line=>line.trim()).filter(Boolean);for(let index=0;index<textLines.length;index++){const match=textLines[index].toUpperCase().match(/\b(\d{2,3})\s*[B8]PM\b/);if(!match)continue;const bpm=Number(match[1]),title=cleanOcrTitle(textLines[index]),next=textLines[index+1]||'';if(title&&bpm>=40&&bpm<=300)rows.push({title,artist:cleanOcrArtist(next),bpm,camelot:camelotFromOcr(` ${next} `),confidence:45});}return rows;
 }
-function ocrRowSimilarity(a,b){const sameTempo=Math.abs(Number(a.bpm)-Number(b.bpm))<=1,sameKey=!a.camelot||!b.camelot||a.camelot===b.camelot,visualMatch=sameTempo&&sameKey&&visualHashDistance(a.visualHash,b.visualHash)<=18;return visualMatch||(sameTempo&&sameKey&&editTextScore(a.title,b.title)>=.72&&(!a.artist||!b.artist||editTextScore(a.artist,b.artist)>=.68));}
+function ocrVisualRowMatch(a,b){return Number(a.bpm)===Number(b.bpm)&&(!a.camelot||!b.camelot||a.camelot===b.camelot)&&visualHashDistance(a.visualHash,b.visualHash)<=12;}
+function ocrRowSimilarity(a,b){const sameTempo=Math.abs(Number(a.bpm)-Number(b.bpm))<=1,sameKey=!a.camelot||!b.camelot||a.camelot===b.camelot;return ocrVisualRowMatch(a,b)||(sameTempo&&sameKey&&editTextScore(a.title,b.title)>=.72&&(!a.artist||!b.artist||editTextScore(a.artist,b.artist)>=.68));}
 function mergeVideoOcrRows(rows){
-  const merged=[];for(const row of rows){const found=merged.find(item=>ocrRowSimilarity(item,row));if(!found){merged.push(row);continue;}if(videoDebugReport&&visualHashDistance(found.visualHash,row.visualHash)<=18)videoDebugReport.metrics.visualMerges++;if((row.confidence||0)>(found.confidence||0)){const previous={...found};Object.assign(found,row);if(!found.artist)found.artist=previous.artist;if(!found.camelot)found.camelot=previous.camelot;}else{if(!found.artist)found.artist=row.artist;if(!found.camelot)found.camelot=row.camelot;}}
+  const merged=[];for(const row of rows){const found=merged.find(item=>ocrRowSimilarity(item,row));if(!found){merged.push(row);continue;}if(videoDebugReport&&ocrVisualRowMatch(found,row))videoDebugReport.metrics.visualMerges++;if((row.confidence||0)>(found.confidence||0)){const previous={...found};Object.assign(found,row);if(!found.artist)found.artist=previous.artist;if(!found.camelot)found.camelot=previous.camelot;}else{if(!found.artist)found.artist=row.artist;if(!found.camelot)found.camelot=row.camelot;}}
   const artists=merged.map(row=>row.artist).filter(value=>value&&!isOcrUiLine(value)),counts={};artists.forEach(value=>counts[value]=(counts[value]||0)+1);const majority=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0],fallbackArtist=majority&&majority[1]>=Math.max(3,Math.ceil(merged.length*.6))?majority[0]:'';
   return merged.map(row=>{const collection=resolveImportCollection({create:false})||'local_import';return{...normalizeRecord({title:row.title,artist:row.artist||fallbackArtist,bpm:row.bpm,camelot:row.camelot,source:'Spotify画面録画OCR',tags:'Spotify画面録画OCR',collection}),_videoOcr:true,_ocrConfidence:row.confidence??0,_keyConfidence:row.keyConfidence??0,_keySource:row.keySource||'',_keyConflict:Boolean(row.keyConflict),confidence:'review',selected:true};}).filter(row=>row.title&&row.bpm);
 }
