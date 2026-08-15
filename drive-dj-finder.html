@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="pwa-icon-180.png">
-<title>Drive DJ Finder v1.2.8</title>
+<title>Drive DJ Finder v1.2.9</title>
   <style>
 
 :root{--ink:#10182c;--paper:#f3f1eb;--cyan:#19a8b5;--orange:#f47a36;--muted:#687287;--line:#d8d8d2}
@@ -122,7 +122,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
     </section>
     <section id="importer" class="importer" hidden aria-label="曲の一括追加">
       <div class="import-grid"><div><h2>曲をまとめて追加</h2><p>CSV・TSV・JSON、分析マスターCSV、またはSpotify曲URLを貼り付け。部分解析データも保存できます。</p><textarea id="importText" spellcheck="false" placeholder="title,artist,year,genre,bpm,camelot,energy\n曲名,アーティスト,2026,J-POP,128,8B,80"></textarea></div><div id="dropZone" class="drop-zone"><div><strong>CSV / TSV / JSONをドロップ</strong><p>一般列名と分析マスター列名に対応</p><label class="file-button secondary">ファイルを選択<input id="importFile" type="file" accept=".csv,.tsv,.json,text/csv,application/json"></label><p class="source-note">追加データはこのブラウザ内に保存。Camelot未確定曲は検索候補から除外されます。</p></div></div></div>
-      <section id="videoImportCard" class="video-import-card" aria-label="Spotify画面録画の読み取り"><div><h3>Spotify画面録画から追加</h3><p>ミックス表示を一定方向へスクロールしたMP4／MOVから、曲名・アーティスト・BPM・Camelotを読み取ります。</p></div><div class="video-import-actions"><label class="file-button video-file-button">画面録画を選択<input id="videoImportFile" type="file" accept="video/mp4,video/quicktime,video/*"></label><span id="videoFileName" class="video-file-name">未選択</span><button id="analyzeVideo" type="button" disabled>動画を読み取る</button><button id="cancelVideo" type="button" hidden>中止</button></div><div class="video-import-status"><div class="video-progress" aria-hidden="true"><i id="videoProgressBar"></i></div><span id="videoProgressLabel" class="video-progress-label">最初と最後だけ止め、途中は1画面0.7〜1秒を目安に一定速度でスクロールしてください。</span><p class="video-privacy">動画は端末内で処理します。初回のみ日本語OCRエンジンを取得するためネット接続が必要です。</p></div><video id="videoAnalyzer" muted playsinline preload="metadata"></video><canvas id="videoFrameCanvas"></canvas><canvas id="videoAnalysisCanvas"></canvas></section>
+      <section id="videoImportCard" class="video-import-card" aria-label="Spotify画面録画の読み取り"><div><h3>Spotify画面録画から追加</h3><p>Spotifyのミックス表示に特化し、BPMを目印に曲名・アーティストの2行を拡大して読み取ります。</p></div><div class="video-import-actions"><label class="file-button video-file-button">画面録画を選択<input id="videoImportFile" type="file" accept="video/mp4,video/quicktime,video/*"></label><span id="videoFileName" class="video-file-name">未選択</span><button id="analyzeVideo" type="button" disabled>動画を読み取る</button><button id="cancelVideo" type="button" hidden>中止</button></div><div class="video-import-status"><div class="video-progress" aria-hidden="true"><i id="videoProgressBar"></i></div><span id="videoProgressLabel" class="video-progress-label">Spotifyの「ミックス」を開き、止めずに一定方向へスクロールしてください。速めでも読み取れます。</span><p class="video-privacy">動画は端末内で処理します。初回のみ日本語OCRエンジンを取得するためネット接続が必要です。</p></div><video id="videoAnalyzer" muted playsinline preload="metadata"></video><canvas id="videoFrameCanvas"></canvas><canvas id="videoAnalysisCanvas"></canvas></section>
       <div class="import-actions"><label class="import-collection"><span>追加先コレクション</span><select id="importCollection"><option value="spotify_artist_king_gnu">Spotify · King Gnu 全曲</option><option value="spotify_artist_nee">Spotify · NEE 全曲</option><option value="spotify_artist_sakanaction">Spotify · サカナクション 全曲</option><option value="spotify_kpop">Spotify · K-POP</option><option value="spotify_night_drive">Spotify · 夜ドライブ</option><option value="spotify_other">Spotify · その他</option><option value="retro_top1000">レトロ Top 1000</option><option value="local_import">ローカル追加</option></select></label><button id="parseImport">内容を読み込む</button><button id="autoEnrich" class="secondary" disabled>BPM・キーを自動補完</button><button id="commitImport" disabled>選択曲を追加</button><button id="downloadSample" class="secondary">サンプルCSV</button><button id="closeImporter" class="secondary">閉じる</button></div>
       <div id="importStatus" class="import-status">貼り付けるか、ファイルを選んでください。</div>
       <div id="previewWrap" class="preview-wrap" hidden><table class="preview-table"><thead><tr><th>追加</th><th>曲 / アーティスト</th><th>DJ BPM</th><th>KEY</th><th>ENERGY</th><th>年 / ジャンル</th><th>判定</th></tr></thead><tbody id="previewBody"></tbody></table></div>
@@ -181,7 +181,7 @@ const OVERRIDE_STORAGE_KEY='driveDjTrackOverridesV1';
 const FAVORITES_STORAGE_KEY='driveDjFavoritesV1';
 const SHARED_TOMBSTONES_STORAGE_KEY='driveDjSharedTombstonesV1';
 const SHARED_STATE_URL='./api/shared-state';
-const APP_VERSION='1.2.8-video-import';
+const APP_VERSION='1.2.9-spotify-ocr';
 const camelots=Array.from({length:12},(_,i)=>[(i+1)+'A',(i+1)+'B']).flat();
 const commonGenres=['J-POP','ロック','アイドル','K-POP','アニソン','ダンスポップ','R&B','ヒップホップ','バラード','洋楽','映画音楽','演歌／歌謡曲','コミック'];
 const state={camelot:'3A',candidateCamelot:'auto',bpmMode:'percent',currentBpm:150,currentTrackKey:'',currentTrackIsrc:'',currentTrackTitle:'',currentTrackArtist:'',currentTrackEnergy:null,bpmPercentPreset:'10',bpmRangeProfile:'symmetric',customPercent:7.5,minBpm:135,maxBpm:165,manualMinBpm:145,manualMaxBpm:160,genre:'すべて',year:'すべて',mode:'safe',energy:0,quality:'all',collection:'billboard_fame_84plus',favoritesOnly:false,viewMode:'compact',pageSize:40,page:1,searchScope:'mix',candidateQuery:'',candidateSearchTarget:'all',candidateArtistExact:'',resultSort:'dj',fameMinScore:'all',chartFilter:'all',retroOnly:false};
@@ -197,6 +197,7 @@ let enriching=false;
 let videoImportFile=null;
 let videoImportAbort=false;
 let videoOcrWorker=null;
+let videoArtistDictionary=null;
 let currentTrackSearchTimer=0;
 let candidateSearchTimer=0;
 let artistSuggestionEntriesCache=[];
@@ -895,7 +896,8 @@ async function videoToPanoramas(file){
     if(video.duration>600)throw new Error('1回に読み取れる動画は10分までです。分割してください。');
     const sourceWidth=video.videoWidth,sourceHeight=video.videoHeight,scale=Math.min(1,1280/sourceWidth),width=Math.round(sourceWidth*scale),height=Math.round(sourceHeight*scale);
     frame.width=width;frame.height=height;const frameContext=frame.getContext('2d',{willReadFrequently:true});
-    const roi={x:Math.round(width*.015),y:Math.round(height*.12),width:Math.round(width*.97),height:Math.round(height*.72)};
+    // Spotifyの固定ヘッダーと下部プレイヤーを除外し、実際に流れる曲リストだけを見る。
+    const roi={x:Math.round(width*.015),y:Math.round(height*.18),width:Math.round(width*.97),height:Math.round(height*.62)};
     analysis.width=190;analysis.height=Math.max(220,Math.round(roi.height*(analysis.width/roi.width)));const analysisContext=analysis.getContext('2d',{willReadFrequently:true});
     const writer=await createPanoramaWriter(roi.width),interval=Math.max(.2,video.duration/500),sampleCount=Math.ceil(video.duration/interval)+1;
     let previous=null,cumulative=0,lastAppendTime=-99,lastGoodTime=0,lastProfile=null;
@@ -922,10 +924,72 @@ function parseTsvLines(tsv){
   const lines=new Map();String(tsv||'').split(/\r?\n/).slice(1).forEach(row=>{const cells=row.split('\t');if(cells.length<12||cells[0]!=='5')return;const text=cells.slice(11).join('\t').trim();if(!text)return;const key=[cells[1],cells[2],cells[3],cells[4]].join('-'),word={text,left:Number(cells[6]),top:Number(cells[7]),width:Number(cells[8]),height:Number(cells[9]),confidence:Number(cells[10])};if(!lines.has(key))lines.set(key,[]);lines.get(key).push(word);});
   return[...lines.values()].map(words=>({words,text:words.map(word=>word.text).join(' ').replace(/\s+/g,' ').trim(),left:Math.min(...words.map(word=>word.left)),top:Math.min(...words.map(word=>word.top)),right:Math.max(...words.map(word=>word.left+word.width)),bottom:Math.max(...words.map(word=>word.top+word.height)),confidence:words.reduce((sum,word)=>sum+Math.max(0,word.confidence),0)/words.length})).sort((a,b)=>a.top-b.top||a.left-b.left);
 }
-function cleanOcrTitle(value){return String(value||'').replace(/\b\d{2,3}\s*[B8]PM\b.*$/i,'').replace(/[⋯…·・.]{2,}$/,'').replace(/^[-–—|]+|[-–—|]+$/g,'').replace(/\s+/g,' ').trim();}
-function cleanOcrArtist(value){return String(value||'').replace(/^[▶▷▻]?\s*ビデオ\s*[・·]\s*/,'').replace(/\s*[・·]\s*\d{1,2}:\d{2}.*$/,'').replace(/\b(1[0-2]|[1-9])[AB8]\b.*$/i,'').replace(/\s+/g,' ').trim();}
+function compactOcrJapanese(value){
+  return String(value||'').replace(/([ぁ-んァ-ヶ一-龠々ー])\s+(?=[ぁ-んァ-ヶ一-龠々ー])/g,'$1').replace(/\s+([、。・：！？）】])/g,'$1').replace(/([（【])\s+/g,'$1').replace(/\s+/g,' ').trim();
+}
+function preprocessOcrCanvas(canvas,mode='lightText'){
+  const context=canvas.getContext('2d',{willReadFrequently:true}),image=context.getImageData(0,0,canvas.width,canvas.height),pixels=image.data;
+  if(mode==='pill'){
+    let minX=canvas.width,minY=canvas.height,maxX=-1,maxY=-1;
+    for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++){const i=(y*canvas.width+x)*4,r=pixels[i],g=pixels[i+1],b=pixels[i+2],lum=r*.299+g*.587+b*.114,sat=Math.max(r,g,b)-Math.min(r,g,b);if(lum>75||sat>42){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);}}
+    const valid=maxX>minX&&maxY>minY;
+    for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++){const i=(y*canvas.width+x)*4,lum=pixels[i]*.299+pixels[i+1]*.587+pixels[i+2]*.114,inside=valid&&x>=minX&&x<=maxX&&y>=minY&&y<=maxY,value=inside&&lum<105?0:255;pixels[i]=pixels[i+1]=pixels[i+2]=value;pixels[i+3]=255;}
+  }else{
+    const threshold=mode==='bpm'?82:58;
+    for(let i=0;i<pixels.length;i+=4){const lum=pixels[i]*.299+pixels[i+1]*.587+pixels[i+2]*.114,value=lum>=threshold?0:255;pixels[i]=pixels[i+1]=pixels[i+2]=value;pixels[i+3]=255;}
+  }
+  context.putImageData(image,0,0);return canvas;
+}
+function cropForOcr(source,x,y,width,height,scale=1,mode='lightText'){
+  const sx=clamp(Math.round(x),0,Math.max(0,source.width-1)),sy=clamp(Math.round(y),0,Math.max(0,source.height-1)),sw=clamp(Math.round(width),1,source.width-sx),sh=clamp(Math.round(height),1,source.height-sy),canvas=makeCanvas(sw*scale,sh*scale),context=canvas.getContext('2d');
+  context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);context.drawImage(source,sx,sy,sw,sh,0,0,canvas.width,canvas.height);return preprocessOcrCanvas(canvas,mode);
+}
+async function imageSourceFromBlob(blob){
+  if(window.createImageBitmap)return createImageBitmap(blob);
+  return new Promise((resolve,reject)=>{const image=new Image(),url=URL.createObjectURL(blob);image.onload=()=>{URL.revokeObjectURL(url);resolve(image);};image.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('解析画像を開けませんでした。'));};image.src=url;});
+}
+function spotifyBpmAnchors(data,scale,sourceHeight){
+  const anchors=[];
+  for(const line of parseTsvLines(data?.tsv)){const match=line.text.toUpperCase().replace(/\s+/g,'').match(/(\d{2,3})[B8]PM/);if(!match)continue;const bpm=Number(match[1]),top=line.top/scale,bottom=line.bottom/scale;if(bpm<40||bpm>300||top<0||bottom>sourceHeight)continue;const duplicate=anchors.find(anchor=>Math.abs(anchor.top-top)<42);if(duplicate){if(line.confidence>duplicate.confidence)Object.assign(duplicate,{bpm,top,bottom,confidence:line.confidence});}else anchors.push({bpm,top,bottom,confidence:line.confidence});}
+  return anchors.sort((a,b)=>a.top-b.top);
+}
+function buildSpotifyTextSheet(source,anchors){
+  const scale=1.8,cropX=source.width*.16,cropWidth=source.width*.52,cropHeight=source.width*.13,contentHeight=Math.round(cropHeight*scale),gap=34,bandHeight=contentHeight+gap,canvas=makeCanvas(cropWidth*scale,Math.max(1,anchors.length*bandHeight)),context=canvas.getContext('2d');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);
+  anchors.forEach((anchor,index)=>{const crop=cropForOcr(source,cropX,anchor.top-source.width*.022,cropWidth,cropHeight,scale,'lightText');context.drawImage(crop,0,index*bandHeight);});return{canvas,bandHeight};
+}
+function buildSpotifyKeySheet(source,anchors){
+  const scale=5,cropX=source.width*.70,cropWidth=source.width*.11,cropHeight=source.width*.06,contentHeight=Math.round(cropHeight*scale),gap=45,bandHeight=contentHeight+gap,canvas=makeCanvas(cropWidth*scale,Math.max(1,anchors.length*bandHeight)),context=canvas.getContext('2d');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);
+  anchors.forEach((anchor,index)=>{const crop=cropForOcr(source,cropX,anchor.top+source.width*.034,cropWidth,cropHeight,scale,'pill');context.drawImage(crop,0,index*bandHeight);});return{canvas,bandHeight};
+}
+function sheetLinesByBand(data,bandHeight,count){
+  const bands=Array.from({length:count},()=>[]);for(const line of parseTsvLines(data?.tsv)){const index=Math.floor((line.top+2)/bandHeight);if(index>=0&&index<count)bands[index].push(line);}return bands;
+}
+function spotifyTitleArtistFromBand(lines){
+  const usable=lines.map(line=>({...line,text:compactOcrJapanese(line.text)})).filter(line=>line.text&&!isOcrUiLine(line.text)&&!/[B8]\s*PM/i.test(line.text)&&!/^\d{1,2}:\d{2}/.test(line.text)&&!/^[-|>]+$/.test(line.text)).sort((a,b)=>a.top-b.top||a.left-b.left),titleLine=usable[0],artistLine=usable.find(line=>line!==titleLine&&line.top>=titleLine?.bottom-5);
+  return{title:cleanOcrTitle(titleLine?.text||''),artist:cleanOcrArtist(artistLine?.text||''),confidence:Math.round(((titleLine?.confidence||0)+(artistLine?.confidence||0))/(artistLine?2:1))};
+}
+function editTextScore(aValue,bValue){
+  const a=normalText(aValue),b=normalText(bValue);if(!a||!b)return 0;if(a===b)return 1;const previous=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){let diagonal=previous[0];previous[0]=i;for(let j=1;j<=b.length;j++){const above=previous[j],cost=a[i-1]===b[j-1]?0:1;previous[j]=Math.min(previous[j]+1,previous[j-1]+1,diagonal+cost);diagonal=above;}}return 1-previous[b.length]/Math.max(a.length,b.length);
+}
+function canonicalArtistFromOcr(value){
+  const cleaned=String(value||'').trim(),needle=normalText(cleaned);if(!needle)return'';if(!videoArtistDictionary)videoArtistDictionary=[...new Set(tracks.map(track=>String(track.artist||'').trim()).filter(Boolean))].map(label=>({label,key:normalText(label)})).filter(item=>item.key.length>=3).sort((a,b)=>b.key.length-a.key.length);const included=videoArtistDictionary.find(item=>needle.includes(item.key));if(included)return included.label;const best=videoArtistDictionary.map(item=>({item,score:editTextScore(cleaned,item.label)})).sort((a,b)=>b.score-a.score)[0];return best?.score>=.84?best.item.label:cleaned;
+}
+function canonicalizeSpotifyOcrRow(row){
+  const bpm=finiteNumber(row.bpm);if(!row.title||bpm===null)return row;const candidates=tracks.filter(track=>{const value=finiteNumber(track.bpm);return value!==null&&Math.min(Math.abs(Math.round(value)-bpm),Math.abs(Math.round(value*2)-bpm),Math.abs(Math.round(value/2)-bpm))<=3;}).map(track=>{const titleScore=editTextScore(row.title,track.title),artistScore=row.artist?editTextScore(row.artist,track.artist):0,keyBonus=row.camelot&&track.camelot===row.camelot?0.08:0,score=titleScore*.78+artistScore*.14+keyBonus;return{track,titleScore,artistScore,score};}).sort((a,b)=>b.score-a.score),best=candidates[0],second=candidates[1];
+  if(!best||best.titleScore<.67||best.score<.61||(second&&best.score-second.score<.045&&best.titleScore<.84))return row;return{...row,title:best.track.title,artist:best.track.artist||row.artist,camelot:row.camelot||best.track.camelot,confidence:Math.max(row.confidence||0,Math.round(70+best.score*25)),canonicalMatch:true};
+}
+async function recognizeSpotifyPanorama(worker,blob){
+  const source=await imageSourceFromBlob(blob);try{
+    const bpmScale=1.6,bpmCrop=cropForOcr(source,source.width*.66,0,source.width*.28,source.height,bpmScale,'bpm');await worker.setParameters({tessedit_pageseg_mode:'11',tessedit_char_whitelist:'0123456789BPM:'});const bpmResult=await worker.recognize(bpmCrop,{}, {tsv:true}),anchors=spotifyBpmAnchors(bpmResult.data,bpmScale,source.height);if(!anchors.length){await worker.setParameters({tessedit_pageseg_mode:'11',tessedit_char_whitelist:''});const fallback=await worker.recognize(blob,{}, {tsv:true});return rowsFromOcrData(fallback.data,source.width);}
+    const textSheet=buildSpotifyTextSheet(source,anchors);await worker.setParameters({tessedit_pageseg_mode:'6',tessedit_char_whitelist:'',preserve_interword_spaces:'1'});const textResult=await worker.recognize(textSheet.canvas,{}, {tsv:true}),textBands=sheetLinesByBand(textResult.data,textSheet.bandHeight,anchors.length);
+    const keySheet=buildSpotifyKeySheet(source,anchors);await worker.setParameters({tessedit_pageseg_mode:'11',tessedit_char_whitelist:'0123456789AB84'});const keyResult=await worker.recognize(keySheet.canvas,{}, {tsv:true}),keyBands=sheetLinesByBand(keyResult.data,keySheet.bandHeight,anchors.length);
+    return anchors.map((anchor,index)=>{const identity=spotifyTitleArtistFromBand(textBands[index]),keyText=keyBands[index].map(line=>line.text).join(''),camelot=camelotFromOcr(keyText),confidence=Math.round(anchor.confidence*.35+(identity.confidence||0)*.5+(camelot?90:35)*.15);return canonicalizeSpotifyOcrRow({title:identity.title,artist:identity.artist,bpm:anchor.bpm,camelot,confidence});}).filter(row=>row.title);
+  }finally{if(typeof source.close==='function')source.close();}
+}
+function cleanOcrTitle(value){return compactOcrJapanese(value).replace(/\b\d{2,3}\s*[B8]PM\b.*$/i,'').replace(/[⋯…·・.]{2,}$/,'').replace(/^[-–—|]+|[-–—|]+$/g,'').replace(/\s+/g,' ').trim();}
+function cleanOcrArtist(value){const cleaned=compactOcrJapanese(value).replace(/^[▶▷▻]?[^・·]{0,8}ビデオ\s*[・·]\s*/,'').replace(/\s*[・·]\s*\d{1,2}:\d{2}.*$/,'').replace(/\b(1[0-2]|[1-9])[AB8]\b.*$/i,'').replace(/\s+/g,' ').trim();return canonicalArtistFromOcr(cleaned);}
 function isOcrUiLine(value){const text=normalText(value);return!text||['オート','追加','ミックス','ビデオ','編集','シャッフル再生'].some(item=>text===normalText(item));}
-function camelotFromOcr(value){const match=String(value||'').toUpperCase().match(/(?:^|\s)(1[0-2]|[1-9])\s*([AB8])(?:\s|$)/);return match?`${match[1]}${match[2]==='8'?'B':match[2]}`:'';}
+function camelotFromOcr(value){const compact=String(value||'').toUpperCase().replace(/[^0-9AB84]/g,''),match=compact.match(/(1[0-2]|[1-9])([AB84])$/);return match?`${match[1]}${match[2]==='8'?'B':match[2]==='4'?'A':match[2]}`:'';}
 function rowsFromOcrData(data,imageWidth){
   const lines=parseTsvLines(data?.tsv),rows=[];
   for(const bpmLine of lines){const bpmMatch=bpmLine.text.toUpperCase().match(/\b(\d{2,3})\s*[B8]PM\b/);if(!bpmMatch)continue;const bpm=Number(bpmMatch[1]);if(bpm<40||bpm>300)continue;const center=bpmLine.top+(bpmLine.bottom-bpmLine.top)/2;
@@ -938,9 +1002,9 @@ function rowsFromOcrData(data,imageWidth){
   if(rows.length||!data?.text)return rows;
   const textLines=String(data.text).split(/\r?\n/).map(line=>line.trim()).filter(Boolean);for(let index=0;index<textLines.length;index++){const match=textLines[index].toUpperCase().match(/\b(\d{2,3})\s*[B8]PM\b/);if(!match)continue;const bpm=Number(match[1]),title=cleanOcrTitle(textLines[index]),next=textLines[index+1]||'';if(title&&bpm>=40&&bpm<=300)rows.push({title,artist:cleanOcrArtist(next),bpm,camelot:camelotFromOcr(` ${next} `),confidence:45});}return rows;
 }
-function ocrRowSimilarity(a,b){return a.bpm===b.bpm&&a.camelot===b.camelot&&textScore(a.title,b.title)>=.78&&(!a.artist||!b.artist||textScore(a.artist,b.artist)>=.72);}
+function ocrRowSimilarity(a,b){return Math.abs(Number(a.bpm)-Number(b.bpm))<=1&&(!a.camelot||!b.camelot||a.camelot===b.camelot)&&editTextScore(a.title,b.title)>=.72&&(!a.artist||!b.artist||editTextScore(a.artist,b.artist)>=.68);}
 function mergeVideoOcrRows(rows){
-  const merged=[];for(const row of rows){const found=merged.find(item=>ocrRowSimilarity(item,row));if(!found){merged.push(row);continue;}if((row.confidence||0)>(found.confidence||0)){Object.assign(found,row);}}
+  const merged=[];for(const row of rows){const found=merged.find(item=>ocrRowSimilarity(item,row));if(!found){merged.push(row);continue;}if((row.confidence||0)>(found.confidence||0)){const previous={...found};Object.assign(found,row);if(!found.artist)found.artist=previous.artist;if(!found.camelot)found.camelot=previous.camelot;}else{if(!found.artist)found.artist=row.artist;if(!found.camelot)found.camelot=row.camelot;}}
   const artists=merged.map(row=>row.artist).filter(value=>value&&!isOcrUiLine(value)),counts={};artists.forEach(value=>counts[value]=(counts[value]||0)+1);const majority=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0],fallbackArtist=majority&&majority[1]>=Math.max(2,Math.ceil(merged.length*.35))?majority[0]:'';
   return merged.map(row=>{const collection=$('importCollection').value||'local_import';return{...normalizeRecord({title:row.title,artist:row.artist||fallbackArtist,bpm:row.bpm,camelot:row.camelot,source:'Spotify画面録画OCR',tags:'Spotify画面録画OCR',collection}),_videoOcr:true,_ocrConfidence:row.confidence??0,confidence:'review',selected:true};}).filter(row=>row.title&&row.bpm);
 }
@@ -950,7 +1014,7 @@ async function analyzeVideoImport(){
     const panoramas=await videoToPanoramas(videoImportFile);if(videoImportAbort)throw new Error('動画の読み取りを中止しました。');if(!panoramas.length)throw new Error('読み取れるスクロール領域を作成できませんでした。');
     const worker=await getVideoOcrWorker(),found=[];
     for(let index=0;index<panoramas.length;index++){
-      if(videoImportAbort)throw new Error('動画の読み取りを中止しました。');setVideoProgress(53+Math.round(index/panoramas.length*42),`文字を読み取り中… ${index+1} / ${panoramas.length}`);const result=await worker.recognize(panoramas[index],{}, {tsv:true});found.push(...rowsFromOcrData(result.data,Math.round($('videoFrameCanvas').width*.97)));
+      if(videoImportAbort)throw new Error('動画の読み取りを中止しました。');setVideoProgress(53+Math.round(index/panoramas.length*42),`Spotifyの曲名行を読み取り中… ${index+1} / ${panoramas.length}`);found.push(...await recognizeSpotifyPanorama(worker,panoramas[index]));
     }
     const rows=mergeVideoOcrRows(found);if(!rows.length)throw new Error('曲を認識できませんでした。Spotifyの「ミックス」表示とスクロール速度を確認してください。');previewRows=rows;previewRows.forEach((row,index)=>{if(isDuplicate(row,index))row.selected=false;});renderPreview();const low=rows.filter(row=>row._ocrConfidence<58||!row.artist||!row.camelot).length;setVideoProgress(100,`${rows.length}曲を読み取りました。${low?`黄色の${low}曲を確認してください。`:'内容を確認して追加できます。'}`);setImportStatus(`画面録画から${rows.length}曲を読み取りました。誤読だけ修正して追加してください。`,'ok');$('previewWrap').scrollIntoView({behavior:'smooth',block:'start'});
   }catch(error){const cancelled=videoImportAbort||String(error?.message||'').includes('中止');setVideoProgress(0,cancelled?'読み取りを中止しました。':(error.message||'動画の読み取りに失敗しました。'));if(!cancelled)setImportStatus(error.message||'動画の読み取りに失敗しました。','error');}
