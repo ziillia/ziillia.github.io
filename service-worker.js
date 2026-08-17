@@ -1,5 +1,5 @@
-const CACHE_NAME='drive-dj-finder-v1.4.0-key-gate';
-const APP_SHELL=['./','./drive-dj-finder.html','./manifest.webmanifest','./pwa-icon.svg','./pwa-icon-180.png','./pwa-icon-512.png'];
+const CACHE_NAME='drive-dj-finder-v1.4.2-music-db';
+const APP_SHELL=['./','./drive-dj-finder.html','./musicbrainz-ocr-dictionary.js','./manifest.webmanifest','./pwa-icon.svg','./pwa-icon-180.png','./pwa-icon-512.png'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));

@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "BPMで行を探し、色付きKEYが見える行だけを読み取るKEY GATE搭載DJツール v1.4.0",
+  "description": "KEY GATEとBillboard経験アーティストのMusicBrainz全曲データベース基盤を備えたDJツール v1.4.2",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",
