@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "BPM・Camelotキー・Energyで次曲を探し、要確認を先頭表示してOCR修正を学習データとして共有するDJツール v1.3.9",
+  "description": "BPMで行を探し、色付きKEYが見える行だけを読み取るKEY GATE搭載DJツール v1.4.0",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",

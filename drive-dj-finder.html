@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="pwa-icon-180.png">
-<title>Drive DJ Finder v1.3.9</title>
+<title>Drive DJ Finder v1.4.0</title>
   <style>
 
 :root{--ink:#10182c;--paper:#f3f1eb;--cyan:#19a8b5;--orange:#f47a36;--muted:#687287;--line:#d8d8d2}
@@ -78,7 +78,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 </head>
 <body>
 <main>
-  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.3.9 REVIEW FIRST</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard全曲を有名度順に探索。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
+  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.4.0 KEY GATE</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard全曲を有名度順に探索。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
   <div class="shell">
     <nav id="djFocusBar" class="dj-focus-bar" aria-label="DJフォーカスバー">
       <div class="focus-now"><span>NOW PLAYING</span><b id="focusTrack">手動入力</b></div>
@@ -154,7 +154,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
       <div id="results" class="track-list view-compact"></div>
       <nav id="pagination" class="pagination" aria-label="ページ移動"><button id="prevPage" type="button">← 前へ</button><span id="pageIndicator">1 / 1</span><button id="nextPage" type="button">次へ →</button></nav>
     </section>
-    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard広域プールはノイズを含む可能性があるため、重要な接続は事前試聴してください。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.3.9 REVIEW FIRST · LOCAL</span></footer>
+    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard広域プールはノイズを含む可能性があるため、重要な接続は事前試聴してください。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.4.0 KEY GATE · LOCAL</span></footer>
   </div>
 </main>
 
@@ -185,8 +185,8 @@ const SHARED_TOMBSTONES_STORAGE_KEY='driveDjSharedTombstonesV1';
 const CUSTOM_COLLECTIONS_STORAGE_KEY='driveDjCustomCollectionsV1';
 const OCR_CORRECTIONS_STORAGE_KEY='driveDjOcrCorrectionsV1';
 const SHARED_STATE_URL='./api/shared-state';
-const APP_VERSION='1.3.9-review-first';
-const APP_BUILD_DATE='2026-08-15';
+const APP_VERSION='1.4.0-key-gate';
+const APP_BUILD_DATE='2026-08-17';
 const camelots=Array.from({length:12},(_,i)=>[(i+1)+'A',(i+1)+'B']).flat();
 const commonGenres=['J-POP','ロック','アイドル','K-POP','アニソン','ダンスポップ','R&B','ヒップホップ','バラード','洋楽','映画音楽','演歌／歌謡曲','コミック'];
 const state={camelot:'3A',candidateCamelot:'auto',bpmMode:'percent',currentBpm:150,currentTrackKey:'',currentTrackIsrc:'',currentTrackTitle:'',currentTrackArtist:'',currentTrackEnergy:null,bpmPercentPreset:'10',bpmRangeProfile:'symmetric',customPercent:7.5,minBpm:135,maxBpm:165,manualMinBpm:145,manualMaxBpm:160,genre:'すべて',year:'すべて',mode:'safe',energy:0,quality:'all',collection:'billboard_fame_84plus',favoritesOnly:false,viewMode:'compact',pageSize:40,page:1,searchScope:'mix',candidateQuery:'',candidateSearchTarget:'all',candidateArtistExact:'',resultSort:'dj',fameMinScore:'all',chartFilter:'all',retroOnly:false};
@@ -562,7 +562,7 @@ function updateCounters(){
   $('statSelected').textContent=selected.length.toLocaleString();
   const selectedName=state.collection==='all'?'全データ':state.collection==='spotify_all'?'Spotifyプレイリスト全体':collectionLabel(state.collection);
   $('sourcePolicy').textContent=state.collection==='retro_top1000'?'正規に投入したレトロTop 1000を検索中。既存曲は重複せず、この所属だけが追加されます。':state.collection==='billboard_fame_84plus'?'Spotify厳選外から、Billboard有名度84点以上の412曲だけを優先検索しています。':state.collection==='billboard_hot100_analyzed'?'Billboard全曲プールを検索中。「全曲探索」でBPM・キー条件を外せます。':state.collection==='all'?'全データを検索中。Spotify所属曲を優先順位で上位表示します。':`${selectedName}を検索中。別ソースの曲は候補から除外しています。`;
-  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} REVIEW FIRST · ${selectedName} · ${selectedReady}/${selected.length}`;
+  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} KEY GATE · ${selectedName} · ${selectedReady}/${selected.length}`;
   const correctionTotal=Object.keys(trackOverrides).length;
   $('correctionCount').textContent=`修正 ${correctionTotal}曲`;
   $('userTrackCount').textContent=`追加曲 ${userTracks.length} / 全${tracks.length}曲`;
@@ -873,7 +873,7 @@ const SPOTIFY_KEY_RGB={
 };
 function escapeDebugHtml(value){return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
 function resetVideoDebug(file){
-  videoDebugReport={app:'Drive DJ Finder',version:APP_VERSION,buildDate:APP_BUILD_DATE,createdAt:new Date().toISOString(),file:file?{name:file.name,size:file.size,type:file.type,lastModified:file.lastModified}:null,metrics:{samples:0,staticSkipped:0,fullFrames:0,deltaFrames:0,panoramas:0,anchors:0,rawRows:0,mergedRows:0,colorKeys:0,keyConflicts:0,canonicalMatches:0,rowOcrCalls:0,retryPasses:0,visualMerges:0,fallbackPanoramas:0},rows:[]};renderVideoDebug();
+  videoDebugReport={app:'Drive DJ Finder',version:APP_VERSION,buildDate:APP_BUILD_DATE,createdAt:new Date().toISOString(),file:file?{name:file.name,size:file.size,type:file.type,lastModified:file.lastModified}:null,metrics:{samples:0,staticSkipped:0,keyLoadFrames:0,fullFrames:0,deltaFrames:0,panoramas:0,anchors:0,noAnchorPanoramas:0,keyGateAccepted:0,keyGateSkipped:0,rawRows:0,mergedRows:0,colorKeys:0,keyConflicts:0,canonicalMatches:0,rowOcrCalls:0,retryPasses:0,visualMerges:0},rows:[]};renderVideoDebug();
 }
 function renderVideoDebug(){
   const report=videoDebugReport,metrics=$('videoDebugMetrics'),gallery=$('videoDebugGallery');if(!report){metrics.innerHTML='';gallery.innerHTML='<span class="video-debug-empty">動画を読み取ると診断結果が表示されます。</span>';return;}
@@ -943,6 +943,11 @@ function estimateVerticalShift(previous,current){
   }
   return{shift:bestShift,score:bestScore,sharpness:current.sharpness};
 }
+function spotifyKeyColorCoverage(canvas){
+  const context=canvas.getContext('2d',{willReadFrequently:true}),{width,height}=canvas,pixels=context.getImageData(0,0,width,height).data,xStart=Math.round(width*.66),xEnd=Math.round(width*.90);let matches=0,samples=0;
+  for(let y=0;y<height;y+=2)for(let x=xStart;x<xEnd;x+=2){const index=(y*width+x)*4,r=pixels[index],g=pixels[index+1],b=pixels[index+2],max=Math.max(r,g,b),min=Math.min(r,g,b);samples++;if(max<70||max-min<28)continue;const lab=rgbLab(r,g,b);if(Object.values(SPOTIFY_KEY_LAB).some(reference=>spotifyLabDistance(lab,reference)<=30))matches++;}
+  return Math.round(matches*1000/Math.max(1,samples));
+}
 function canvasBlob(canvas,type='image/jpeg',quality=.92){return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('画像の作成に失敗しました。')),type,quality));}
 function makeCanvas(width,height){const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(width));canvas.height=Math.max(1,Math.round(height));return canvas;}
 async function createPanoramaWriter(width,maxHeight=5200,overlap=180){
@@ -975,17 +980,17 @@ async function videoToPanoramas(file){
     const writer=await createPanoramaWriter(roi.width),interval=Math.max(.2,video.duration/500),sampleCount=Math.ceil(video.duration/interval)+1;
     let previous=null,cumulative=0,lastAppendTime=-99,lastGoodTime=0,lastProfile=null;
     for(let index=0;index<sampleCount;index++){
-      if(videoImportAbort)throw new Error('動画の読み取りを中止しました。');const time=Math.min(video.duration-.001,index*interval);await seekVideo(video,time);frameContext.drawImage(video,0,0,width,height);analysisContext.drawImage(frame,roi.x,roi.y,roi.width,roi.height,0,0,analysis.width,analysis.height);const current=analysisProfile(analysis);if(videoDebugReport)videoDebugReport.metrics.samples++;
+      if(videoImportAbort)throw new Error('動画の読み取りを中止しました。');const time=Math.min(video.duration-.001,index*interval);await seekVideo(video,time);frameContext.drawImage(video,0,0,width,height);analysisContext.drawImage(frame,roi.x,roi.y,roi.width,roi.height,0,0,analysis.width,analysis.height);const current=analysisProfile(analysis);current.keyCoverage=spotifyKeyColorCoverage(analysis);if(videoDebugReport)videoDebugReport.metrics.samples++;
       if(!previous){const initial=makeCanvas(roi.width,roi.height);initial.getContext('2d').drawImage(frame,roi.x,roi.y,roi.width,roi.height,0,0,roi.width,roi.height);await writer.append(initial);if(videoDebugReport)videoDebugReport.metrics.fullFrames++;previous=current;lastProfile=current;lastAppendTime=time;continue;}
       const movement=estimateVerticalShift(previous,current),sharpEnough=current.sharpness>Math.max(4,(lastProfile?.sharpness||current.sharpness)*.48);
       if(movement.score>.28&&movement.shift>1)cumulative+=movement.shift;
-      const movedEnough=cumulative>=analysis.height*.27,timeout=time-lastAppendTime>=1.05,reverse=movement.score>.34&&movement.shift<-analysis.height*.12,uncertain=movement.score<=.28&&time-lastGoodTime>.75;
+      const movedEnough=cumulative>=analysis.height*.27,timeout=time-lastAppendTime>=1.05,reverse=movement.score>.34&&movement.shift<-analysis.height*.12,uncertain=movement.score<=.28&&time-lastGoodTime>.75,keyCoverageIncreased=current.keyCoverage>=previous.keyCoverage+8&&current.keyCoverage>previous.keyCoverage*1.14;
       if(movement.score>.28)lastGoodTime=time;
-      const staticFrame=timeout&&movement.score>.48&&Math.abs(movement.shift)<=3&&cumulative<analysis.height*.08;
+      const staticFrame=timeout&&!keyCoverageIncreased&&movement.score>.48&&Math.abs(movement.shift)<=3&&cumulative<analysis.height*.08;
       if(staticFrame){if(videoDebugReport)videoDebugReport.metrics.staticSkipped++;lastAppendTime=time;previous=current;continue;}
-      if(sharpEnough&&(movedEnough||timeout||reverse||uncertain)){
+      if((sharpEnough||keyCoverageIncreased)&&(movedEnough||timeout||reverse||uncertain)){
         const full=makeCanvas(roi.width,roi.height);full.getContext('2d').drawImage(frame,roi.x,roi.y,roi.width,roi.height,0,0,roi.width,roi.height);
-        if(reverse||uncertain||(timeout&&cumulative<analysis.height*.15)){await writer.append(full);if(videoDebugReport)videoDebugReport.metrics.fullFrames++;}
+        if(reverse||uncertain||(timeout&&cumulative<analysis.height*.15)){await writer.append(full);if(videoDebugReport){videoDebugReport.metrics.fullFrames++;if(keyCoverageIncreased)videoDebugReport.metrics.keyLoadFrames++;}}
         else{const newHeight=Math.round(clamp(cumulative/analysis.height*roi.height+170,170,roi.height));await writer.append(full,roi.height-newHeight,newHeight);if(videoDebugReport)videoDebugReport.metrics.deltaFrames++;}
         cumulative=0;lastAppendTime=time;lastProfile=current;
       }
@@ -1040,14 +1045,13 @@ function detectSpotifyKeyColor(source,anchor){
   for(let py=0;py<height;py+=2)for(let px=0;px<width;px+=2){const index=(py*width+px)*4,r=pixels[index],g=pixels[index+1],b=pixels[index+2],max=Math.max(r,g,b),min=Math.min(r,g,b);if(max<70||max-min<28)continue;const lab=rgbLab(r,g,b);let bestKey='',bestDistance=Infinity;for(const[key,reference]of Object.entries(SPOTIFY_KEY_LAB)){const distance=spotifyLabDistance(lab,reference);if(distance<bestDistance){bestDistance=distance;bestKey=key;}}if(bestDistance>28)continue;const weight=Math.max(1,29-bestDistance);votes[bestKey]=(votes[bestKey]||0)+weight;(ys[bestKey]??=[]).push(py);}
   const ranked=Object.entries(votes).sort((a,b)=>b[1]-a[1]),best=ranked[0],second=ranked[1];if(!best||best[1]<95)return{key:'',confidence:0,centerY:null};const dominance=best[1]/Math.max(1,second?.[1]||0),positions=ys[best[0]].sort((a,b)=>a-b),confidence=Math.round(clamp(55+Math.min(30,(dominance-1)*28)+Math.min(15,positions.length/10),0,99));return{key:dominance>=1.12?best[0]:'',candidate:best[0],confidence,centerY:y+positions[Math.floor(positions.length/2)],dominance};
 }
+function spotifyKeyGate(source,anchor){
+  const color=detectSpotifyKeyColor(source,anchor),center=finiteNumber(color.centerY),margin=source.width*.09,spatiallyValid=center!==null&&center>=anchor.top-source.width*.004&&center<=anchor.bottom+margin,accepted=Boolean(color.key&&color.confidence>=60&&spatiallyValid);return{...color,accepted,reason:accepted?'color key visible':!color.key?'color key missing':color.confidence<60?'color key weak':'color key outside row'};
+}
 function fieldCropGeometry(source,anchor,field){const color=anchor.keyColor,center=color?.centerY,baseWidth=source.width;if(field==='title')return{y:center!==null&&center!==undefined?center-baseWidth*.078:anchor.top-baseWidth*.028,height:baseWidth*.058};return{y:center!==null&&center!==undefined?center-baseWidth*.032:anchor.top+baseWidth*.018,height:baseWidth*.052};}
 function buildSpotifyFieldSheet(source,anchors,field,mode='lightText'){
   const scale=2.35,cropX=source.width*.095,cropWidth=source.width*.56,sample=fieldCropGeometry(source,anchors[0]||{top:0},field),contentHeight=Math.round(sample.height*scale),gap=30,bandHeight=contentHeight+gap,canvas=makeCanvas(cropWidth*scale,Math.max(1,anchors.length*bandHeight)),context=canvas.getContext('2d');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);
   anchors.forEach((anchor,index)=>{const geometry=fieldCropGeometry(source,anchor,field),crop=cropForOcr(source,cropX,geometry.y,cropWidth,geometry.height,scale,mode);context.drawImage(crop,0,index*bandHeight);});return{canvas,bandHeight};
-}
-function buildSpotifyKeySheet(source,anchors){
-  const scale=5,cropX=source.width*.70,cropWidth=source.width*.11,cropHeight=source.width*.06,contentHeight=Math.round(cropHeight*scale),gap=45,bandHeight=contentHeight+gap,canvas=makeCanvas(cropWidth*scale,Math.max(1,anchors.length*bandHeight)),context=canvas.getContext('2d');context.fillStyle='#fff';context.fillRect(0,0,canvas.width,canvas.height);
-  anchors.forEach((anchor,index)=>{const crop=cropForOcr(source,cropX,anchor.top+source.width*.034,cropWidth,cropHeight,scale,'pill');context.drawImage(crop,0,index*bandHeight);});return{canvas,bandHeight};
 }
 function sheetLinesByBand(data,bandHeight,count){
   const bands=Array.from({length:count},()=>[]);for(const line of parseTsvLines(data?.tsv)){const index=Math.floor((line.top+2)/bandHeight);if(index>=0&&index<count)bands[index].push(line);}return bands;
@@ -1060,7 +1064,6 @@ function spotifySingleFieldCrop(source,anchor,field,mode='grayText'){const geome
 async function recognizeSpotifySingleField(worker,source,anchor,field){
   await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'',preserve_interword_spaces:'1'});const read=async mode=>{const result=await worker.recognize(spotifySingleFieldCrop(source,anchor,field,mode));if(videoDebugReport)videoDebugReport.metrics.rowOcrCalls++;const raw=compactOcrJapanese(result.data?.text||''),text=field==='title'?cleanOcrTitle(raw):cleanOcrArtist(raw),confidence=Math.round(finiteNumber(result.data?.confidence)||0);return{raw,text,confidence,mode};},primary=await read('grayText'),mustRetry=field==='title'||!primary.text||primary.confidence<72||looksLikeSpotifyMetadata(primary.raw);if(!mustRetry)return{...primary,alternatives:[primary.raw]};if(videoDebugReport)videoDebugReport.metrics.retryPasses++;const secondary=await read('lightText'),chosen=chooseFieldCandidate(primary,secondary);return{...chosen,alternatives:[primary.raw,secondary.raw].filter(Boolean)};
 }
-async function recognizeSpotifyKeyFallback(worker,source,anchor){const crop=cropForOcr(source,source.width*.69,anchor.top+source.width*.035,source.width*.15,source.width*.075,5,'pill');await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'0123456789AB84'});const result=await worker.recognize(crop);if(videoDebugReport)videoDebugReport.metrics.rowOcrCalls++;return camelotFromOcr(result.data?.text||'');}
 function spotifyVideoMarker(value){const text=String(value||''),match=text.match(/[ビピヒ][ビデヂチテ]{1,5}[オォ]/);if(!match||match.index>8)return null;const suffix=text.slice((match.index||0)+match[0].length,match.index+match[0].length+1);return!suffix||/[\s・·。.:：«»<>|▶▷▻▸▹□▣▢A-Za-z0-9]/.test(suffix)?match:null;}
 function stripSpotifyVideoPrefix(value){let text=String(value||'').trim(),marker=spotifyVideoMarker(text);if(marker)text=text.slice((marker.index||0)+marker[0].length);return text.replace(/^[\s・·。.。:：«»<>|/\\\-—_▶▷▻▸▹□▣▢凸凹①-⑳]+/,'').trim();}
 function looksLikeSpotifyMetadata(value){return Boolean(spotifyVideoMarker(value))||/(?:^|[^一-龠々ぁ-んァ-ヶ])動画\s*[・·:]/i.test(String(value||''))||/^[□▣▢凸凹]\s*/.test(String(value||''));
@@ -1100,10 +1103,10 @@ function canonicalizeSpotifyOcrRow(row){
 }
 async function recognizeSpotifyPanorama(worker,blob,panoramaIndex=0){
   const source=await imageSourceFromBlob(blob);try{
-    const bpmScale=1.6,bpmCrop=cropForOcr(source,source.width*.66,0,source.width*.28,source.height,bpmScale,'bpm');await worker.setParameters({tessedit_pageseg_mode:'11',tessedit_char_whitelist:'0123456789BPM:'});const bpmResult=await worker.recognize(bpmCrop,{}, {tsv:true}),anchors=spotifyBpmAnchors(bpmResult.data,bpmScale,source.height);if(videoDebugReport)videoDebugReport.metrics.anchors+=anchors.length;if(!anchors.length){if(videoDebugReport)videoDebugReport.metrics.fallbackPanoramas++;await worker.setParameters({tessedit_pageseg_mode:'11',tessedit_char_whitelist:''});const fallback=await worker.recognize(blob,{}, {tsv:true}),rows=rowsFromOcrData(fallback.data,source.width);if(videoDebugReport){videoDebugReport.metrics.rawRows+=rows.length;rows.slice(0,160-videoDebugReport.rows.length).forEach(row=>videoDebugReport.rows.push({panorama:panoramaIndex,rawTitle:row.title,rawArtist:row.artist,title:row.title,artist:row.artist,bpm:row.bpm,rawCamelot:row.camelot,keySource:'fallback',keyConfidence:0,keyConflict:false,canonicalMatch:false,canonicalReason:'full panorama fallback'}));renderVideoDebug();}return rows;}
-    anchors.forEach(anchor=>anchor.keyColor=detectSpotifyKeyColor(source,anchor));
+    const bpmScale=1.6,bpmCrop=cropForOcr(source,source.width*.66,0,source.width*.28,source.height,bpmScale,'bpm');await worker.setParameters({tessedit_pageseg_mode:'11',tessedit_char_whitelist:'0123456789BPM:'});const bpmResult=await worker.recognize(bpmCrop,{}, {tsv:true}),anchors=spotifyBpmAnchors(bpmResult.data,bpmScale,source.height);if(videoDebugReport)videoDebugReport.metrics.anchors+=anchors.length;if(!anchors.length){if(videoDebugReport){videoDebugReport.metrics.noAnchorPanoramas++;renderVideoDebug();}return[];}
+    anchors.forEach(anchor=>anchor.keyColor=spotifyKeyGate(source,anchor));const readyAnchors=anchors.filter(anchor=>anchor.keyColor.accepted);if(videoDebugReport){videoDebugReport.metrics.keyGateAccepted+=readyAnchors.length;videoDebugReport.metrics.keyGateSkipped+=anchors.length-readyAnchors.length;videoDebugReport.metrics.colorKeys+=readyAnchors.length;}
     await worker.setParameters({tessedit_pageseg_mode:'7',tessedit_char_whitelist:'',preserve_interword_spaces:'1'});const rows=[];
-    for(const anchor of anchors){if(videoImportAbort)throw new Error('動画の読み取りを中止しました。');const title=await recognizeSpotifySingleField(worker,source,anchor,'title'),artist=await recognizeSpotifySingleField(worker,source,anchor,'artist'),colorKey=anchor.keyColor?.key||'',ocrKey=colorKey?'':await recognizeSpotifyKeyFallback(worker,source,anchor),camelot=colorKey||ocrKey,keyConfidence=colorKey?anchor.keyColor.confidence:(ocrKey?68:0),identityConfidence=Math.round((title.confidence+(artist.confidence||title.confidence*.65))/(artist.text?2:1)),confidence=Math.round(anchor.confidence*.25+identityConfidence*.52+keyConfidence*.23),visualHash=spotifyTitleVisualHash(source,anchor),raw={title:title.text,artist:artist.text,bpm:anchor.bpm,camelot,confidence,keyConfidence,keySource:colorKey?'color':ocrKey?'ocr':'',keyConflict:false,visualHash},corrected=canonicalizeSpotifyOcrRow(raw);if(videoDebugReport){videoDebugReport.metrics.rawRows++;if(colorKey)videoDebugReport.metrics.colorKeys++;if(corrected.canonicalMatch)videoDebugReport.metrics.canonicalMatches++;if(videoDebugReport.rows.length<160)videoDebugReport.rows.push({panorama:panoramaIndex,rawTitle:title.raw||title.text,rawArtist:artist.raw||artist.text,titleAlternatives:title.alternatives||[],artistAlternatives:artist.alternatives||[],title:corrected.title,artist:corrected.artist,bpm:anchor.bpm,rawCamelot:camelot,keySource:corrected.keySource,keyConfidence,keyConflict:false,visualHash,canonicalMatch:Boolean(corrected.canonicalMatch),canonicalReason:corrected.canonicalReason||'',candidates:corrected.canonicalCandidates||[],titleCrop:videoDebugCrop(source,anchor,'title'),artistCrop:videoDebugCrop(source,anchor,'artist'),keyCrop:videoDebugCrop(source,anchor,'key')});}if(corrected.title)rows.push(corrected);}
+    for(const anchor of readyAnchors){if(videoImportAbort)throw new Error('動画の読み取りを中止しました。');const title=await recognizeSpotifySingleField(worker,source,anchor,'title'),artist=await recognizeSpotifySingleField(worker,source,anchor,'artist'),camelot=anchor.keyColor.key,keyConfidence=anchor.keyColor.confidence,identityConfidence=Math.round((title.confidence+(artist.confidence||title.confidence*.65))/(artist.text?2:1)),confidence=Math.round(anchor.confidence*.25+identityConfidence*.52+keyConfidence*.23),visualHash=spotifyTitleVisualHash(source,anchor),raw={title:title.text,artist:artist.text,bpm:anchor.bpm,camelot,confidence,keyConfidence,keySource:'color',keyConflict:false,visualHash},corrected=canonicalizeSpotifyOcrRow(raw);if(videoDebugReport){videoDebugReport.metrics.rawRows++;if(corrected.canonicalMatch)videoDebugReport.metrics.canonicalMatches++;if(videoDebugReport.rows.length<160)videoDebugReport.rows.push({panorama:panoramaIndex,rawTitle:title.raw||title.text,rawArtist:artist.raw||artist.text,titleAlternatives:title.alternatives||[],artistAlternatives:artist.alternatives||[],title:corrected.title,artist:corrected.artist,bpm:anchor.bpm,rawCamelot:camelot,keySource:corrected.keySource,keyConfidence,keyConflict:false,visualHash,canonicalMatch:Boolean(corrected.canonicalMatch),canonicalReason:corrected.canonicalReason||'',candidates:corrected.canonicalCandidates||[],titleCrop:videoDebugCrop(source,anchor,'title'),artistCrop:videoDebugCrop(source,anchor,'artist'),keyCrop:videoDebugCrop(source,anchor,'key')});}if(corrected.title)rows.push(corrected);}
     renderVideoDebug();return rows;
   }finally{if(typeof source.close==='function')source.close();}
 }
@@ -1139,7 +1142,7 @@ async function analyzeVideoImport(){
     for(let index=0;index<panoramas.length;index++){
       if(videoImportAbort)throw new Error('動画の読み取りを中止しました。');setVideoProgress(53+Math.round(index/panoramas.length*42),`Spotifyの曲名行を読み取り中… ${index+1} / ${panoramas.length}`);found.push(...await recognizeSpotifyPanorama(worker,panoramas[index],index));
     }
-    const rows=mergeVideoOcrRows(found);if(videoDebugReport){videoDebugReport.metrics.mergedRows=rows.length;videoDebugReport.finishedAt=new Date().toISOString();renderVideoDebug();}if(!rows.length)throw new Error('曲を認識できませんでした。Spotifyの「ミックス」表示とスクロール速度を確認してください。');previewRows=rows;previewRows.forEach((row,index)=>{if(isDuplicate(row,index))row.selected=false;});renderPreview();const low=rows.filter(row=>row._ocrConfidence<58||!row.artist||!row.camelot).length;setVideoProgress(100,`${rows.length}曲を読み取りました。${low?`黄色の${low}曲を確認してください。`:'内容を確認して追加できます。'}`);setImportStatus(`画面録画から${rows.length}曲を読み取りました。診断欄で補正前後も確認できます。`,'ok');$('previewWrap').scrollIntoView({behavior:'smooth',block:'start'});
+    const rows=mergeVideoOcrRows(found),skipped=videoDebugReport?.metrics.keyGateSkipped||0;if(videoDebugReport){videoDebugReport.metrics.mergedRows=rows.length;videoDebugReport.finishedAt=new Date().toISOString();renderVideoDebug();}if(!rows.length)throw new Error(skipped?`色付きKEYが未表示または不鮮明な${skipped}行を除外しました。KEYが表示されてからゆっくりスクロールして再撮影してください。`:'曲を認識できませんでした。Spotifyの「ミックス」表示とスクロール速度を確認してください。');previewRows=rows;previewRows.forEach((row,index)=>{if(isDuplicate(row,index))row.selected=false;});renderPreview();const low=rows.filter(row=>row._ocrConfidence<58||!row.artist).length,skipNotice=skipped?` KEY未表示の${skipped}行は除外しました。`:'';setVideoProgress(100,`${rows.length}曲を読み取りました。${skipNotice}${low?`黄色の${low}曲を確認してください。`:'内容を確認して追加できます。'}`);setImportStatus(`画面録画から${rows.length}曲を読み取りました。${skipNotice}診断欄で補正前後も確認できます。`,'ok');$('previewWrap').scrollIntoView({behavior:'smooth',block:'start'});
   }catch(error){const cancelled=videoImportAbort||String(error?.message||'').includes('中止');setVideoProgress(0,cancelled?'読み取りを中止しました。':(error.message||'動画の読み取りに失敗しました。'));if(!cancelled)setImportStatus(error.message||'動画の読み取りに失敗しました。','error');}
   finally{setVideoWorking(false);videoImportAbort=false;}
 }
