@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "KEY GATEと再監査済みMusicBrainz全曲辞書を備えたDJツール v1.4.4 RELINK",
+  "description": "MusicBrainz全曲辞書をOCR補正の先頭で照合するDJツール v1.4.5 DICTIONARY FIRST",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",

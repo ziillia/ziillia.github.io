@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="pwa-icon-180.png">
-<title>Drive DJ Finder v1.4.4</title>
+<title>Drive DJ Finder v1.4.5</title>
   <style>
 
 :root{--ink:#10182c;--paper:#f3f1eb;--cyan:#19a8b5;--orange:#f47a36;--muted:#687287;--line:#d8d8d2}
@@ -78,7 +78,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 </head>
 <body>
 <main>
-  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.4.4 RELINK</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、再監査済みのBillboard経験アーティスト全曲辞書でOCRを補正します。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
+  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.4.5 DICTIONARY FIRST</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、再監査済みのBillboard経験アーティスト全曲辞書でOCRを補正します。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
   <div class="shell">
     <nav id="djFocusBar" class="dj-focus-bar" aria-label="DJフォーカスバー">
       <div class="focus-now"><span>NOW PLAYING</span><b id="focusTrack">手動入力</b></div>
@@ -154,7 +154,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
       <div id="results" class="track-list view-compact"></div>
       <nav id="pagination" class="pagination" aria-label="ページ移動"><button id="prevPage" type="button">← 前へ</button><span id="pageIndicator">1 / 1</span><button id="nextPage" type="button">次へ →</button></nav>
     </section>
-    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。MusicBrainz辞書は共同名義と複合クレジットを再監査し、既存データで一意に決まらないOCR行だけ補正します。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.4.4 RELINK · LOCAL</span></footer>
+    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。MusicBrainz辞書をOCR補正の先頭で照合し、辞書件数・照合数・命中数を診断に記録します。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.4.5 DICTIONARY FIRST · LOCAL</span></footer>
   </div>
 </main>
 
@@ -186,8 +186,8 @@ const SHARED_TOMBSTONES_STORAGE_KEY='driveDjSharedTombstonesV1';
 const CUSTOM_COLLECTIONS_STORAGE_KEY='driveDjCustomCollectionsV1';
 const OCR_CORRECTIONS_STORAGE_KEY='driveDjOcrCorrectionsV1';
 const SHARED_STATE_URL='./api/shared-state';
-const APP_VERSION='1.4.4-relink';
-const APP_BUILD_DATE='2026-08-17';
+const APP_VERSION='1.4.5-dictionary-first';
+const APP_BUILD_DATE='2026-08-18';
 const musicBrainzOcrDictionary=Array.isArray(window.MUSICBRAINZ_OCR_DICTIONARY)?window.MUSICBRAINZ_OCR_DICTIONARY:[];
 let musicBrainzOcrIndex=null;
 const camelots=Array.from({length:12},(_,i)=>[(i+1)+'A',(i+1)+'B']).flat();
@@ -565,7 +565,7 @@ function updateCounters(){
   $('statSelected').textContent=selected.length.toLocaleString();
   const selectedName=state.collection==='all'?'全データ':state.collection==='spotify_all'?'Spotifyプレイリスト全体':collectionLabel(state.collection);
   $('sourcePolicy').textContent=state.collection==='retro_top1000'?'正規に投入したレトロTop 1000を検索中。既存曲は重複せず、この所属だけが追加されます。':state.collection==='billboard_fame_84plus'?'Spotify厳選外から、Billboard有名度84点以上の412曲だけを優先検索しています。':state.collection==='billboard_hot100_analyzed'?'Billboard全曲プールを検索中。「全曲探索」でBPM・キー条件を外せます。':state.collection==='all'?'全データを検索中。Spotify所属曲を優先順位で上位表示します。':`${selectedName}を検索中。別ソースの曲は候補から除外しています。`;
-  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} RELINK · ${selectedName} · ${selectedReady}/${selected.length}`;
+  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} · MB辞書 ${musicBrainzOcrDictionary.length.toLocaleString()}件 · ${selectedName} · ${selectedReady}/${selected.length}`;
   const correctionTotal=Object.keys(trackOverrides).length;
   $('correctionCount').textContent=`修正 ${correctionTotal}曲`;
   $('userTrackCount').textContent=`追加曲 ${userTracks.length} / 全${tracks.length}曲`;
@@ -876,11 +876,11 @@ const SPOTIFY_KEY_RGB={
 };
 function escapeDebugHtml(value){return String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));}
 function resetVideoDebug(file){
-  videoDebugReport={app:'Drive DJ Finder',version:APP_VERSION,buildDate:APP_BUILD_DATE,createdAt:new Date().toISOString(),file:file?{name:file.name,size:file.size,type:file.type,lastModified:file.lastModified}:null,metrics:{samples:0,staticSkipped:0,keyLoadFrames:0,fullFrames:0,deltaFrames:0,panoramas:0,anchors:0,noAnchorPanoramas:0,keyGateAccepted:0,keyGateSkipped:0,rawRows:0,mergedRows:0,colorKeys:0,keyConflicts:0,canonicalMatches:0,rowOcrCalls:0,retryPasses:0,visualMerges:0},rows:[]};renderVideoDebug();
+  videoDebugReport={app:'Drive DJ Finder',version:APP_VERSION,buildDate:APP_BUILD_DATE,createdAt:new Date().toISOString(),file:file?{name:file.name,size:file.size,type:file.type,lastModified:file.lastModified}:null,metrics:{musicBrainzDictionaryRows:musicBrainzOcrDictionary.length,musicBrainzLookups:0,musicBrainzMatches:0,samples:0,staticSkipped:0,keyLoadFrames:0,fullFrames:0,deltaFrames:0,panoramas:0,anchors:0,noAnchorPanoramas:0,keyGateAccepted:0,keyGateSkipped:0,rawRows:0,mergedRows:0,colorKeys:0,keyConflicts:0,canonicalMatches:0,rowOcrCalls:0,retryPasses:0,visualMerges:0},rows:[]};renderVideoDebug();
 }
 function renderVideoDebug(){
   const report=videoDebugReport,metrics=$('videoDebugMetrics'),gallery=$('videoDebugGallery');if(!report){metrics.innerHTML='';gallery.innerHTML='<span class="video-debug-empty">動画を読み取ると診断結果が表示されます。</span>';return;}
-  const m=report.metrics,items=[['samples','採取FRAME'],['staticSkipped','静止SKIP'],['panoramas','PANORAMA'],['anchors','検出行'],['colorKeys','色KEY'],['rowOcrCalls','単独OCR'],['retryPasses','再試行'],['visualMerges','画像統合'],['canonicalMatches','辞書補正'],['keyConflicts','KEY競合'],['rawRows','OCR行'],['mergedRows','最終行']];metrics.innerHTML=items.map(([key,label])=>`<div><b>${Number(m[key]||0)}</b><span>${label}</span></div>`).join('');
+  const m=report.metrics,items=[['musicBrainzDictionaryRows','MB辞書'],['musicBrainzLookups','MB照合'],['musicBrainzMatches','MB命中'],['samples','採取FRAME'],['staticSkipped','静止SKIP'],['panoramas','PANORAMA'],['anchors','検出行'],['colorKeys','色KEY'],['rowOcrCalls','単独OCR'],['retryPasses','再試行'],['visualMerges','画像統合'],['canonicalMatches','辞書補正'],['keyConflicts','KEY競合'],['rawRows','OCR行'],['mergedRows','最終行']];metrics.innerHTML=items.map(([key,label])=>`<div><b>${Number(m[key]||0).toLocaleString()}</b><span>${label}</span></div>`).join('');
   $('videoDebugSummary').textContent=report.finishedAt?`${m.rawRows}行 → ${m.mergedRows}曲`:'解析中';$('downloadVideoDebug').disabled=!report.rows.length;
   if(!report.rows.length){gallery.innerHTML='<span class="video-debug-empty">行画像と補正前後は解析後に表示されます。</span>';return;}
   gallery.innerHTML=report.rows.slice(0,160).map((row,index)=>`<div class="video-debug-row"><div class="video-debug-crops">${row.titleCrop?`<img src="${row.titleCrop}" alt="title crop">`:''}${row.artistCrop?`<img src="${row.artistCrop}" alt="artist crop">`:''}${row.keyCrop?`<img src="${row.keyCrop}" alt="key crop">`:''}</div><div class="video-debug-copy"><b>#${index+1} P${row.panorama+1} · ${escapeDebugHtml(row.bpm)} BPM · ${escapeDebugHtml(row.rawCamelot||'KEY?')}</b><br>OCR: ${escapeDebugHtml(row.rawTitle||'—')} / ${escapeDebugHtml(row.rawArtist||'—')}${row.titleAlternatives?.length>1?`<br>2 PASS: ${row.titleAlternatives.map(escapeDebugHtml).join(' ⇄ ')}`:''}<br><em class="${row.canonicalMatch?'debug-corrected':''}">採用: ${escapeDebugHtml(row.title||'—')} / ${escapeDebugHtml(row.artist||'—')}</em><br>KEY: ${escapeDebugHtml(row.keySource||'none')} ${escapeDebugHtml(row.keyConfidence||0)}%${row.keyConflict?' · 競合':''}${row.canonicalReason?` · ${escapeDebugHtml(row.canonicalReason)}`:''}</div></div>`).join('');
@@ -1100,7 +1100,7 @@ function musicBrainzOcrCandidate(row,versionedTitle){
   return best.titleScore>=.66&&lengthRatio>=.72&&(best.titleScore>=.90||margin>=.10)?best:null;
 }
 function canonicalizeSpotifyOcrRow(row){
-  row={...row,_ocrRawTitle:row._ocrRawTitle||row.title,_ocrRawArtist:row._ocrRawArtist||row.artist};const bpm=finiteNumber(row.bpm);if(!row.title||bpm===null)return row;const learned=applyLearnedOcrCorrection(row);if(learned)return learned;const knownArtist=exactKnownSpotifyArtist(row.artist),versionedTitle=/(?:replica|self\s*cover|remix|re-edit|edit|live|version|ver\.?)/i.test(String(row.title||'')),candidates=tracks.map(track=>{const value=finiteNumber(track.bpm);if(value===null)return null;const bpmError=Math.min(Math.abs(Math.round(value)-bpm),Math.abs(Math.round(value*2)-bpm),Math.abs(Math.round(value/2)-bpm));if(bpmError>3)return null;const titleScore=editTextScore(row.title,track.title),artistScore=row.artist?editTextScore(row.artist,track.artist):0,keyMatch=Boolean(row.camelot&&track.camelot===row.camelot),keyBonus=keyMatch?0.08:0,score=titleScore*.72+artistScore*.18+keyBonus+Math.max(0,.02-bpmError*.006);return{track,titleScore,artistScore,keyMatch,bpmError,score};}).filter(Boolean).sort((a,b)=>b.score-a.score),best=candidates[0],second=candidates[1];
+  row={...row,_ocrRawTitle:row._ocrRawTitle||row.title,_ocrRawArtist:row._ocrRawArtist||row.artist};const bpm=finiteNumber(row.bpm);if(!row.title||bpm===null)return row;const learned=applyLearnedOcrCorrection(row);if(learned)return learned;const versionedTitle=/(?:replica|self\s*cover|remix|re-edit|edit|live|version|ver\.?)/i.test(String(row.title||''));if(videoDebugReport)videoDebugReport.metrics.musicBrainzLookups++;const musicBrainzFirst=musicBrainzOcrCandidate(row,versionedTitle);if(musicBrainzFirst){if(videoDebugReport)videoDebugReport.metrics.musicBrainzMatches++;return{...row,title:musicBrainzFirst.title,artist:spotifyArtistPunctuation(musicBrainzFirst.artist||row.artist),camelot:row.camelot,confidence:Math.max(row.confidence||0,Math.round(70+musicBrainzFirst.titleScore*25)),canonicalMatch:true,canonicalReason:'MusicBrainz dictionary first',canonicalCandidates:[{title:musicBrainzFirst.title,artist:musicBrainzFirst.artist,score:Math.round(musicBrainzFirst.titleScore*100),titleScore:Math.round(musicBrainzFirst.titleScore*100)}]};}const knownArtist=exactKnownSpotifyArtist(row.artist),candidates=tracks.map(track=>{const value=finiteNumber(track.bpm);if(value===null)return null;const bpmError=Math.min(Math.abs(Math.round(value)-bpm),Math.abs(Math.round(value*2)-bpm),Math.abs(Math.round(value/2)-bpm));if(bpmError>3)return null;const titleScore=editTextScore(row.title,track.title),artistScore=row.artist?editTextScore(row.artist,track.artist):0,keyMatch=Boolean(row.camelot&&track.camelot===row.camelot),keyBonus=keyMatch?0.08:0,score=titleScore*.72+artistScore*.18+keyBonus+Math.max(0,.02-bpmError*.006);return{track,titleScore,artistScore,keyMatch,bpmError,score};}).filter(Boolean).sort((a,b)=>b.score-a.score),best=candidates[0],second=candidates[1];
   const exactIdentity=candidates.filter(item=>item.artistScore>=.96&&item.keyMatch&&item.bpmError<=1.1),uniqueIdentity=[...new Map(exactIdentity.map(item=>[`${normalText(item.track.title)}|${normalText(item.track.artist)}`,item])).values()],identityBest=uniqueIdentity.sort((a,b)=>b.titleScore-a.titleScore)[0];let selected=null,reason='';
   const reviewedTitle=SPOTIFY_OCR_REVIEWED_OVERRIDES[`${normalText(knownArtist||row.artist)}|${Math.round(bpm)}|${normalText(row.title)}`],reviewedTrack=reviewedTitle?tracks.find(track=>normalText(track.title)===normalText(reviewedTitle)&&editTextScore(knownArtist||row.artist,track.artist)>=.96):null;
   if(reviewedTrack){selected={track:reviewedTrack,titleScore:editTextScore(row.title,reviewedTrack.title),artistScore:1,score:.82};reason='reviewed OCR override';}
@@ -1110,7 +1110,6 @@ function canonicalizeSpotifyOcrRow(row){
   if(!selected){const exactTitle=[...new Map(tracks.filter(track=>normalText(track.title)===normalText(row.title)).map(track=>[`${normalText(track.title)}|${normalText(track.artist)}`,track])).values()];if(exactTitle.length===1&&(!knownArtist||editTextScore(knownArtist,exactTitle[0].artist)>=.96)){selected={track:exactTitle[0],titleScore:1,artistScore:row.artist?editTextScore(row.artist,exactTitle[0].artist):0,score:.82};reason='global exact title';}}
   if(!selected&&!versionedTitle&&row.artist){const tempoArtist=[...new Map(candidates.filter(item=>item.artistScore>=.96&&item.bpmError<=1.1).map(item=>[`${normalText(item.track.title)}|${normalText(item.track.artist)}`,item])).values()];if(tempoArtist.length===1&&tempoArtist[0].titleScore>=.35){selected=tempoArtist[0];reason='artist+bpm unique';}}
   if(!selected&&!versionedTitle&&row.artist){const byArtist=tracks.map(track=>({track,artistScore:editTextScore(row.artist,track.artist),titleScore:editTextScore(row.title,track.title)})).filter(item=>item.artistScore>=.96).sort((a,b)=>b.titleScore-a.titleScore),artistBest=byArtist[0],artistSecond=byArtist[1];if(artistBest&&artistBest.titleScore>=.52&&(!artistSecond||artistBest.titleScore-artistSecond.titleScore>=.12)){selected={...artistBest,score:artistBest.titleScore};reason='artist title dictionary';}}
-  if(!selected){const musicBrainz=musicBrainzOcrCandidate(row,versionedTitle);if(musicBrainz){selected={track:{title:musicBrainz.title,artist:musicBrainz.artist,camelot:''},titleScore:musicBrainz.titleScore,artistScore:1,score:musicBrainz.titleScore};reason='MusicBrainz title dictionary';}}
   if(!selected)return{...row,artist:spotifyArtistPunctuation(row.artist),canonicalCandidates:candidates.slice(0,3).map(item=>({title:item.track.title,artist:spotifyArtistPunctuation(item.track.artist),score:Math.round(item.score*100),titleScore:Math.round(item.titleScore*100)}))};return{...row,title:selected.track.title,artist:spotifyArtistPunctuation(selected.track.artist||row.artist),camelot:row.camelot||selected.track.camelot,confidence:Math.max(row.confidence||0,Math.round(70+selected.score*25)),canonicalMatch:true,canonicalReason:reason,canonicalCandidates:candidates.slice(0,3).map(item=>({title:item.track.title,artist:spotifyArtistPunctuation(item.track.artist),score:Math.round(item.score*100),titleScore:Math.round(item.titleScore*100)}))};
 }
 async function recognizeSpotifyPanorama(worker,blob,panoramaIndex=0){
