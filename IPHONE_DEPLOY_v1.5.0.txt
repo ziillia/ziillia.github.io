@@ -1,0 +1,17 @@
+iPhoneだけでv1.5.0を反映する手順
+
+1. ZIPを「ファイル」Appで展開します。
+2. Gitのリポジトリ直下へ次の3ファイルをUpload fileで上書きします。
+   - drive-dj-finder.html
+   - service-worker.js
+   - manifest.webmanifest
+3. README_v1.5.0.txtは任意です。
+4. musicbrainz-ocr-dictionary.jsはアップロード・削除しません。Git上の約15MB版を残してください。
+5. Cloudflare Pagesのデプロイ完了後、Safariのタブとホーム画面Appを一度閉じて開き直します。
+6. 画面上部が「v1.5.0 PADDLE A/B」なら更新完了です。
+
+最初の確認
+- 「高精度OCR（Paddle）」はONのまま動画を1本読み取ります。
+- 診断で PADDLE準備=1、MB辞書が約297,678件か確認します。
+- PADDLE準備=0でもTesseractへ自動で戻るので読み取り自体は継続します。
+- MB辞書=0なら、Git上の辞書ファイルとCloudflare/PWAキャッシュを先に直してください。

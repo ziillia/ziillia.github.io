@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "MusicBrainz全曲辞書をOCR補正の先頭で照合するDJツール v1.4.5 DICTIONARY FIRST",
+  "description": "未確定行だけPaddleOCRとMusicBrainz全曲辞書で再判定するDJツール v1.5.0 PADDLE A/B",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",
