@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "KEY GATEとBillboard経験アーティストのMusicBrainz全曲データベース基盤を備えたDJツール v1.4.2",
+  "description": "KEY GATEと再監査済みMusicBrainz全曲辞書を備えたDJツール v1.4.4 RELINK",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",

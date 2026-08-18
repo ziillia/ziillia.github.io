@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="pwa-icon-180.png">
-<title>Drive DJ Finder v1.4.2</title>
+<title>Drive DJ Finder v1.4.4</title>
   <style>
 
 :root{--ink:#10182c;--paper:#f3f1eb;--cyan:#19a8b5;--orange:#f47a36;--muted:#687287;--line:#d8d8d2}
@@ -78,7 +78,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 </head>
 <body>
 <main>
-  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.4.2 MUSIC DB</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、Billboard経験アーティストの全曲辞書へ拡張。レトロ名曲も同じ画面で絞り込めます。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
+  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.4.4 RELINK</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">BPM・キー・Energyで次曲を探し、再監査済みのBillboard経験アーティスト全曲辞書でOCRを補正します。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
   <div class="shell">
     <nav id="djFocusBar" class="dj-focus-bar" aria-label="DJフォーカスバー">
       <div class="focus-now"><span>NOW PLAYING</span><b id="focusTrack">手動入力</b></div>
@@ -154,7 +154,7 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
       <div id="results" class="track-list view-compact"></div>
       <nav id="pagination" class="pagination" aria-label="ページ移動"><button id="prevPage" type="button">← 前へ</button><span id="pageIndicator">1 / 1</span><button id="nextPage" type="button">次へ →</button></nav>
     </section>
-    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。検索ソースを分離し、Spotify厳選を既定にしています。Billboard経験アーティストのMusicBrainz全曲辞書はOCR補正用に段階収集中です。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.4.2 MUSIC DB · LOCAL</span></footer>
+    <footer><p>DJ BPMは遅い曲を倍取りする場合があります。MusicBrainz辞書は共同名義と複合クレジットを再監査し、既存データで一意に決まらないOCR行だけ補正します。</p><span id="datasetLabel">DRIVE DJ FINDER · v1.4.4 RELINK · LOCAL</span></footer>
   </div>
 </main>
 
@@ -186,7 +186,7 @@ const SHARED_TOMBSTONES_STORAGE_KEY='driveDjSharedTombstonesV1';
 const CUSTOM_COLLECTIONS_STORAGE_KEY='driveDjCustomCollectionsV1';
 const OCR_CORRECTIONS_STORAGE_KEY='driveDjOcrCorrectionsV1';
 const SHARED_STATE_URL='./api/shared-state';
-const APP_VERSION='1.4.2-music-db';
+const APP_VERSION='1.4.4-relink';
 const APP_BUILD_DATE='2026-08-17';
 const musicBrainzOcrDictionary=Array.isArray(window.MUSICBRAINZ_OCR_DICTIONARY)?window.MUSICBRAINZ_OCR_DICTIONARY:[];
 let musicBrainzOcrIndex=null;
@@ -223,7 +223,7 @@ function finiteNumber(value){
 }
 function clamp(value,min,max){return Math.min(max,Math.max(min,value));}
 function esc(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function normalText(value){return String(value??'').normalize('NFKC').toLowerCase().replace(/feat(?:uring)?\.?|ft\.?/g,' ').replace(/[^a-z0-9ぁ-んァ-ヶ一-龠]+/g,'');}
+function normalText(value){return String(value??'').normalize('NFKD').toLowerCase().replace(/ø/g,'o').replace(/ł/g,'l').replace(/đ|ð/g,'d').replace(/þ/g,'th').replace(/æ/g,'ae').replace(/œ/g,'oe').replace(/\p{M}/gu,'').replace(/feat(?:uring)?\.?|ft\.?/g,' ').replace(/[^\p{L}\p{N}]+/gu,'');}
 function currentTrackMatches(query){
   const needle=normalText(query);if(!needle)return[];
   const unique=new Map();
@@ -565,7 +565,7 @@ function updateCounters(){
   $('statSelected').textContent=selected.length.toLocaleString();
   const selectedName=state.collection==='all'?'全データ':state.collection==='spotify_all'?'Spotifyプレイリスト全体':collectionLabel(state.collection);
   $('sourcePolicy').textContent=state.collection==='retro_top1000'?'正規に投入したレトロTop 1000を検索中。既存曲は重複せず、この所属だけが追加されます。':state.collection==='billboard_fame_84plus'?'Spotify厳選外から、Billboard有名度84点以上の412曲だけを優先検索しています。':state.collection==='billboard_hot100_analyzed'?'Billboard全曲プールを検索中。「全曲探索」でBPM・キー条件を外せます。':state.collection==='all'?'全データを検索中。Spotify所属曲を優先順位で上位表示します。':`${selectedName}を検索中。別ソースの曲は候補から除外しています。`;
-  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} MUSIC DB · ${selectedName} · ${selectedReady}/${selected.length}`;
+  $('datasetLabel').textContent=`DRIVE DJ FINDER · v${APP_VERSION.split('-')[0]} RELINK · ${selectedName} · ${selectedReady}/${selected.length}`;
   const correctionTotal=Object.keys(trackOverrides).length;
   $('correctionCount').textContent=`修正 ${correctionTotal}曲`;
   $('userTrackCount').textContent=`追加曲 ${userTracks.length} / 全${tracks.length}曲`;
