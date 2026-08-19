@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "辞書の取得・本文検証・JSON解析を分離診断するDJツール v1.5.4 DICTIONARY DIAGNOSTICS",
+  "description": "要確認の主因とMusicBrainz不一致理由を可視化するDJツール v1.5.5 REVIEW DIAGNOSTICS",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",
