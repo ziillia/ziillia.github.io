@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "全曲辞書の自動再読込と安全な重複OCR再利用に対応するDJツール v1.5.2 SAFE THROUGHPUT",
+  "description": "辞書配信を安定化しアーティスト欄の切り抜きを補正するDJツール v1.5.3 DEPLOY CROP",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",
