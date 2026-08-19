@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "辞書配信を安定化しアーティスト欄の切り抜きを補正するDJツール v1.5.3 DEPLOY CROP",
+  "description": "辞書の取得・本文検証・JSON解析を分離診断するDJツール v1.5.4 DICTIONARY DIAGNOSTICS",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",
