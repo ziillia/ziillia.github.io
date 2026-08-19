@@ -1,4 +1,4 @@
-const CACHE_NAME='drive-dj-finder-v1.5.0-paddle-ab';
+const CACHE_NAME='drive-dj-finder-v1.5.2-safe-throughput';
 const APP_SHELL=['./','./drive-dj-finder.html','./musicbrainz-ocr-dictionary.js','./manifest.webmanifest','./pwa-icon.svg','./pwa-icon-180.png','./pwa-icon-512.png'];
 
 self.addEventListener('install',event=>{

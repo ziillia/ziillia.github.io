@@ -2,7 +2,7 @@
   "id": "./drive-dj-finder.html",
   "name": "Drive DJ Finder",
   "short_name": "Drive DJ",
-  "description": "未確定行だけPaddleOCRとMusicBrainz全曲辞書で再判定するDJツール v1.5.0 PADDLE A/B",
+  "description": "全曲辞書の自動再読込と安全な重複OCR再利用に対応するDJツール v1.5.2 SAFE THROUGHPUT",
   "lang": "ja",
   "start_url": "./drive-dj-finder.html",
   "scope": "./",
