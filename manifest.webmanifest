@@ -4,7 +4,7 @@
   "short_name": "Drive DJ",
   "description": "trusted multi-artistの拒否理由を安全に診断するDJツール v1.7.5",
   "lang": "ja",
-  "start_url": "./drive-dj-finder.html?v=1.7.5",
+  "start_url": "./drive-dj-finder?v=1.7.5",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
