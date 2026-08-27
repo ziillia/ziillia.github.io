@@ -7,12 +7,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0b0c0f">
 <title>Prompt Palette</title>
-<link rel="stylesheet" href="./style.css?v=8">
+<link rel="stylesheet" href="./style.css?v=9">
 </head>
 <body>
 <header>
   <h1>Prompt Palette</h1>
-  <div class="sub">JP / ENを切り替えて、MASTER / LAYOUTを選択。SCENE / POSE / OUTFIT / BODYは必要に応じて追加できます。</div>
+  <div class="sub">JP / ENを切り替えて、MASTER / LAYOUTを選択。SCENE / POSE / OUTFIT / COVERAGE / BODYは必要に応じて追加できます。</div>
   <div class="toolbar">
     <button class="btn" id="previewBtn">結合内容を見る</button>
     <button class="btn" id="addSceneBtn">＋ SCENE</button>
@@ -24,105 +24,50 @@
 </header>
 
 <section>
-  <div class="section-head">
-    <div class="section-title">LANGUAGE</div>
-    <div class="section-note">出力言語</div>
-  </div>
+  <div class="section-head"><div class="section-title">LANGUAGE</div><div class="section-note">出力言語</div></div>
   <div class="language-grid" id="languageGrid"></div>
 </section>
-
 <section>
-  <div class="section-head">
-    <div class="section-title">MASTER</div>
-    <div class="section-note">1つだけ選択</div>
-  </div>
+  <div class="section-head"><div class="section-title">MASTER</div><div class="section-note">1つだけ選択</div></div>
   <div class="master-grid" id="masterGrid"></div>
 </section>
-
 <section>
-  <div class="section-head">
-    <div class="section-title">LAYOUT</div>
-    <div class="section-note">構図数 1〜5</div>
-  </div>
+  <div class="section-head"><div class="section-title">LAYOUT</div><div class="section-note">構図数 1〜5</div></div>
   <div class="layout-grid" id="layoutGrid"></div>
 </section>
-
 <section>
-  <div class="section-head">
-    <div class="section-title">SCENE</div>
-    <div class="section-note">複数選択可</div>
-  </div>
+  <div class="section-head"><div class="section-title">SCENE</div><div class="section-note">複数選択可</div></div>
   <div class="cards" id="sceneCards"></div>
 </section>
-
 <section>
-  <div class="section-head">
-    <div class="section-title">POSE</div>
-    <div class="section-note">複数選択可</div>
-  </div>
+  <div class="section-head"><div class="section-title">POSE</div><div class="section-note">複数選択可</div></div>
   <div class="cards" id="poseCards"></div>
 </section>
-
 <section>
-  <div class="section-head">
-    <div class="section-title">OUTFIT</div>
-    <div class="section-note">0〜1個選択・再タップで解除</div>
-  </div>
+  <div class="section-head"><div class="section-title">OUTFIT</div><div class="section-note">0〜1個選択・再タップで解除</div></div>
   <div class="cards" id="outfitCards"></div>
 </section>
-
 <section>
-  <div class="section-head">
-    <div class="section-title">BODY</div>
-    <div class="section-note">任意・複数選択可</div>
-  </div>
+  <div class="section-head"><div class="section-title">COVERAGE</div><div class="section-note">0〜1個選択</div></div>
+  <div class="cards" id="coverageCards"></div>
+</section>
+<section>
+  <div class="section-head"><div class="section-title">BODY</div><div class="section-note">任意・複数選択可</div></div>
   <div class="cards" id="bodyCards"></div>
 </section>
 
-<div class="sticky">
-  <div class="sticky-inner">
-    <div class="status">
-      <strong id="selectionTitle">JP · Neutral</strong>
-      <span id="selectionSub">差分なし</span>
-    </div>
-    <button class="copy-main" id="copyCombined">結合コピー</button>
-  </div>
-</div>
+<div class="sticky"><div class="sticky-inner"><div class="status"><strong id="selectionTitle">JP · Neutral</strong><span id="selectionSub">差分なし</span></div><button class="copy-main" id="copyCombined">結合コピー</button></div></div>
 
-<div class="modal" id="editModal">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <h2 id="modalHeading">編集</h2>
-    <label for="editTitle">タイトル</label>
-    <input id="editTitle">
-    <label for="editText" id="editTextLabel">プロンプト（日本語）</label>
-    <textarea id="editText"></textarea>
-    <div class="sheet-actions">
-      <button class="btn" id="cancelEdit">閉じる</button>
-      <button class="btn danger" id="deleteItem" style="display:none">削除</button>
-      <button class="btn primary" id="saveEdit">保存</button>
-    </div>
-  </div>
-</div>
-
-<div class="modal" id="previewModal">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <h2>結合プロンプト</h2>
-    <textarea id="combinedPreview" readonly></textarea>
-    <div class="sheet-actions">
-      <button class="btn" id="closePreview">閉じる</button>
-      <button class="btn primary" id="copyPreview">コピー</button>
-    </div>
-  </div>
-</div>
-
+<div class="modal" id="editModal"><div class="sheet"><div class="sheet-handle"></div><h2 id="modalHeading">編集</h2><label for="editTitle">タイトル</label><input id="editTitle"><label for="editText" id="editTextLabel">プロンプト（日本語）</label><textarea id="editText"></textarea><div class="sheet-actions"><button class="btn" id="cancelEdit">閉じる</button><button class="btn danger" id="deleteItem" style="display:none">削除</button><button class="btn primary" id="saveEdit">保存</button></div></div></div>
+<div class="modal" id="previewModal"><div class="sheet"><div class="sheet-handle"></div><h2>結合プロンプト</h2><textarea id="combinedPreview" readonly></textarea><div class="sheet-actions"><button class="btn" id="closePreview">閉じる</button><button class="btn primary" id="copyPreview">コピー</button></div></div></div>
 <div class="toast" id="toast">コピーしました</div>
-<script src="./data.js?v=8"></script>
-<script src="./overrides.js?v=8"></script>
-<script src="./extras.js?v=8"></script>
-<script src="./pre-v8.js?v=8"></script>
-<script src="./app.js?v=8"></script>
-<script src="./post-v8.js?v=8"></script>
+<script src="./data.js?v=9"></script>
+<script src="./overrides.js?v=9"></script>
+<script src="./extras.js?v=9"></script>
+<script src="./pre-v8.js?v=9"></script>
+<script src="./pre-v9.js?v=9"></script>
+<script src="./app.js?v=9"></script>
+<script src="./post-v8.js?v=9"></script>
+<script src="./post-v9.js?v=9"></script>
 </body>
 </html>
