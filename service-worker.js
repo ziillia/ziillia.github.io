@@ -1,4 +1,4 @@
-const CACHE_NAME='drive-dj-finder-v1.9.1-access-safe';
+const CACHE_NAME='drive-dj-finder-v1.9.2-access-safe';
 const APP_SHELL=['./pwa-icon.svg','./pwa-icon-180.png','./pwa-icon-512.png'];
 
 self.addEventListener('install',event=>{
