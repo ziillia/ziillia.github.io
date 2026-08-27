@@ -7,12 +7,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0b0c0f">
 <title>Prompt Palette</title>
-<link rel="stylesheet" href="./style.css?v=7">
+<link rel="stylesheet" href="./style.css?v=8">
 </head>
 <body>
 <header>
   <h1>Prompt Palette</h1>
-  <div class="sub">JP / ENを切り替えて、MASTER / LAYOUT / OUTFITを選択。SCENE / POSE / BODYは必要に応じて追加できます。</div>
+  <div class="sub">JP / ENを切り替えて、MASTER / LAYOUTを選択。SCENE / POSE / OUTFIT / BODYは必要に応じて追加できます。</div>
   <div class="toolbar">
     <button class="btn" id="previewBtn">結合内容を見る</button>
     <button class="btn" id="addSceneBtn">＋ SCENE</button>
@@ -66,7 +66,7 @@
 <section>
   <div class="section-head">
     <div class="section-title">OUTFIT</div>
-    <div class="section-note">1つだけ選択</div>
+    <div class="section-note">0〜1個選択・再タップで解除</div>
   </div>
   <div class="cards" id="outfitCards"></div>
 </section>
@@ -118,9 +118,11 @@
 </div>
 
 <div class="toast" id="toast">コピーしました</div>
-<script src="./data.js?v=7"></script>
-<script src="./overrides.js?v=7"></script>
-<script src="./extras.js?v=7"></script>
-<script src="./app.js?v=7"></script>
+<script src="./data.js?v=8"></script>
+<script src="./overrides.js?v=8"></script>
+<script src="./extras.js?v=8"></script>
+<script src="./pre-v8.js?v=8"></script>
+<script src="./app.js?v=8"></script>
+<script src="./post-v8.js?v=8"></script>
 </body>
 </html>
