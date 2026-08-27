@@ -7,12 +7,12 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0b0c0f">
 <title>Prompt Palette</title>
-<link rel="stylesheet" href="./style.css?v=6">
+<link rel="stylesheet" href="./style.css?v=7">
 </head>
 <body>
 <header>
   <h1>Prompt Palette</h1>
-  <div class="sub">MASTER / LAYOUT / OUTFITを選び、SCENE / POSE / BODYを必要に応じて追加。カード単体でも結合でもコピーできます。</div>
+  <div class="sub">JP / ENを切り替えて、MASTER / LAYOUT / OUTFITを選択。SCENE / POSE / BODYは必要に応じて追加できます。</div>
   <div class="toolbar">
     <button class="btn" id="previewBtn">結合内容を見る</button>
     <button class="btn" id="addSceneBtn">＋ SCENE</button>
@@ -22,6 +22,14 @@
     <button class="btn ghost" id="resetBtn">初期状態に戻す</button>
   </div>
 </header>
+
+<section>
+  <div class="section-head">
+    <div class="section-title">LANGUAGE</div>
+    <div class="section-note">出力言語</div>
+  </div>
+  <div class="language-grid" id="languageGrid"></div>
+</section>
 
 <section>
   <div class="section-head">
@@ -74,7 +82,7 @@
 <div class="sticky">
   <div class="sticky-inner">
     <div class="status">
-      <strong id="selectionTitle">Neutral</strong>
+      <strong id="selectionTitle">JP · Neutral</strong>
       <span id="selectionSub">差分なし</span>
     </div>
     <button class="copy-main" id="copyCombined">結合コピー</button>
@@ -87,7 +95,7 @@
     <h2 id="modalHeading">編集</h2>
     <label for="editTitle">タイトル</label>
     <input id="editTitle">
-    <label for="editText">プロンプト</label>
+    <label for="editText" id="editTextLabel">プロンプト（日本語）</label>
     <textarea id="editText"></textarea>
     <div class="sheet-actions">
       <button class="btn" id="cancelEdit">閉じる</button>
@@ -110,8 +118,9 @@
 </div>
 
 <div class="toast" id="toast">コピーしました</div>
-<script src="./data.js?v=6"></script>
-<script src="./overrides.js?v=6"></script>
-<script src="./app.js?v=6"></script>
+<script src="./data.js?v=7"></script>
+<script src="./overrides.js?v=7"></script>
+<script src="./extras.js?v=7"></script>
+<script src="./app.js?v=7"></script>
 </body>
 </html>
