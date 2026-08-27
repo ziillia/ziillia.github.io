@@ -7,17 +7,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0b0c0f">
 <title>Prompt Palette</title>
-<link rel="stylesheet" href="./style.css?v=5">
+<link rel="stylesheet" href="./style.css?v=6">
 </head>
 <body>
 <header>
   <h1>Prompt Palette</h1>
-  <div class="sub">MASTERとOUTFITを1つずつ選び、SCENE / POSEを必要なだけ追加。カード単体でも、下のボタンから結合してもコピーできます。</div>
+  <div class="sub">MASTER / LAYOUT / OUTFITを選び、SCENE / POSE / BODYを必要に応じて追加。カード単体でも結合でもコピーできます。</div>
   <div class="toolbar">
     <button class="btn" id="previewBtn">結合内容を見る</button>
     <button class="btn" id="addSceneBtn">＋ SCENE</button>
     <button class="btn" id="addPoseBtn">＋ POSE</button>
     <button class="btn" id="addOutfitBtn">＋ OUTFIT</button>
+    <button class="btn" id="addBodyBtn">＋ BODY</button>
     <button class="btn ghost" id="resetBtn">初期状態に戻す</button>
   </div>
 </header>
@@ -28,6 +29,14 @@
     <div class="section-note">1つだけ選択</div>
   </div>
   <div class="master-grid" id="masterGrid"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-title">LAYOUT</div>
+    <div class="section-note">構図数 1〜5</div>
+  </div>
+  <div class="layout-grid" id="layoutGrid"></div>
 </section>
 
 <section>
@@ -52,6 +61,14 @@
     <div class="section-note">1つだけ選択</div>
   </div>
   <div class="cards" id="outfitCards"></div>
+</section>
+
+<section>
+  <div class="section-head">
+    <div class="section-title">BODY</div>
+    <div class="section-note">任意・複数選択可</div>
+  </div>
+  <div class="cards" id="bodyCards"></div>
 </section>
 
 <div class="sticky">
@@ -93,8 +110,8 @@
 </div>
 
 <div class="toast" id="toast">コピーしました</div>
-<script src="./data.js?v=5"></script>
-<script src="./overrides.js?v=5"></script>
-<script src="./app.js?v=5"></script>
+<script src="./data.js?v=6"></script>
+<script src="./overrides.js?v=6"></script>
+<script src="./app.js?v=6"></script>
 </body>
 </html>
