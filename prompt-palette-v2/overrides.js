@@ -47,6 +47,16 @@
 
 それ以外の人物の特徴、ロケーション、衣装、写真表現、誌面構成についてはMASTERおよびSCENEの指示を維持する。`;
 
+  const luxuryInteriorText = `【SCENE：LUXURY INTERIOR】
+
+自然光の入る、洗練された上質な室内空間を舞台にしてください。大きな窓、ソファ、椅子、カーテン、壁面、窓際、廊下など、室内の異なる場所を背景として活用してください。
+
+窓際に立つ、室内を歩く、椅子やソファで休憩する、カーテン越しの光を受けるなど、その空間で自然に生まれる動作や瞬間を取り入れてください。
+
+柔らかな窓光と自然な陰影を活かし、落ち着きと奥行きのある人物中心のエディトリアル写真として構成してください。
+
+それ以外の人物の特徴、写真表現、構図、誌面構成についてはMASTERの指示を維持する。`;
+
   function patch(data){
     if(!data) return;
     const attack = Array.isArray(data.masters) && data.masters.find(x=>x.id==='attack');
@@ -57,6 +67,9 @@
 
     const low = Array.isArray(data.poses) && data.poses.find(x=>x.id==='low-close');
     if(low){ low.title = '🔥 LOW & CLOSE'; low.text = lowCloseText; }
+
+    const interior = Array.isArray(data.scenes) && data.scenes.find(x=>x.id==='hotel');
+    if(interior){ interior.title = '🪟 LUXURY INTERIOR'; interior.text = luxuryInteriorText; }
   }
 
   patch(window.initialData);
