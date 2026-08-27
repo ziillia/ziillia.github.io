@@ -16,7 +16,13 @@ function load(){
     if(!Array.isArray(state.scenes)) state.scenes = clone(initialData.scenes);
     if(!Array.isArray(state.poses)) state.poses = clone(initialData.poses);
     if(!Array.isArray(state.outfits)) state.outfits = clone(initialData.outfits);
+    if(!Array.isArray(state.layouts)) state.layouts = clone(initialData.layouts||[]);
+    if(!Array.isArray(state.bodies)) state.bodies = clone(initialData.bodies||[]);
+    if(!Array.isArray(state.selectedScenes)) state.selectedScenes=[];
+    if(!Array.isArray(state.selectedPoses)) state.selectedPoses=[];
+    if(!Array.isArray(state.selectedBodies)) state.selectedBodies=[];
     if(!state.selectedOutfit) state.selectedOutfit = initialData.selectedOutfit;
+    if(!state.selectedLayout) state.selectedLayout = initialData.selectedLayout||"4";
 
     initialData.poses.forEach(item=>{
       if(!state.poses.some(x=>x.id===item.id)) state.poses.push(clone(item));
@@ -24,16 +30,35 @@ function load(){
     initialData.outfits.forEach(item=>{
       if(!state.outfits.some(x=>x.id===item.id)) state.outfits.push(clone(item));
     });
+    (initialData.bodies||[]).forEach(item=>{
+      if(!state.bodies.some(x=>x.id===item.id)) state.bodies.push(clone(item));
+    });
+    state.layouts=clone(initialData.layouts||state.layouts);
 
     ["attack","safe"].forEach(id=>{
       const fresh=initialData.masters.find(x=>x.id===id);
       const current=state.masters.find(x=>x.id===id);
-      if(fresh && current) current.text=fresh.text;
+      if(fresh && current){current.text=fresh.text;current.title=fresh.title;current.short=fresh.short}
     });
     initialData.scenes.forEach(fresh=>{
       const current=state.scenes.find(x=>x.id===fresh.id);
-      if(current) current.text=fresh.text;
+      if(current){current.text=fresh.text;current.title=fresh.title}
+      else state.scenes.push(clone(fresh));
     });
+    ["bold","refined"].forEach(id=>{
+      const fresh=initialData.outfits.find(x=>x.id===id);
+      const current=state.outfits.find(x=>x.id===id);
+      if(fresh && current){current.text=fresh.text;current.title=fresh.title}
+    });
+    (initialData.bodies||[]).forEach(fresh=>{
+      const current=state.bodies.find(x=>x.id===fresh.id);
+      if(current){current.text=fresh.text;current.title=fresh.title}
+    });
+
+    state.selectedScenes=state.selectedScenes.filter(id=>state.scenes.some(x=>x.id===id));
+    state.selectedPoses=state.selectedPoses.filter(id=>state.poses.some(x=>x.id===id));
+    state.selectedBodies=state.selectedBodies.filter(id=>state.bodies.some(x=>x.id===id));
+    if(!state.layouts.some(x=>x.id===String(state.selectedLayout))) state.selectedLayout=initialData.selectedLayout||"4";
     save();
   }catch(e){ state = clone(initialData); }
 }
@@ -64,6 +89,20 @@ function renderMasters(){
   });
 }
 
+function renderLayouts(){
+  const root=document.getElementById("layoutGrid");
+  root.innerHTML="";
+  (state.layouts||[]).forEach(item=>{
+    const b=document.createElement("button");
+    b.className="layout-choice"+(String(state.selectedLayout)===String(item.id)?" active":"");
+    b.innerHTML=`<strong>${esc(item.title)}</strong><small>SHOT</small>`;
+    b.addEventListener("click",()=>{
+      state.selectedLayout=String(item.id);save();render();
+    });
+    root.appendChild(b);
+  });
+}
+
 function cardHTML(item,selected){
   return `
     <div class="card-top">
@@ -81,10 +120,11 @@ function renderCards(kind){
   const config={
     scenes:{root:"sceneCards", multi:true, key:"selectedScenes"},
     poses:{root:"poseCards", multi:true, key:"selectedPoses"},
-    outfits:{root:"outfitCards", multi:false, key:"selectedOutfit"}
+    outfits:{root:"outfitCards", multi:false, key:"selectedOutfit"},
+    bodies:{root:"bodyCards", multi:true, key:"selectedBodies"}
   }[kind];
   const root=document.getElementById(config.root);
-  const items=state[kind];
+  const items=state[kind]||[];
   root.innerHTML="";
   if(!items.length){root.innerHTML='<div class="empty">まだプリセットがありません</div>';return}
   items.forEach(item=>{
@@ -106,7 +146,7 @@ function toggle(kind,id){
   if(kind==="outfits"){
     state.selectedOutfit=id;
   }else{
-    const key=kind==="scenes"?"selectedScenes":"selectedPoses";
+    const key=kind==="scenes"?"selectedScenes":kind==="poses"?"selectedPoses":"selectedBodies";
     const arr=state[key];
     state[key]=arr.includes(id)?arr.filter(x=>x!==id):[...arr,id];
   }
@@ -115,19 +155,21 @@ function toggle(kind,id){
 
 function compose(){
   const m=state.masters.find(x=>x.id===state.selectedMaster)||state.masters[0];
+  const layout=(state.layouts||[]).find(x=>String(x.id)===String(state.selectedLayout));
+  const bodies=(state.bodies||[]).filter(x=>state.selectedBodies.includes(x.id));
   const scenes=state.scenes.filter(x=>state.selectedScenes.includes(x.id));
   const poses=state.poses.filter(x=>state.selectedPoses.includes(x.id));
   const outfit=state.outfits.find(x=>x.id===state.selectedOutfit)||state.outfits[0];
-  return [m?.text,...scenes.map(x=>x.text),...poses.map(x=>x.text),outfit?.text].filter(Boolean).join("\n\n");
+  return [m?.text,layout?.text,...bodies.map(x=>x.text),...scenes.map(x=>x.text),...poses.map(x=>x.text),outfit?.text].filter(Boolean).join("\n\n");
 }
 function updateStatus(){
   const m=state.masters.find(x=>x.id===state.selectedMaster);
   const outfit=state.outfits.find(x=>x.id===state.selectedOutfit);
-  const count=state.selectedScenes.length+state.selectedPoses.length;
-  document.getElementById("selectionTitle").textContent=`${m?.title||"MASTER"} + ${outfit?.title||"OUTFIT"}`;
-  document.getElementById("selectionSub").textContent=count?`SCENE / POSE 差分 ${count}件を選択中`:"SCENE / POSE 差分なし";
+  const extraCount=state.selectedScenes.length+state.selectedPoses.length+state.selectedBodies.length;
+  document.getElementById("selectionTitle").textContent=`${m?.title||"MASTER"} · ${state.selectedLayout||"-"} SHOT · ${outfit?.title||"OUTFIT"}`;
+  document.getElementById("selectionSub").textContent=extraCount?`SCENE / POSE / BODY 差分 ${extraCount}件を選択中`:"追加差分なし";
 }
-function render(){renderMasters();renderCards("scenes");renderCards("poses");renderCards("outfits");updateStatus()}
+function render(){renderMasters();renderLayouts();renderCards("scenes");renderCards("poses");renderCards("outfits");renderCards("bodies");updateStatus()}
 
 async function copyText(text){
   let ok=false;
@@ -190,6 +232,7 @@ document.getElementById("deleteItem").addEventListener("click",()=>{
   state[kind]=state[kind].filter(x=>x.id!==id);
   if(kind==="scenes")state.selectedScenes=state.selectedScenes.filter(x=>x!==id);
   if(kind==="poses")state.selectedPoses=state.selectedPoses.filter(x=>x!==id);
+  if(kind==="bodies")state.selectedBodies=state.selectedBodies.filter(x=>x!==id);
   if(kind==="outfits" && state.selectedOutfit===id){
     state.selectedOutfit=state.outfits[0]?.id||"";
   }
@@ -201,6 +244,7 @@ document.getElementById("editModal").addEventListener("click",e=>{if(e.target.id
 document.getElementById("addSceneBtn").addEventListener("click",()=>openEdit("scenes",null,true));
 document.getElementById("addPoseBtn").addEventListener("click",()=>openEdit("poses",null,true));
 document.getElementById("addOutfitBtn").addEventListener("click",()=>openEdit("outfits",null,true));
+document.getElementById("addBodyBtn").addEventListener("click",()=>openEdit("bodies",null,true));
 document.getElementById("copyCombined").addEventListener("click",()=>copyText(compose()));
 
 function openPreview(){
