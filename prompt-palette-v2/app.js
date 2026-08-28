@@ -13,7 +13,7 @@
         if(migrated.migrated){
           if(!localStorage.getItem(BACKUP))localStorage.setItem(BACKUP,raw);
           const next=JSON.stringify(state);localStorage.setItem(KEY,next);lastRaw=next;
-          migrationMessage='v17に引き継ぎました。旧データは「設定とバックアップ」から書き出せます。';
+          migrationMessage='新しい構成に引き継ぎました。旧データは「設定とバックアップ」から書き出せます。';
         }
       }
     }catch(error){storageBlocked=true;storageMessage='保存データを安全に読み込めないため、自動保存を停止しています。元データは変更していません。設定から書き出して確認してください。';}
@@ -41,6 +41,8 @@
   }
   function render(){
     document.documentElement.lang=state.language==='jp'?'ja':'en';
+    document.querySelector('[data-action=close]').setAttribute('aria-label',t('閉じる','Close'));
+    $('app').setAttribute('aria-label',t('プロンプト設定','Prompt settings'));
     document.querySelector('.intro p').textContent=t('同じ人。新しい一瞬。','The same person. A new moment.');
     document.querySelector('.intro span').textContent=t('必要な差分だけを選んで、ひとつの写真集へ。','Choose only what changes. Compose one coherent photobook.');
     document.querySelector('[data-action=settings]').setAttribute('aria-label',t('設定とバックアップ','Settings and backup'));
@@ -65,6 +67,9 @@
   }
   function update(){
     result=E.compile(state);
+    const takeButton=document.querySelector('[data-action=take]');
+    takeButton.disabled=E.compile({...state,take:(state.take+1)%1000000}).text===result.text;
+    takeButton.title=takeButton.disabled?t('すべての撮影条件が固定されています','All photographic conditions are fixed'):t('選択を保って候補を切り替えます','Rotate candidates without changing selections');
     document.querySelectorAll('[data-path]').forEach(b=>b.setAttribute('aria-pressed',String(selected(b.dataset.path,b.dataset.value))));
     document.querySelectorAll('[data-action=language]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===state.language)));
     const name=(g,id)=>E.label(E.find(state,g,id),state.language);
@@ -103,7 +108,7 @@
   }
   function download(name,text){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   function settings(){
-    open(t('設定とバックアップ','Settings & backup'),`<p class="help">${t('人物同一性・肌・写真品質は共通の土台として常に適用。撮影・表情・身体・衣装は独立して指定できます。','Identity, skin and photographic quality form a shared base. Specify camera, expression, physique and clothing independently.')}</p><p class="help">${t('旧MASTERは写真のトーンへ。彼氏目線は表情へ。夕方の設定は光へ移動しました。旧データは自動バックアップされ、追加プリセットを引き継いでいます。','Former MASTER choices are now photographic tones; Partner POV is an expression; sunset is lighting. Legacy data is backed up automatically and custom presets are retained.')}</p><div class="settings-row"><button class="button" data-action="export">${t('現在の設定を書き出す','Export current settings')}</button><button class="button" data-action="export-old">${t('旧データを書き出す','Export old data')}</button></div><div class="settings-row"><button class="button quiet" data-action="export-import-backup">${t('前回の読み込み前データ','Export pre-import backup')}</button></div><label class="field">${t('設定ファイルを読み込む','Import settings')}<input id="importFile" type="file" accept=".json,application/json"></label><p class="help">${t('読み込み時は現在のデータをバックアップします。自由文の指示内容は自動解析しません。','Import backs up the current saved data. Free-form custom instructions are not semantically parsed.')}</p><div class="settings-row"><button class="button quiet" data-action="reset">${t('選択だけ初期化','Reset selections only')}</button></div><p class="help">Prompt Palette v17 · ${t('保存はこのブラウザ内です。端末を移す前に書き出してください。','Data is stored in this browser. Export before moving to another device.')}</p>`);
+    open(t('設定とバックアップ','Settings & backup'),`<p class="help">${t('人物同一性・肌・写真品質は共通の土台として常に適用。撮影・表情・身体・衣装は独立して指定できます。','Identity, skin and photographic quality form a shared base. Specify camera, expression, physique and clothing independently.')}</p><p class="help">${t('旧MASTERは写真のトーンへ。彼氏目線は表情へ。夕方の設定は光へ移動しました。旧データは自動バックアップされ、追加プリセットを引き継いでいます。','Former MASTER choices are now photographic tones; Partner POV is an expression; sunset is lighting. Legacy data is backed up automatically and custom presets are retained.')}</p><div class="settings-row"><button class="button" data-action="export">${t('現在の設定を書き出す','Export current settings')}</button><button class="button" data-action="export-old">${t('旧データを書き出す','Export old data')}</button></div><div class="settings-row"><button class="button quiet" data-action="export-import-backup">${t('前回の読み込み前データ','Export pre-import backup')}</button></div><label class="field">${t('設定ファイルを読み込む','Import settings')}<input id="importFile" type="file" accept=".json,application/json"></label><p class="help">${t('読み込み時は現在のデータをバックアップします。自由文の指示内容は自動解析しません。','Import backs up the current saved data. Free-form custom instructions are not semantically parsed.')}</p><div class="settings-row"><button class="button quiet" data-action="reset">${t('選択だけ初期化','Reset selections only')}</button></div><p class="help">Prompt Palette v18 · ${t('保存はこのブラウザ内です。端末を移す前に書き出してください。','Data is stored in this browser. Export before moving to another device.')}</p>`);
   }
   document.addEventListener('click',async event=>{
     const button=event.target.closest('button');if(!button)return;
@@ -129,7 +134,7 @@
     else if(action==='body-info'){
       const b=state.body;open(t('身体の指定内容','Physical instructions'),`<div class="sheet-copy">${esc([E.find(state,'masses',b.mass),...b.regions.map(id=>E.find(state,'regions',id)),E.find(state,'vascularity',b.vascularity)].map(x=>E.textOf(x,state.language)).join('\n\n'))}</div><p class="help">${t('全身＋部位別は重点強化として統合。筋量とvascularityは別々に調整します。','Global and regional growth combine as additional emphasis. Mass and vascularity are adjusted independently.')}</p>`);
     }
-    else if(action==='export')download('prompt-palette-v17.json',JSON.stringify({format:'prompt-palette',state,collapsed:fold},null,2));
+    else if(action==='export')download('prompt-palette-v18.json',JSON.stringify({format:'prompt-palette',state,collapsed:fold},null,2));
     else if(action==='export-old'){
       try{const raw=localStorage.getItem(BACKUP)||localStorage.getItem(KEY);if(raw)download('prompt-palette-original.json',raw);else toast(t('旧データはありません','No old data available'));}catch(error){toast(t('保存データを読み出せません','Cannot read saved data'));}
     }

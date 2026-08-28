@@ -113,6 +113,7 @@
         ['視線を少し外した、落ち着いた表情。','A relaxed expression with a slight glance away.']]
     };
     const lightText={
+      session:['参照画像の時間帯と光源に合う光。入射角と陰影に変化をつけ、新しいカットとして仕上げる。','Keep the reference time of day and type of light source, varying light direction and shading for a distinctly new photograph.'],
       day:['自然な日光と穏やかなサイドライト。','Natural daylight with gentle side light.'],
       window:['窓や障子からの拡散光と室内の自然な反射光。','Diffused window or shoji light with natural interior bounce.'],
       water:['日光と水面からの反射光。肌のハイライトを白飛びさせない。','Daylight and reflected light from the water; retain skin highlight detail.'],
@@ -141,7 +142,7 @@
       if(angle==='relative')shot.push(k%2?t('参照の撮影位置から少し横へ移動した視点。','A viewpoint slightly to one side of the reference camera position.'):t('参照に近いカメラの高さと角度。','A camera height and angle close to the reference.'));
       else shot.push(textOf(find(s,'angles',angle),s.language));
       let light=s.lighting;
-      if(light==='auto')light=locked&&!scene?'reference':scene?.light||'day';
+      if(light==='auto')light=scene?(scene.light||'reference'):(s.variation==='dynamic'?'session':'reference');
       if(light==='sunset'&&scene?.fixedTime){light='night';warn('夜景では夕方の光を使わず、夜の環境光を優先します。','Night scenes use ambient night light instead of evening daylight.');}
       shot.push(lightText[light]?t(...lightText[light]):textOf(find(s,'lighting',light),s.language));
       if(s.expression==='reference')shot.push(textOf(find(s,'expressions','reference'),s.language));

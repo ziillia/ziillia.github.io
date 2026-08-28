@@ -77,3 +77,13 @@ test('new take changes a default KEEP result only through micro expression',()=>
   const s=defaults();s.variation='keep';s.layout='1';const a=E.compile(s);s.take=1;const b=E.compile(s);assert.notEqual(a.text,b.text);
   assert.deepEqual({...a.shots[0],text:''},{...b.shots[0],text:''});
 });
+test('unselected environment retains the reference time and light source',()=>{
+  for(const variation of ['keep','balanced','dynamic']){
+    const s=defaults();s.variation=variation;const r=E.compile(s);assert.doesNotMatch(r.text,/自然な日光と|Natural daylight with/);
+    assert.ok(r.shots.every(x=>x.light===(variation==='dynamic'?'session':'reference')));
+    s.sceneIds=['city-night'];assert.ok(E.compile(s).shots.every(x=>x.light==='night'));
+  }
+});
+test('all explicit locks produce an identical next take, allowing the UI to disable it',()=>{
+  const s=defaults();s.variation='keep';s.expression='reference';const a=E.compile(s).text;s.take=1;assert.equal(E.compile(s).text,a);
+});

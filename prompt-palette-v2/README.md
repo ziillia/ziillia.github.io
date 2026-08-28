@@ -1,13 +1,15 @@
-# Prompt Palette v17
+# Prompt Palette v18
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
+
+v18 retains state schema 17. It preserves the reference time of day when no setting is selected, and disables “New take” when every photographic axis is locked.
 
 ## Active structure
 
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=17`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=18`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 
