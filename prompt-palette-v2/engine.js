@@ -95,7 +95,8 @@
     parts.push(layout);
     if(locked)parts.push(t('以下で具体的に変更する要素以外は、参照画像の姿勢、身体の向き、写真内の構図、撮影位置、距離、画角、背景、光の方向を固定する。写真枠の配置だけでは撮影条件を変えない。','Lock the reference posture, body orientation, composition within photographs, camera position, distance, field of view, background and light direction, except for the specific changes stated below. Page arrangement alone does not change the photographic setup.'));
     else parts.push(s.variation==='balanced'?t('同じ撮影セッションの近い別テイクとしてまとめる。指定のない姿勢や背景には小さな変化だけを加える。','Keep the photographs as closely related takes from one session, with only small changes to unspecified posture and background.'):t('同じ女性としての一貫性を保ち、指定のない撮影条件には明確な変化をつける。場所の指定がなければ、参照画像と自然につながる撮影場所の別の一角を使う。','Keep the same woman consistent while making distinct changes to unspecified photographic conditions. Without a specified location, use another part of a setting that naturally connects to the reference.'));
-    if(s.expression==='partner-pov'||s.expression==='candid-close')parts.push(textOf(find(s,'expressions',s.expression),s.language)+' '+t('感情は視線、微笑み、間合いで伝える。姿勢、撮影距離、衣装をそれだけの理由で変更しない。','Convey emotion through gaze, smiles and timing without using it to change posture, camera distance or clothing.'));
+    if(s.expression==='partner-pov')parts.push(textOf(find(s,'expressions',s.expression),s.language)+' '+t('変更対象は視線と表情のみ。姿勢、撮影距離、衣装はこの指定を理由に変更しない。','Apply this adjustment only to gaze and expression. It must not change posture, camera distance or clothing.'));
+    else if(s.expression==='candid-close')parts.push(textOf(find(s,'expressions',s.expression),s.language)+' '+t('感情は視線、微笑み、間合いで伝える。姿勢、撮影距離、衣装をそれだけの理由で変更しない。','Convey emotion through gaze, smiles and timing without using it to change posture, camera distance or clothing.'));
     if(outfit)parts.push(textOf(outfit,s.language)+(coverage?'':t(' 全カットで統一した衣装を使い、人物の顔や体型は変えない。',' Use a consistent outfit across photographs without changing the face or physique.')));
     else if(!coverage)parts.push(t('参照画像の衣装を維持する。','Retain the reference clothing.'));
     if(coverage)parts.push((outfit?t('選んだ衣装の色と素材を活かし、','Retain the chosen outfit’s colors and materials; '):t('参照衣装の色と素材を活かし、','Retain the reference outfit’s colors and materials; '))+textOf(coverage,s.language)+' '+t('カバー範囲はこの指定を優先し、衣装の別の指示や筋肉表現を理由に布面積を減らさない。','This coverage requirement takes priority; do not reduce fabric to satisfy other styling or muscle-definition instructions.'));
@@ -103,10 +104,10 @@
     const angleAuto=['eye','three-quarter','low','high','three-quarter'];
     const expressions={
       'partner-pov':[
-        ['ふと目が合い、信頼する相手に小さく微笑む。','An unexpected meeting of eyes and a small smile toward someone she trusts.'],
-        ['笑い終わりの余韻を残し、少し照れた目元。','The lingering end of a laugh with a slightly shy look.'],
-        ['相手の言葉を待つような、柔らかく静かな視線。','A soft, quiet gaze as though waiting for a reply.'],
-        ['視線を外してから戻す瞬間の、親しみのある表情。','A warm expression as her gaze returns after looking away.']],
+        ['レンズへ短く視線を合わせ、口元に小さな微笑みを残す。','Briefly meet the lens with a small smile around the mouth.'],
+        ['笑い終わりの口元の動きが残り、目元はわずかに緩む。','Capture the end of a laugh, with residual movement around the mouth and slightly relaxed eyes.'],
+        ['視線は静止し、目元はわずかに緩んでいる。','A steady gaze with slightly relaxed eyes.'],
+        ['一度外した視線をレンズへ戻す瞬間。口元にごく小さな微笑みを残す。','Capture the instant the gaze returns to the lens after looking away, with a very small smile around the mouth.']],
       'candid-close':[
         ['短い会話に応える自然な微笑み。','A natural smile in response to a brief exchange.'],
         ['言葉を聞いてふっと笑う瞬間。','The instant of a spontaneous laugh in response to a remark.'],

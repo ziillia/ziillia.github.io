@@ -87,3 +87,36 @@ test('unselected environment retains the reference time and light source',()=>{
 test('all explicit locks produce an identical next take, allowing the UI to disable it',()=>{
   const s=defaults();s.variation='keep';s.expression='reference';const a=E.compile(s).text;s.take=1;assert.equal(E.compile(s).text,a);
 });
+test('gaze preset retains four visible expression patterns without relationship instructions',()=>{
+  const markers={jp:['レンズへ短く視線','笑い終わり','視線は静止','視線をレンズへ戻す'],en:['Briefly meet the lens','end of a laugh','steady gaze','gaze returns to the lens']};
+  for(const language of ['jp','en']){
+    const s=defaults();s.language=language;s.expression='partner-pov';s.layout='1';s.variation='keep';
+    for(let take=0;take<4;take++){
+      s.take=take;const r=E.compile(s);
+      assert.ok(r.shots[0].text.includes(markers[language][take]));
+      assert.doesNotMatch(r.text,/恋人|彼氏|信頼する|胸が高鳴|照れ|親しみ|romantic|partner|trusts|anticipation|shy|warmth/i);
+      assert.match(r.text,/変更対象は視線と表情のみ|only to gaze and expression/);
+      assert.match(r.text,/撮影者やその手は写さない|photographer and their hands out of frame/);
+      if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
+    }
+    s.take=4;assert.ok(E.compile(s).shots[0].text.includes(markers[language][0]));
+  }
+});
+test('gaze preset does not alter resolved scene, posture, camera, light, body or wardrobe',()=>{
+  for(const language of ['jp','en'])for(const variation of ['keep','balanced','dynamic'])for(const layout of ['1','3','5']){
+    const s=defaults();Object.assign(s,{language,variation,layout,sceneIds:['beach','soft-interior'],poseIds:['standing','sitting'],outfitId:'refined',coverageId:'coverage-strong'});
+    Object.assign(s.body,{mass:'hypertrophy-direct',regions:['hypertrophy-delts','hypertrophy-lats'],vascularity:'vascularity-extreme'});
+    const before=JSON.stringify(s),base=E.compile(s),gaze=E.compile({...s,expression:'partner-pov'});
+    assert.equal(JSON.stringify(s),before);
+    assert.deepEqual(gaze.shots.map(({text,...shot})=>shot),base.shots.map(({text,...shot})=>shot));
+    const common=base.text.split('\n\n').slice(0,-Number(layout));
+    for(const paragraph of common)assert.ok(gaze.text.includes(paragraph));
+    assert.deepEqual(gaze.warnings,base.warnings);
+  }
+});
+test('existing gaze selection and custom text survive the label change',()=>{
+  const s=defaults();s.expression='partner-pov';s.custom.poses=[{id:'custom-copy',title:'Saved',text:'信頼する相手に向けた表情。',textEn:'An expression toward someone she trusts.',custom:true,extra:{keep:true}}];
+  const before=JSON.stringify(s),migrated=E.migrate(s);
+  assert.equal(migrated.state.expression,'partner-pov');assert.equal(migrated.migrated,false);
+  assert.deepEqual(migrated.state.custom,s.custom);assert.equal(JSON.stringify(s),before);
+});

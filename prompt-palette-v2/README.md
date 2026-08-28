@@ -1,15 +1,17 @@
-# Prompt Palette v18
+# Prompt Palette v19
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
 
-v18 retains state schema 17. It preserves the reference time of day when no setting is selected, and disables “New take” when every photographic axis is locked.
+v19 retains state schema 17. The former Partner POV preset is now labeled Gaze & expression and describes visible gaze, eye/mouth changes and expression timing without specifying a personal relationship or an intended emotional response. The four take patterns and the `partner-pov` ID remain unchanged; no custom text is rewritten. These are prompt-level changes, not a guarantee of identical generated images.
+
+v18 preserved the reference time of day when no setting is selected and disabled “New take” when every photographic axis is locked.
 
 ## Active structure
 
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=18`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=19`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 
@@ -17,7 +19,7 @@ Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as histor
 
 Identity, fair reference skin and photographic quality are fixed common constraints. Former MASTER choices now set a photographic tone, not a safety level. Variation determines only unspecified photographic axes. Explicit posture, expression, distance, angle, setting and light override only their own axes; reference locks remain effective even with dynamic variation.
 
-The compiler emits concrete instructions, not category-routing paragraphs. Each photo gets one setting and one posture; extra choices rotate through “New take”. Partner POV controls gaze and expression without forcing clothing or camera changes. Sunset is lighting; a night scene takes priority over evening daylight. Single-photo layouts favor a prominent vertical portrait unless framing is locked. All layouts are flat pre-publication digital canvases, not photographed books.
+The compiler emits concrete instructions, not category-routing paragraphs. Each photo gets one setting and one posture; extra choices rotate through “New take”. Gaze & expression controls only gaze and facial expression, without forcing posture, clothing or camera changes. Sunset is lighting; a night scene takes priority over evening daylight. Single-photo layouts favor a prominent vertical portrait unless framing is locked. All layouts are flat pre-publication digital canvases, not photographed books.
 
 Global and regional hypertrophy combine as extra regional emphasis. Direct and extreme are distinct strengths. Vascularity is independent from mass. Clothing is optional and retained from the reference when unset; more coverage takes priority over styling. Arbitrary custom text is not semantically parsed: a visible warning asks the user to review conflicts. Missing or Japanese-containing custom EN text is omitted from EN output with a warning; no Japanese fallback. JP retains the legacy JP-then-EN fallback.
 

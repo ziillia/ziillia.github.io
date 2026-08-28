@@ -36,7 +36,7 @@
       row('auto','変化量に合わせる','Follow variation','表情は選択した変化量に合わせる。','Let the variation level determine changes in expression.'),
       row('reference','参照を維持','Reference','参照画像の視線と表情を維持。','Preserve the reference gaze and expression.'),
       row('candid-close','自然なやりとり','Candid','短い会話の合間のような、気持ちの伝わる自然な表情。','Natural, emotionally readable expressions between brief exchanges.'),
-      row('partner-pov','🤍 彼氏目線','🤍 Partner POV','信頼する恋人に向ける視線と微笑み。間合いと小さな反応で、親しさと胸が高鳴る空気を作る。撮影者やその手は写さない。','A gaze and smile offered to a trusted romantic partner. Convey warmth and a flutter of anticipation through timing and small reactions. Keep the photographer and their hands out of frame.')
+      row('partner-pov','視線・表情','Gaze & expression','視線の方向、目元と口元の小さな変化、表情が切り替わるタイミングを捉える。撮影者やその手は写さない。','Capture gaze direction, small changes around the eyes and mouth, and the timing of expression transitions. Keep the photographer and their hands out of frame.')
     ],
     distances:[
       row('auto','おまかせ','Auto','選択した変化量の範囲で撮影距離を決める。','Choose camera distance within the selected variation level.'),
