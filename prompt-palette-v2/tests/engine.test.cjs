@@ -34,7 +34,7 @@ test('leading headings are stripped without altering interior bracket text',()=>
   assert.equal(E.strip('Text\n【内側】'),'Text\n【内側】');
 });
 test('all built-in body combinations produce one coherent mass/vascularity instruction',()=>{
-  for(const mass of C.masses)for(const vascularity of C.vascularity)for(let mask=0;mask<16;mask++)for(const language of ['jp','en']){
+  for(const mass of C.masses)for(const vascularity of C.vascularity)for(let mask=0;mask<2**C.regions.length;mask++)for(const language of ['jp','en']){
     const s=defaults();s.language=language;s.body.mass=mass.id;s.body.vascularity=vascularity.id;s.body.regions=C.regions.filter((r,i)=>mask&(1<<i)).map(r=>r.id);
     const r=E.compile(s);assert.equal(r.warnings.length,0);assert.equal(r.shots.length,4);
     if(mass.id!=='reference')assert.doesNotMatch(r.text,/指定部位以外の筋量|Maintain reference muscular mass|Retain reference muscular mass outside/);
@@ -119,4 +119,38 @@ test('existing gaze selection and custom text survive the label change',()=>{
   const before=JSON.stringify(s),migrated=E.migrate(s);
   assert.equal(migrated.state.expression,'partner-pov');assert.equal(migrated.migrated,false);
   assert.deepEqual(migrated.state.custom,s.custom);assert.equal(JSON.stringify(s),before);
+});
+test('new poses and overhead angle affect only their explicitly selected axes under KEEP',()=>{
+  const poseIds=['supine-arms-open','low-recline-side-turn','kneeling-forward-lean','back-turn-look-over-shoulder'];
+  for(const language of ['jp','en'])for(const poseId of poseIds){
+    const s=defaults();Object.assign(s,{language,variation:'keep',layout:'1',expression:'reference',poseIds:[poseId]});
+    const r=E.compile(s),shot=r.shots[0];
+    assert.equal(shot.poseId,poseId);assert.equal(shot.sceneId,'');assert.equal(shot.angle,'reference');assert.equal(shot.distance,'reference');assert.equal(shot.light,'reference');
+    assert.ok(shot.text.includes(E.textOf(E.find(s,'poses',poseId),language)));
+    s.angle='overhead';const overhead=E.compile(s).shots[0];
+    assert.deepEqual({...overhead,text:'',angle:'reference'},{...shot,text:''});
+    assert.match(overhead.text,/鉛直下向き|vertically downward/);
+    s.poseIds=[];assert.equal(E.compile(s).shots[0].poseId,'');
+  }
+});
+test('pecs growth is independent from bust volume at every global muscle strength',()=>{
+  for(const language of ['jp','en'])for(const mass of C.masses)for(const bust of [false,true]){
+    const s=defaults();s.language=language;Object.assign(s.body,{mass:mass.id,regions:['hypertrophy-pecs','hypertrophy-delts'],bust,vascularity:'vascularity-extreme'});
+    const before=JSON.stringify(s),r=E.compile(s);
+    assert.match(r.text,/大胸筋の筋組織|muscle tissue of the pectoralis major/);
+    assert.match(r.text,/三角筋前部|anterior, lateral and posterior deltoid/);
+    assert.equal(JSON.stringify(s),before);assert.equal(r.state.body.bust,bust);
+    if(bust){assert.match(r.text,/バストのボリュームを増やす|Increase bust volume/);assert.doesNotMatch(r.text,/乳房組織自体のボリュームは参照|Retain the reference volume of the breast tissue/);}
+    else {assert.match(r.text,/乳房組織自体のボリュームは参照|Retain the reference volume of the breast tissue/);assert.doesNotMatch(r.text,/バストのボリュームを増やす|Increase bust volume/);}
+    if(mass.id==='reference')assert.match(r.text,/指定部位以外の筋量は参照|Retain reference muscular mass outside/);
+    else assert.match(r.text,/全身の筋量増加に加え|In addition to overall growth/);
+  }
+  const custom=defaults();custom.body.regions=['hypertrophy-pecs'];custom.body.customIds=['custom-volume'];custom.custom.bodies=[{id:'custom-volume',title:'Custom',text:'バストのボリュームを増やす。',textEn:'Increase bust volume.',custom:true}];
+  assert.doesNotMatch(E.compile(custom).text,/乳房組織自体のボリュームは参照/);
+});
+test('pecs growth leaves shot planning and wardrobe selections untouched',()=>{
+  const s=defaults();Object.assign(s,{variation:'dynamic',sceneIds:['beach','soft-interior'],poseIds:['standing','sitting'],expression:'partner-pov',outfitId:'refined',coverageId:'coverage-strong'});
+  const base=E.compile(s);s.body.regions=['hypertrophy-pecs'];const pecs=E.compile(s);
+  assert.deepEqual(pecs.shots,base.shots);assert.equal(pecs.state.outfitId,base.state.outfitId);assert.equal(pecs.state.coverageId,base.state.coverageId);
+  assert.match(pecs.text,/身体の調整を理由に衣装のカバー範囲や撮影距離を変えない/);
 });

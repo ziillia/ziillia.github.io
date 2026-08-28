@@ -1,8 +1,10 @@
-# Prompt Palette v19
+# Prompt Palette v20
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
 
-v19 retains state schema 17. The former Partner POV preset is now labeled Gaze & expression and describes visible gaze, eye/mouth changes and expression timing without specifying a personal relationship or an intended emotional response. The four take patterns and the `partner-pov` ID remain unchanged; no custom text is rewritten. These are prompt-level changes, not a guarantee of identical generated images.
+v20 retains state schema 17. Four opt-in posture presets describe supine arms-open, low recline with a torso turn, kneeling with a slight forward lean, and a back-facing over-shoulder turn. An independent Overhead camera angle does not select a posture or setting. Automatic pose/angle choices remain unchanged. Pecs is an independent regional muscle-growth choice, combinable with other regions, overall growth and vascularity. It targets pectoralis major muscle, not breast tissue; without a bust or custom body adjustment, breast-tissue volume is retained. Bust growth can still be selected separately.
+
+v19 retained state schema 17. The former Partner POV preset is now labeled Gaze & expression and describes visible gaze, eye/mouth changes and expression timing without specifying a personal relationship or an intended emotional response. The four take patterns and the `partner-pov` ID remain unchanged; no custom text is rewritten. These are prompt-level changes, not a guarantee of identical generated images.
 
 v18 preserved the reference time of day when no setting is selected and disabled “New take” when every photographic axis is locked.
 
@@ -11,7 +13,7 @@ v18 preserved the reference time of day when no setting is selected and disabled
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=19`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=20`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 

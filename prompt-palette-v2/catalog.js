@@ -30,7 +30,11 @@
       row('sitting','座る','Sitting','環境内の座面に腰掛け、無理のない脚位置と安定した重心を保つ。','Sit on a suitable surface in the setting, with comfortable leg placement and stable support.'),
       row('motion','動き','Motion','その場を歩き、進行方向へ自然に身体を向けた一瞬。髪と衣服に動きが残る。','Capture a step through the setting, the body naturally oriented along the movement, with motion in hair and clothing.'),
       row('low-close','低い姿勢','Low posture','床または地面に座り、片手で上体を支えた安定した姿勢。','Sit on the floor or ground with the torso stably supported by one hand.'),
-      row('low-athletic','ストレッチ','Stretching','片膝をついたウォームアップの姿勢。身体の支持と重心を明確にする。','Use a one-knee-down warm-up posture with clear support and balance.')
+      row('low-athletic','ストレッチ','Stretching','片膝をついたウォームアップの姿勢。身体の支持と重心を明確にする。','Use a one-knee-down warm-up posture with clear support and balance.'),
+      row('supine-arms-open','仰向け・腕を開く','Supine / arms open','仰向けになり、背中、骨盤、後頭部を支持面に預ける。両腕を身体の左右から頭側への斜め方向に開き、肘を軽く曲げる。','Lie supine with the back, pelvis and back of the head resting on a supporting surface. Open both arms out to the sides or diagonally toward either side of the head, with elbows slightly bent.'),
+      row('low-recline-side-turn','横臥・上体を起こす','Low recline / side turn','横たわった低い姿勢から、片方の前腕で上体をわずかに起こす。骨盤と脚の支持を保ち、胸郭と顔をカメラ側へ軽く回旋する。','From a low reclining posture, raise the upper torso slightly on one forearm. Keep the pelvis and legs supported and gently rotate the rib cage and head toward the camera.'),
+      row('kneeling-forward-lean','膝立ち・軽い前傾','Kneeling / forward lean','両膝と下腿を支持面につけた膝立ち。重心を安定させ、上体をわずかに前傾させる。頭部、背骨、骨盤のつながりを自然に保つ。','Kneel with both knees and lower legs supported. Maintain stable weight distribution and lean the torso slightly forward, retaining natural alignment of the head, spine and pelvis.'),
+      row('back-turn-look-over-shoulder','背面・振り返り','Back turn / over shoulder','身体は背面から斜め後ろ向きに保ち、顔を片方の肩越しに振り返る。首と肩は自然につながる回旋とし、体幹の向きを大きく変えない。','Keep the body facing away or in a rear three-quarter orientation and turn the head over one shoulder. Coordinate the neck and shoulder rotation naturally without substantially changing torso orientation.')
     ],
     expressions:[
       row('auto','変化量に合わせる','Follow variation','表情は選択した変化量に合わせる。','Let the variation level determine changes in expression.'),
@@ -51,7 +55,8 @@
       row('eye','目の高さ','Eye level','目の高さから撮影。','Photograph at eye level.'),
       row('three-quarter','斜めから','Oblique','正面から少し横へ移動した撮影位置。身体の向きは変えない。','Place the camera slightly to one side of the frontal view without changing body orientation.'),
       row('low','少し低く','Slightly low','少し低いカメラ位置。顔や手足の遠近感を誇張しない。','Use a slightly low camera position without exaggerated facial or limb perspective.'),
-      row('high','少し高く','Slightly high','少し高いカメラ位置。自然な人物の比率を保つ。','Use a slightly elevated camera position while retaining natural proportions.')
+      row('high','少し高く','Slightly high','少し高いカメラ位置。自然な人物の比率を保つ。','Use a slightly elevated camera position while retaining natural proportions.'),
+      row('overhead','真上','Overhead','被写体の真上にカメラを置き、鉛直下向きに撮影する。姿勢と身体の向きは変えず、広角による顔や手足の歪みを避ける。','Place the camera directly above the subject, pointing vertically downward. Retain the specified posture and body orientation and avoid wide-angle distortion of the face or limbs.')
     ],
     lighting:[
       row('auto','環境に合わせる','Match setting','環境と変化量に合う光。','Light matched to the setting and variation level.'),
@@ -68,7 +73,8 @@
       row('hypertrophy-abs','腹筋','Abs','腹直筋と腹斜筋の厚み、ブロック感、溝、セパレーション','rectus abdominis and oblique thickness, block-like volume, grooves and separation'),
       row('hypertrophy-delts','三角筋','Delts','三角筋前部・中部・後部の丸み、張り、幅、厚み、上腕との境界','anterior, lateral and posterior deltoid roundness, fullness, width, thickness and separation from the upper arm'),
       row('hypertrophy-lats','広背筋','Lats','広背筋の幅、厚み、外側への張り出し、背中の立体感、V字の輪郭','lat width, thickness, lateral projection, back depth and V-taper'),
-      row('hypertrophy-thighs','大腿部','Thighs','大腿四頭筋・内転筋・ハムストリングスの太さ、厚み、前後左右への張り、立体感、セパレーション','quadriceps, adductor and hamstring size, thickness, multidirectional fullness, three-dimensional volume and separation')
+      row('hypertrophy-thighs','大腿部','Thighs','大腿四頭筋・内転筋・ハムストリングスの太さ、厚み、前後左右への張り、立体感、セパレーション','quadriceps, adductor and hamstring size, thickness, multidirectional fullness, three-dimensional volume and separation'),
+      row('hypertrophy-pecs','大胸筋','Pecs','大胸筋の上部から下部にかけての厚み、筋腹の丸み、前方への張り、三角筋との境界とセパレーション','pectoralis major thickness from the upper to lower portions, muscle-belly roundness, forward projection and separation from the deltoids')
     ],
     vascularity:[
       row('reference','参照を維持','Reference','参照画像の血管の見え方を維持。','Preserve reference vascularity.'),

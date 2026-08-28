@@ -50,3 +50,9 @@ test('custom bodies select custom IDs, independently of bust boolean',()=>{
   assert.match(b.node('app').innerHTML,/data-path="body.customIds" data-value="custom-x" aria-pressed="false"/);
 });
 test('malformed collapse storage is preserved',()=>{const b=boot(undefined,{fold:'{bad'});b.toggle('scenes',true);assert.equal(b.data.get('promptPaletteV2Collapsed'),'{bad');});
+test('new posture, overhead and pecs selections persist independently from bust volume',async()=>{
+  const b=boot();await b.click({path:'poseIds',value:'supine-arms-open'});await b.click({path:'angle',value:'overhead'});await b.click({path:'body.regions',value:'hypertrophy-pecs'});
+  const saved=b.data.get(KEY),s=JSON.parse(saved);assert.deepEqual(s.poseIds,['supine-arms-open']);assert.equal(s.angle,'overhead');assert.deepEqual(s.body.regions,['hypertrophy-pecs']);assert.equal(s.body.bust,false);
+  const reloaded=boot(saved);assert.equal(reloaded.data.get(KEY),saved);assert.match(reloaded.node('app').innerHTML,/data-path="body.regions" data-value="hypertrophy-pecs" aria-pressed="true"/);
+  await reloaded.click({path:'body.bust',value:'full-bust'});const combined=JSON.parse(reloaded.data.get(KEY));assert.deepEqual(combined.body.regions,['hypertrophy-pecs']);assert.equal(combined.body.bust,true);
+});

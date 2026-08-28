@@ -83,6 +83,10 @@
     }else if(s.body.mass==='reference'&&!customBody.length)body.push(t('参照画像の筋肉量とセパレーション、全身のバランスを維持し、身体的特徴を不必要に弱めない。','Maintain reference muscular mass, separation and overall balance without unnecessarily diminishing physical characteristics.'));
     if(s.body.vascularity!=='reference')body.push(textOf(find(s,'vascularity',s.body.vascularity),s.language));
     else if(!customBody.length)body.push(t('腹部・大腿部を含め、参照画像の自然な血管の見え方を維持する。','Preserve reference natural vascularity, including the abdomen and thighs.'));
+    if(s.body.regions.includes('hypertrophy-pecs')){
+      body.push(t('大胸筋の筋組織を発達させ、胸郭と骨格の大きさは維持する。','Develop the muscle tissue of the pectoralis major while preserving rib-cage and skeletal dimensions.'));
+      if(!s.body.bust&&!customBody.length)body.push(t('乳房組織自体のボリュームは参照画像のまま保つ。','Retain the reference volume of the breast tissue itself.'));
+    }
     if(s.body.bust)body.push(textOf(C.bodies[0],s.language));
     body.push(...customBody.map(x=>textOf(x,s.language)));
     if(s.body.vascularity!=='reference'||s.body.mass!=='reference'||s.body.regions.length)body.push(t('身体の調整を理由に衣装のカバー範囲や撮影距離を変えない。','Physical adjustments must not change clothing coverage or camera distance.'));
