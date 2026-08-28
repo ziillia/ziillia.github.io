@@ -1,86 +1,20 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0b0c0f">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10141c">
+<meta name="description" content="人物写真のためのモジュール式プロンプト。仕上がり、撮影、身体と衣装を独立して組み立てます。">
 <title>Prompt Palette</title>
-<link rel="stylesheet" href="./style.css?v=16">
+<link rel="stylesheet" href="./style.css?v=17">
+<script defer src="./catalog.js?v=17"></script><script defer src="./engine.js?v=17"></script><script defer src="./app.js?v=17"></script>
 </head>
 <body>
-<header>
-  <h1>Prompt Palette</h1>
-  <div class="sub">JP / ENを切り替えて、MASTERとVARIATIONで基本方針を選択。LAYOUT / SCENE / POSE / OUTFIT / COVERAGE / BODYを必要に応じて追加できます。</div>
-  <div class="toolbar">
-    <button class="btn" id="previewBtn">結合内容を見る</button>
-    <button class="btn" id="addSceneBtn">＋ SCENE</button>
-    <button class="btn" id="addPoseBtn">＋ POSE</button>
-    <button class="btn" id="addOutfitBtn">＋ OUTFIT</button>
-    <button class="btn" id="addBodyBtn">＋ BODY</button>
-    <button class="btn ghost" id="resetBtn">初期状態に戻す</button>
-  </div>
-</header>
-
-<section>
-  <div class="section-head"><div class="section-title">LANGUAGE</div><div class="section-note">出力言語</div></div>
-  <div class="language-grid" id="languageGrid"></div>
-</section>
-<section>
-  <div class="section-head"><div class="section-title">MASTER</div><div class="section-note">人物・体型・肌・写真品質</div></div>
-  <div class="master-grid" id="masterGrid"></div>
-</section>
-<section>
-  <div class="section-head"><div class="section-title">VARIATION</div><div class="section-note">変化量・1つ選択</div></div>
-  <div class="variation-grid" id="variationGrid"></div>
-</section>
-<section>
-  <div class="section-head"><div class="section-title">LAYOUT</div><div class="section-note">構図数 1〜5</div></div>
-  <div class="layout-grid" id="layoutGrid"></div>
-</section>
-<section>
-  <div class="section-head"><div class="section-title">SCENE</div><div class="section-note">複数選択可</div></div>
-  <div class="cards" id="sceneCards"></div>
-</section>
-<section>
-  <div class="section-head"><div class="section-title">POSE</div><div class="section-note">複数選択可</div></div>
-  <div class="cards" id="poseCards"></div>
-</section>
-<section>
-  <div class="section-head"><div class="section-title">OUTFIT</div><div class="section-note">0〜1個選択・再タップで解除</div></div>
-  <div class="cards" id="outfitCards"></div>
-</section>
-<section>
-  <div class="section-head"><div class="section-title">COVERAGE</div><div class="section-note">0〜1個選択</div></div>
-  <div class="cards" id="coverageCards"></div>
-</section>
-<section>
-  <div class="section-head"><div class="section-title">BODY</div><div class="section-note">任意・複数選択可</div></div>
-  <div class="cards" id="bodyCards"></div>
-</section>
-
-<div class="sticky"><div class="sticky-inner"><div class="status"><strong id="selectionTitle">JP · Neutral · BALANCED</strong><span id="selectionSub">差分なし</span></div><button class="copy-main" id="copyCombined">結合コピー</button></div></div>
-
-<div class="modal" id="editModal"><div class="sheet"><div class="sheet-handle"></div><h2 id="modalHeading">編集</h2><label for="editTitle">タイトル</label><input id="editTitle"><label for="editText" id="editTextLabel">プロンプト（日本語）</label><textarea id="editText"></textarea><div class="sheet-actions"><button class="btn" id="cancelEdit">閉じる</button><button class="btn danger" id="deleteItem" style="display:none">削除</button><button class="btn primary" id="saveEdit">保存</button></div></div></div>
-<div class="modal" id="previewModal"><div class="sheet"><div class="sheet-handle"></div><h2>結合プロンプト</h2><textarea id="combinedPreview" readonly></textarea><div class="sheet-actions"><button class="btn" id="closePreview">閉じる</button><button class="btn primary" id="copyPreview">コピー</button></div></div></div>
-<div class="toast" id="toast">コピーしました</div>
-<script src="./data.js?v=16"></script>
-<script src="./overrides.js?v=16"></script>
-<script src="./extras.js?v=16"></script>
-<script src="./pre-v8.js?v=16"></script>
-<script src="./pre-v9.js?v=16"></script>
-<script src="./pre-v10.js?v=16"></script>
-<script src="./pre-v11.js?v=16"></script>
-<script src="./pre-v12.js?v=16"></script>
-<script src="./pre-v13.js?v=16"></script>
-<script src="./pre-v14.js?v=16"></script>
-<script src="./pre-v15.js?v=16"></script>
-<script src="./pre-v16.js?v=16"></script>
-<script src="./app.js?v=16"></script>
-<script src="./post-v8.js?v=16"></script>
-<script src="./post-v9.js?v=16"></script>
-<script src="./post-v10.js?v=16"></script>
-<script src="./post-v16.js?v=16"></script>
-</body>
-</html>
+<header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">P</span><div><h1>Prompt Palette <small>v17</small></h1><p>Portrait prompt studio</p></div></div><div class="header-actions"><div class="language" aria-label="出力言語"><button data-action="language" data-value="jp" aria-pressed="true">JP</button><button data-action="language" data-value="en" aria-pressed="false">EN</button></div><button class="icon-button" data-action="settings" aria-label="設定とバックアップ">⋯</button></div></header>
+<div class="intro"><p>同じ人。新しい一瞬。</p><span>必要な差分だけを選んで、ひとつの写真集へ。</span></div>
+<div id="storageNotice" class="notice" role="status" hidden></div>
+<main id="app" aria-label="プロンプト設定"></main>
+<footer class="dock"><div class="dock-inner"><div class="output-meta"><strong id="outputSummary"></strong><span id="outputCount"></span></div><div class="dock-actions"><button class="button quiet" data-action="take" title="選択を保ったままカットの候補を切り替えます">別カット</button><button class="button" data-action="preview">プレビュー</button><button class="button primary" data-action="copy">コピー</button></div></div></footer>
+<dialog id="sheet" aria-labelledby="sheetTitle"><div class="sheet-head"><h2 id="sheetTitle"></h2><button class="icon-button" data-action="close" aria-label="閉じる">×</button></div><div id="sheetBody"></div></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript>Prompt Paletteを使うにはJavaScriptを有効にしてください。</noscript>
+</body></html>
