@@ -77,7 +77,7 @@ function esc(s=""){
 }
 function itemText(item){
   if(!item) return "";
-  return state.selectedLanguage==="en" ? (item.textEn||item.text||"") : (item.text||item.textEn||"");
+  return state.selectedLanguage==="en" ? (item.textEn||"") : (item.text||item.textEn||"");
 }
 function excerpt(s){ return String(s||"").replace(/\s+/g," ").trim().slice(0,150); }
 
@@ -205,11 +205,10 @@ function toast(msg){
 
 function openEdit(kind,id,isNew){
   editContext={kind,id,isNew};
-  const langKey=state.selectedLanguage==="en"?"textEn":"text";
   let item=isNew?{title:"",text:"",textEn:""}:state[kind].find(x=>x.id===id);
   document.getElementById("modalHeading").textContent=isNew?(state.selectedLanguage==="en"?"New preset":"新規プリセット"):(state.selectedLanguage==="en"?"Edit preset":"プリセット編集");
   document.getElementById("editTitle").value=item?.title||"";
-  document.getElementById("editText").value=item?.[langKey]||item?.text||"";
+  document.getElementById("editText").value=state.selectedLanguage==="en" ? (item?.textEn||"") : (item?.text||item?.textEn||"");
   document.getElementById("editTextLabel").textContent=state.selectedLanguage==="en"?"Prompt (English)":"プロンプト（日本語）";
   document.getElementById("deleteItem").style.display=(!isNew && kind!=="masters")?"block":"none";
   document.getElementById("editModal").classList.add("open");
@@ -226,12 +225,12 @@ document.getElementById("saveEdit").addEventListener("click",()=>{
   const langKey=state.selectedLanguage==="en"?"textEn":"text";
   if(isNew){
     const newId="custom-"+Date.now();
-    const obj={id:newId,title,text:text};
-    if(state.selectedLanguage==="en") obj.textEn=text;
+    const obj={id:newId,title,text:"",textEn:""};
+    obj[langKey]=text;
     state[kind].push(obj);
   }else{
     const item=state[kind].find(x=>x.id===id);
-    if(item){item.title=title;item[langKey]=text;if(!item.text)item.text=text;}
+    if(item){item.title=title;item[langKey]=text;}
   }
   save();closeEdit();render();toast(state.selectedLanguage==="en"?"Saved":"保存しました");
 });
