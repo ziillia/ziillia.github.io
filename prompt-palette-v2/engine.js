@@ -91,6 +91,7 @@
     body.push(...customBody.map(x=>textOf(x,s.language)));
     if(s.body.vascularity!=='reference'||s.body.mass!=='reference'||s.body.regions.length)body.push(t('身体の調整を理由に衣装のカバー範囲や撮影距離を変えない。','Physical adjustments must not change clothing coverage or camera distance.'));
     parts.push(body.join(' '));
+    if(s.body.mass!=='reference'||s.body.regions.length||s.body.vascularity!=='reference')parts.push(t('BODYで明示された筋量、部位、vascularityだけを変更する。肌の明度、色相、アンダートーン、ホワイトバランス、カラーグレーディングは参照画像と同じ状態に固定し、すべての写真で一貫させる。競技コンディショニングを理由に日焼け、ブロンズ化、オレンジ寄りの色かぶりを加えない。','Change only the muscle mass, regions and vascularity explicitly selected in BODY. Lock complexion brightness, hue, undertone, white balance and color grading to the reference across every photograph. Athletic conditioning must not introduce tanning, bronzing or an orange color cast.'));
     const framingLocked=s.distance==='reference'||(s.distance==='auto'&&locked);
     let layout=t(`写真は正確に${n}枚。`,`Use exactly ${n} photograph${n===1?'':'s'}. `);
     if(n===1)layout+=framingLocked?t('参照写真内の向きとフレーミングを維持し、誌面の余白で配置を整える。','Preserve the reference orientation and framing within the photograph; use page space to arrange it.'):t('縦位置または縦長寄りの人物写真を主役にし、人物を大きく見せる。横の余りは背景の自然な延長や余白に使い、極端な横長の引き構図にしない。','Prioritize a portrait-oriented or vertically dominant photograph with the model prominent. Use extra horizontal space for background continuation or negative space, not an extreme landscape establishing shot.');
