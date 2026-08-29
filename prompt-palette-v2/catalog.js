@@ -42,6 +42,11 @@
       row('candid-close','自然なやりとり','Candid','短い会話の合間のような、気持ちの伝わる自然な表情。','Natural, emotionally readable expressions between brief exchanges.'),
       row('partner-pov','視線・表情','Gaze & expression','視線の方向、目元と口元の小さな変化、表情が切り替わるタイミングを捉える。撮影者やその手は写さない。','Capture gaze direction, small changes around the eyes and mouth, and the timing of expression transitions. Keep the photographer and their hands out of frame.')
     ],
+    cameraModes:[
+      row('planned','個別に設定','Set individually','変化量による自動構成、または距離・角度・光の個別指定を使う。','Use variation-based planning or individual distance, angle and lighting choices.'),
+      row('free-distinct','AIに任せる','AI decides','具体的な撮影条件は指定せず、各写真を必ず明確に異なる構図にする。','Leave exact camera conditions open while requiring a clearly distinct composition for every photograph.'),
+      row('blank','未記入','Omit','撮影距離・角度・光の専用指示を出力しない。','Emit no dedicated instruction for camera distance, angle or lighting.')
+    ],
     distances:[
       row('auto','おまかせ','Auto','選択した変化量の範囲で撮影距離を決める。','Choose camera distance within the selected variation level.'),
       row('reference','参照固定','Lock reference','参照画像の撮影距離と写真内のフレーミングを維持する。','Preserve reference camera distance and framing within the photograph.'),

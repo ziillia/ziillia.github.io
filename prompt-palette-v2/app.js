@@ -49,10 +49,11 @@
     const finish=control(t('写真のトーン','Photographic tone'),chips('look','looks','segmented'))+
       control(t('変化量','Variation'),chips('variation','variations','segmented')+'<p id="variationDescription" class="description"></p>')+
       control(t('写真数','Photograph count'),`<div class="shots-count">${[1,2,3,4,5].map(n=>choice('layout',String(n),String(n))).join('')}</div>`,t('大きなメイン＋補助写真','Main + supporting images'));
+    const camera=control(t('撮影条件の扱い','Camera control mode'),chips('cameraMode','cameraModes','segmented'))+(state.cameraMode==='planned'?control(t('距離・フレーミング','Distance & framing'),chips('distance','distances'))+control(t('カメラの角度','Camera angle'),chips('angle','angles'))+control(t('光','Lighting'),chips('lighting','lighting'))+'<p class="description">'+t('明示した設定は変化量より優先。「参照固定」ならDYNAMICでも固定。','Explicit choices override variation. “Lock reference” stays locked even in DYNAMIC.')+'</p>':'<p class="description">'+(state.cameraMode==='free-distinct'?t('距離・角度・光の具体値は書かず、各写真を必ず異なる構図にします。','Exact distance, angle and lighting values are omitted; every photograph must use a distinct composition.'):t('距離・角度・光の専用指示を生成文へ追加しません。','No dedicated distance, angle or lighting instructions are added to the generated prompt.'))+'</p>');
     const shooting=control(t('表情の指定','Expression controls'),chips('expression','expressions'))+
       sub('scenes',t('環境','Setting'),presets('sceneIds','scenes')+'<p class="description">'+t('未選択なら参照の環境。複数の候補はカットに配分。','No selection: reference setting. Multiple candidates are distributed across shots.')+'</p>',true)+
       sub('poses',t('姿勢・動作','Posture & action'),presets('poseIds','poses')+'<p class="description">'+t('未選択なら変化量に従う。複数の姿勢を同時に要求しません。','No selection: follow variation. Incompatible poses are never required simultaneously.')+'</p>',true)+
-      sub('camera',t('撮影距離・角度・光','Camera & light'),control(t('距離・フレーミング','Distance & framing'),chips('distance','distances'))+control(t('カメラの角度','Camera angle'),chips('angle','angles'))+control(t('光','Lighting'),chips('lighting','lighting'))+'<p class="description">'+t('明示した設定は変化量より優先。「参照固定」ならDYNAMICでも固定。','Explicit choices override variation. “Lock reference” stays locked even in DYNAMIC.')+'</p>')+
+      sub('camera',t('撮影距離・角度・光','Camera & light'),camera)+
       '<details class="mini-plan" data-fold="plan" '+(!fold.plan?'open':'')+'><summary>'+t('カットの組み立て','Shot plan')+'<span>'+t('自動作成','Resolved automatically')+'</span></summary><div id="shotPlan"></div></details><div id="warnings"></div>';
     const body=control(t('全身の筋量','Overall muscular mass'),chips('body.mass','masses','segmented'))+
       control(t('重点的に発達させる部位','Additional regional growth'),chips('body.regions','regions'),t('複数可','Multiple'))+
@@ -80,7 +81,7 @@
     $('summary-body-style').textContent=[count?t(`身体 ${count}項目`,`${count} physical adjustments`):t('身体は参照','Reference physique'),state.outfitId?name('outfits',state.outfitId):t('参照衣装','Reference outfit'),state.coverageId?name('coverages',state.coverageId):''].filter(Boolean).join(' · ');
     $('outputSummary').textContent=`${state.language.toUpperCase()} · ${state.layout} ${t('枚','shots')} · ${state.variation.toUpperCase()}`;
     $('outputCount').textContent=t(`${result.text.length.toLocaleString()}字 · 案 ${state.take+1}`,`${result.text.length.toLocaleString()} chars · Take ${state.take+1}`)+(result.warnings.length?' ⚠':'');
-    $('shotPlan').innerHTML=result.shots.map(x=>`<div class="plan-item"><strong>${x.index} ${x.index===1?t('メイン','Main'):t('補助','Supporting')} · ${esc(x.sceneId?name('scenes',x.sceneId):t('参照の環境','Reference setting'))}</strong>${esc([x.poseId?name('poses',x.poseId):t('変化量に合わせる','Follow variation'),x.distance==='relative'?t('参照に近い距離','Related distance'):name('distances',x.distance),x.angle==='relative'?t('近い撮影位置','Related viewpoint'):name('angles',x.angle)].join(' · '))}</div>`).join('');
+    $('shotPlan').innerHTML=result.shots.map(x=>`<div class="plan-item"><strong>${x.index} ${x.index===1?t('メイン','Main'):t('補助','Supporting')} · ${esc(x.sceneId?name('scenes',x.sceneId):t('参照の環境','Reference setting'))}</strong>${esc([x.poseId?name('poses',x.poseId):t('変化量に合わせる','Follow variation'),...(state.cameraMode==='planned'?[x.distance==='relative'?t('参照に近い距離','Related distance'):name('distances',x.distance),x.angle==='relative'?t('近い撮影位置','Related viewpoint'):name('angles',x.angle)]:[name('cameraModes',state.cameraMode)])].join(' · '))}</div>`).join('');
     $('warnings').innerHTML=result.warnings.map(w=>`<p class="warning">${esc(w)}</p>`).join('');
     const notice=storageMessage||migrationMessage;$('storageNotice').textContent=notice;$('storageNotice').hidden=!notice;
   }
@@ -108,7 +109,7 @@
   }
   function download(name,text){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type:'application/json'}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   function settings(){
-    open(t('設定とバックアップ','Settings & backup'),`<p class="help">${t('人物同一性・肌・写真品質は共通の土台として常に適用。撮影・表情・身体・衣装は独立して指定できます。','Identity, skin and photographic quality form a shared base. Specify camera, expression, physique and clothing independently.')}</p><p class="help">${t('旧MASTERは写真のトーンへ。旧「彼氏目線」は「視線・表情」へ。夕方の設定は光へ移動しました。選択と追加プリセットは引き継いでいます。','Former MASTER choices are now photographic tones; former Partner POV is now Gaze & expression; sunset is lighting. Selections and custom presets are retained.')}</p><div class="settings-row"><button class="button" data-action="export">${t('現在の設定を書き出す','Export current settings')}</button><button class="button" data-action="export-old">${t('旧データを書き出す','Export old data')}</button></div><div class="settings-row"><button class="button quiet" data-action="export-import-backup">${t('前回の読み込み前データ','Export pre-import backup')}</button></div><label class="field">${t('設定ファイルを読み込む','Import settings')}<input id="importFile" type="file" accept=".json,application/json"></label><p class="help">${t('読み込み時は現在のデータをバックアップします。自由文の指示内容は自動解析しません。','Import backs up the current saved data. Free-form custom instructions are not semantically parsed.')}</p><div class="settings-row"><button class="button quiet" data-action="reset">${t('選択だけ初期化','Reset selections only')}</button></div><p class="help">Prompt Palette v21 · ${t('保存はこのブラウザ内です。端末を移す前に書き出してください。','Data is stored in this browser. Export before moving to another device.')}</p>`);
+    open(t('設定とバックアップ','Settings & backup'),`<p class="help">${t('人物同一性・肌・写真品質は共通の土台として常に適用。撮影・表情・身体・衣装は独立して指定できます。','Identity, skin and photographic quality form a shared base. Specify camera, expression, physique and clothing independently.')}</p><p class="help">${t('旧MASTERは写真のトーンへ。旧「彼氏目線」は「視線・表情」へ。夕方の設定は光へ移動しました。選択と追加プリセットは引き継いでいます。','Former MASTER choices are now photographic tones; former Partner POV is now Gaze & expression; sunset is lighting. Selections and custom presets are retained.')}</p><div class="settings-row"><button class="button" data-action="export">${t('現在の設定を書き出す','Export current settings')}</button><button class="button" data-action="export-old">${t('旧データを書き出す','Export old data')}</button></div><div class="settings-row"><button class="button quiet" data-action="export-import-backup">${t('前回の読み込み前データ','Export pre-import backup')}</button></div><label class="field">${t('設定ファイルを読み込む','Import settings')}<input id="importFile" type="file" accept=".json,application/json"></label><p class="help">${t('読み込み時は現在のデータをバックアップします。自由文の指示内容は自動解析しません。','Import backs up the current saved data. Free-form custom instructions are not semantically parsed.')}</p><div class="settings-row"><button class="button quiet" data-action="reset">${t('選択だけ初期化','Reset selections only')}</button></div><p class="help">Prompt Palette v22 · ${t('保存はこのブラウザ内です。端末を移す前に書き出してください。','Data is stored in this browser. Export before moving to another device.')}</p>`);
   }
   document.addEventListener('click',async event=>{
     const button=event.target.closest('button');if(!button)return;
@@ -118,7 +119,7 @@
       else if(typeof old==='boolean')next=!old;
       else next=['outfitId','coverageId'].includes(path)&&old===value?'':value;
       const keys=path.split('.');if(keys.length===2)state[keys[0]][keys[1]]=next;else state[path]=next;
-      state.take=0;save();update();return;
+      state.take=0;save();if(path==='cameraMode')render();else update();return;
     }
     const action=button.dataset.action;
     if(action==='language'){state.language=button.dataset.value;save();render();}
@@ -134,7 +135,7 @@
     else if(action==='body-info'){
       const b=state.body;open(t('身体の指定内容','Physical instructions'),`<div class="sheet-copy">${esc([E.find(state,'masses',b.mass),...b.regions.map(id=>E.find(state,'regions',id)),E.find(state,'vascularity',b.vascularity)].map(x=>E.textOf(x,state.language)).join('\n\n'))}</div><p class="help">${t('全身＋部位別は重点強化として統合。筋量とvascularity、大胸筋とバストのボリュームは、それぞれ別々に調整します。','Global and regional growth combine as additional emphasis. Mass and vascularity are independent; pectoral muscle growth and bust volume are also separate adjustments.')}</p>`);
     }
-    else if(action==='export')download('prompt-palette-v21.json',JSON.stringify({format:'prompt-palette',state,collapsed:fold},null,2));
+    else if(action==='export')download('prompt-palette-v22.json',JSON.stringify({format:'prompt-palette',state,collapsed:fold},null,2));
     else if(action==='export-old'){
       try{const raw=localStorage.getItem(BACKUP)||localStorage.getItem(KEY);if(raw)download('prompt-palette-original.json',raw);else toast(t('旧データはありません','No old data available'));}catch(error){toast(t('保存データを読み出せません','Cannot read saved data'));}
     }

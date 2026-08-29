@@ -1,8 +1,10 @@
-# Prompt Palette v21
+# Prompt Palette v22
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
 
-v21 retains state schema 17. Whenever built-in muscle growth, regional development or vascularity is selected, the compiler places a complexion lock immediately after BODY. It limits BODY changes to the selected physique axes and fixes complexion brightness, hue, undertone, white balance and color grading to the reference across every photograph.
+v22 retains state schema 17. Multi-shot layouts now require touching image frames with no white gaps, background bands or gutters; any negative space belongs inside a photograph. Camera & light adds three modes: the existing planned/individual controls, AI decides (no concrete camera values plus a strict distinct-composition requirement), and Omit (no dedicated distance, angle or lighting instructions). Existing individual choices remain saved while another mode is active.
+
+v21 added a complexion lock immediately after BODY whenever built-in muscle growth, regional development or vascularity is selected. It limits BODY changes to the selected physique axes and fixes complexion brightness, hue, undertone, white balance and color grading to the reference across every photograph.
 
 v20 added four opt-in posture presets describing supine arms-open, low recline with a torso turn, kneeling with a slight forward lean, and a back-facing over-shoulder turn. An independent Overhead camera angle does not select a posture or setting. Automatic pose/angle choices remain unchanged. Pecs is an independent regional muscle-growth choice, combinable with other regions, overall growth and vascularity. It targets pectoralis major muscle, not breast tissue; without a bust or custom body adjustment, breast-tissue volume is retained. Bust growth can still be selected separately.
 
@@ -15,7 +17,7 @@ v18 preserved the reference time of day when no setting is selected and disabled
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=21`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=22`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 

@@ -154,3 +154,30 @@ test('pecs growth leaves shot planning and wardrobe selections untouched',()=>{
   assert.deepEqual(pecs.shots,base.shots);assert.equal(pecs.state.outfitId,base.state.outfitId);assert.equal(pecs.state.coverageId,base.state.coverageId);
   assert.match(pecs.text,/身体の調整を理由に衣装のカバー範囲や撮影距離を変えない/);
 });
+test('multi-shot layouts forbid gaps between adjacent photographs',()=>{
+  for(const language of ['jp','en'])for(const layout of ['2','3','4','5']){
+    const s=defaults();s.language=language;s.layout=layout;const text=E.compile(s).text;
+    assert.match(text,/写真同士の間に白い余白|Do not place white gaps/);
+    assert.match(text,/隣接する写真枠を互いに接して|make adjacent image frames touch/);
+    assert.match(text,/写真内のネガティブスペース|within the photographs/);
+  }
+  const one=defaults();one.layout='1';assert.doesNotMatch(E.compile(one).text,/写真同士の間に白い余白/);
+});
+test('camera modes preserve individual choices while free and blank omit resolved camera axes',()=>{
+  for(const language of ['jp','en'])for(const variation of ['keep','balanced','dynamic'])for(const cameraMode of ['free-distinct','blank']){
+    const s=defaults();Object.assign(s,{language,variation,cameraMode,distance:'close',angle:'overhead',lighting:'sunset',expression:'partner-pov'});Object.assign(s.body,{mass:'hypertrophy-direct',vascularity:'vascularity-extreme'});
+    const r=E.compile(s);
+    assert.equal(r.state.distance,'close');assert.equal(r.state.angle,'overhead');assert.equal(r.state.lighting,'sunset');
+    assert.ok(r.shots.every(x=>x.distance===''&&x.angle===''&&x.light===''));
+    assert.doesNotMatch(r.text,/身体の調整を理由に衣装のカバー範囲や撮影距離|Physical adjustments must not change clothing coverage or camera distance/);
+    assert.doesNotMatch(r.text,/姿勢、撮影距離、衣装|posture, camera distance or clothing/);
+    if(cameraMode==='free-distinct'){
+      assert.match(r.text,/必ず明確に異なる構図|must use a composition clearly distinct/);
+      assert.match(r.text,/同じトリミング、人物サイズ、カメラ位置を繰り返さない|Do not repeat the same crop, subject scale or camera position/);
+    }else{
+      assert.doesNotMatch(r.text,/必ず明確に異なる構図|must use a composition clearly distinct/);
+      for(const item of [...C.distances,...C.angles,...C.lighting])assert.ok(!r.shots.some(x=>x.text.includes(E.textOf(item,language))));
+    }
+    if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
+  }
+});

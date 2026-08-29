@@ -56,3 +56,8 @@ test('new posture, overhead and pecs selections persist independently from bust 
   const reloaded=boot(saved);assert.equal(reloaded.data.get(KEY),saved);assert.match(reloaded.node('app').innerHTML,/data-path="body.regions" data-value="hypertrophy-pecs" aria-pressed="true"/);
   await reloaded.click({path:'body.bust',value:'full-bust'});const combined=JSON.parse(reloaded.data.get(KEY));assert.deepEqual(combined.body.regions,['hypertrophy-pecs']);assert.equal(combined.body.bust,true);
 });
+test('camera mode persists without discarding individual camera choices',async()=>{
+  const b=boot();await b.click({path:'distance',value:'close'});await b.click({path:'angle',value:'overhead'});await b.click({path:'lighting',value:'sunset'});await b.click({path:'cameraMode',value:'free-distinct'});
+  const saved=b.data.get(KEY),s=JSON.parse(saved);assert.equal(s.cameraMode,'free-distinct');assert.equal(s.distance,'close');assert.equal(s.angle,'overhead');assert.equal(s.lighting,'sunset');
+  const reloaded=boot(saved);assert.equal(JSON.parse(reloaded.data.get(KEY)).cameraMode,'free-distinct');await reloaded.click({path:'cameraMode',value:'blank'});const blank=JSON.parse(reloaded.data.get(KEY));assert.equal(blank.cameraMode,'blank');assert.equal(blank.distance,'close');assert.equal(blank.angle,'overhead');assert.equal(blank.lighting,'sunset');
+});
