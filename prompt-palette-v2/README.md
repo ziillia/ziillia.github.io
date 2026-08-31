@@ -1,8 +1,10 @@
-# Prompt Palette v23
+# Prompt Palette v24
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
 
-v23 retains state schema 17. KEEP now removes face-specific generation and expression instructions, including eye-focus and per-take facial changes. It ends the compiled prompt with an absolute reference-face lock covering facial structure, features, expression, gaze, head orientation, facial skin and mirroring. The lock takes priority over posture, camera, physique and clothing instructions. Non-KEEP expression behavior is unchanged.
+v24 retains state schema 17. KEEP omits face-specific generation, eye-focus, gaze, expression and per-take facial-change instructions without adding any face-lock or face-preservation wording. Existing expression selections remain saved and apply again outside KEEP. Non-KEEP behavior is unchanged.
+
+v23 introduced an explicit reference-face lock for KEEP; v24 replaces it with omission-only behavior.
 
 v22 added gapless multi-shot layouts and three Camera & light modes: planned/individual controls, AI decides, and Omit.
 
@@ -19,7 +21,7 @@ v18 preserved the reference time of day when no setting is selected and disabled
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=23`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=24`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 
