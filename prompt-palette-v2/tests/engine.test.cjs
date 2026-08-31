@@ -73,9 +73,9 @@ test('all preset selections compile in both languages without headings or routin
     if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
   }
 });
-test('new take changes a default KEEP result only through micro expression',()=>{
-  const s=defaults();s.variation='keep';s.layout='1';const a=E.compile(s);s.take=1;const b=E.compile(s);assert.notEqual(a.text,b.text);
-  assert.deepEqual({...a.shots[0],text:''},{...b.shots[0],text:''});
+test('default KEEP remains identical across takes because facial micro-expression changes are suppressed',()=>{
+  const s=defaults();s.variation='keep';s.layout='1';const a=E.compile(s);s.take=1;const b=E.compile(s);assert.equal(a.text,b.text);
+  assert.deepEqual(a.shots,b.shots);
 });
 test('unselected environment retains the reference time and light source',()=>{
   for(const variation of ['keep','balanced','dynamic']){
@@ -90,7 +90,7 @@ test('all explicit locks produce an identical next take, allowing the UI to disa
 test('gaze preset retains four visible expression patterns without relationship instructions',()=>{
   const markers={jp:['レンズへ短く視線','笑い終わり','視線は静止','視線をレンズへ戻す'],en:['Briefly meet the lens','end of a laugh','steady gaze','gaze returns to the lens']};
   for(const language of ['jp','en']){
-    const s=defaults();s.language=language;s.expression='partner-pov';s.layout='1';s.variation='keep';
+    const s=defaults();s.language=language;s.expression='partner-pov';s.layout='1';s.variation='balanced';
     for(let take=0;take<4;take++){
       s.take=take;const r=E.compile(s);
       assert.ok(r.shots[0].text.includes(markers[language][take]));
@@ -126,7 +126,8 @@ test('new poses and overhead angle affect only their explicitly selected axes un
     const s=defaults();Object.assign(s,{language,variation:'keep',layout:'1',expression:'reference',poseIds:[poseId]});
     const r=E.compile(s),shot=r.shots[0];
     assert.equal(shot.poseId,poseId);assert.equal(shot.sceneId,'');assert.equal(shot.angle,'reference');assert.equal(shot.distance,'reference');assert.equal(shot.light,'reference');
-    assert.ok(shot.text.includes(E.textOf(E.find(s,'poses',poseId),language)));
+    if(['low-recline-side-turn','back-turn-look-over-shoulder'].includes(poseId))assert.match(shot.text,/顔と頭部の向きは参照画像のまま維持|Preserve the reference face and head orientation unchanged/);
+    else assert.ok(shot.text.includes(E.textOf(E.find(s,'poses',poseId),language)));
     s.angle='overhead';const overhead=E.compile(s).shots[0];
     assert.deepEqual({...overhead,text:'',angle:'reference'},{...shot,text:''});
     assert.match(overhead.text,/鉛直下向き|vertically downward/);
@@ -180,4 +181,18 @@ test('camera modes preserve individual choices while free and blank omit resolve
     }
     if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
   }
+});
+test('KEEP removes facial generation and expression prompts and ends with an absolute face lock',()=>{
+  for(const language of ['jp','en'])for(const expression of C.expressions.map(x=>x.id))for(const cameraMode of C.cameraModes.map(x=>x.id)){
+    const s=defaults();Object.assign(s,{language,variation:'keep',layout:'2',expression,cameraMode,sceneIds:['city-night']});const r=E.compile(s);
+    const lock=language==='jp'?'顔は参照画像から一切変更しない。':'Do not change the face from the reference in any way.';
+    assert.ok(r.text.endsWith(language==='jp'?'この顔固定は、選択された姿勢、撮影条件、身体、衣装の指示より優先する。':'This face lock takes priority over selected posture, camera, physique and clothing instructions.'));
+    assert.ok(r.text.includes(lock));
+    assert.doesNotMatch(r.text,/瞳に的確にピント|Focus precisely on visible eyes|笑い終わり|end of a laugh|自然な微笑みを浮かべ|A natural small smile|視線を少し外した|A relaxed expression with a slight glance away/);
+    assert.ok(!r.text.includes(E.textOf(E.find(s,'expressions',expression),language))||expression==='auto');
+    assert.doesNotMatch(r.text,/顔は自然な肌色に整える|balancing facial skin color naturally/);
+    if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
+  }
+  const balanced=defaults();balanced.variation='balanced';balanced.expression='partner-pov';const text=E.compile(balanced).text;
+  assert.match(text,/瞳に的確にピント|Focus precisely on visible eyes/);assert.match(text,/視線の方向|Capture gaze direction/);
 });
