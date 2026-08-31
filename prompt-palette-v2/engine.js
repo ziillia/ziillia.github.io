@@ -103,7 +103,7 @@
     if(cameraFree)parts.push(t('撮影距離、画角、カメラの高さ・角度、光の方向と質は具体的に指定せず、生成側が各カットに適した条件を決める。ただし、各写真は参照画像および同じ誌面内の他の写真と必ず明確に異なる構図にし、同じトリミング、人物サイズ、カメラ位置を繰り返さない。この撮影条件の指定は、参照維持を求める変化量より優先する。','Do not prescribe camera distance, field of view, camera height or angle, or the direction and quality of light; let the generator choose suitable conditions for each photograph. However, every photograph must use a composition clearly distinct from both the reference and the other photographs in the layout. Do not repeat the same crop, subject scale or camera position. This camera-condition instruction overrides a variation setting that otherwise preserves the reference.'));
     if(!locked&&s.expression==='partner-pov')parts.push(textOf(find(s,'expressions',s.expression),s.language)+' '+(cameraPlanned?t('変更対象は視線と表情のみ。姿勢、撮影距離、衣装はこの指定を理由に変更しない。','Apply this adjustment only to gaze and expression. It must not change posture, camera distance or clothing.'):t('変更対象は視線と表情のみ。姿勢と衣装はこの指定を理由に変更しない。','Apply this adjustment only to gaze and expression. It must not change posture or clothing.')));
     else if(!locked&&s.expression==='candid-close')parts.push(textOf(find(s,'expressions',s.expression),s.language)+' '+(cameraPlanned?t('感情は視線、微笑み、間合いで伝える。姿勢、撮影距離、衣装をそれだけの理由で変更しない。','Convey emotion through gaze, smiles and timing without using it to change posture, camera distance or clothing.'):t('感情は視線、微笑み、間合いで伝える。姿勢と衣装をそれだけの理由で変更しない。','Convey emotion through gaze, smiles and timing without using it to change posture or clothing.')));
-    if(outfit)parts.push(textOf(outfit,s.language)+(coverage?'':t(' 全カットで統一した衣装を使い、人物の顔や体型は変えない。',' Use a consistent outfit across photographs without changing the face or physique.')));
+    if(outfit)parts.push(textOf(outfit,s.language)+(coverage?'':t(' 全カットで統一した衣装を使う。',' Use a consistent outfit across photographs.')));
     else if(!coverage)parts.push(t('参照画像の衣装を維持する。','Retain the reference clothing.'));
     if(coverage)parts.push((outfit?t('選んだ衣装の色と素材を活かし、','Retain the chosen outfit’s colors and materials; '):t('参照衣装の色と素材を活かし、','Retain the reference outfit’s colors and materials; '))+textOf(coverage,s.language)+' '+t('カバー範囲はこの指定を優先し、衣装の別の指示や筋肉表現を理由に布面積を減らさない。','This coverage requirement takes priority; do not reduce fabric to satisfy other styling or muscle-definition instructions.'));
     const distanceAuto=['medium','close','full','medium','full'];
@@ -135,8 +135,8 @@
       if(scene)shot.push(textOf(scene,s.language));
       else shot.push(locked?t('参照画像と同じ環境。','The same setting as the reference.'):t('参照画像と同じ撮影セッションにつながる環境。','A setting continuous with the reference session.'));
       if(pose){
-        if(locked&&!pose.custom&&pose.id==='low-recline-side-turn')shot.push(t('横たわった低い姿勢から、片方の前腕で上体をわずかに起こす。骨盤と脚の支持を保ち、胸郭だけをカメラ側へ軽く回旋する。顔と頭部の向きは参照画像のまま維持する。','From a low reclining posture, raise the upper torso slightly on one forearm. Keep the pelvis and legs supported and gently rotate only the rib cage toward the camera. Preserve the reference face and head orientation unchanged.'));
-        else if(locked&&!pose.custom&&pose.id==='back-turn-look-over-shoulder')shot.push(t('身体を背面から斜め後ろ向きにする。顔と頭部の向きは参照画像のまま維持し、首と肩を無理に回旋させない。','Turn the body away or into a rear three-quarter orientation. Preserve the reference face and head orientation unchanged, without forcing rotation through the neck or shoulders.'));
+        if(locked&&!pose.custom&&pose.id==='low-recline-side-turn')shot.push(t('横たわった低い姿勢から、片方の前腕で上体をわずかに起こす。骨盤と脚の支持を保ち、胸郭だけをカメラ側へ軽く回旋する。','From a low reclining posture, raise the upper torso slightly on one forearm. Keep the pelvis and legs supported and gently rotate only the rib cage toward the camera.'));
+        else if(locked&&!pose.custom&&pose.id==='back-turn-look-over-shoulder')shot.push(t('身体を背面から斜め後ろ向きにし、首と肩を無理に回旋させない。','Turn the body away or into a rear three-quarter orientation without forcing rotation through the neck or shoulders.'));
         else shot.push(textOf(pose,s.language));
       }
       else if(locked)shot.push(t('参照画像と同じ姿勢と身体の向き。','The same posture and body orientation as the reference.'));
@@ -173,7 +173,6 @@
       parts.push(t('異なる場所でも自然につながる共通の衣装を選ぶ。','Choose one shared outfit that works naturally across the different settings.'));
     }
     parts.push(shots.map(x=>x.text).join('\n\n'));
-    if(locked)parts.push(t('顔は参照画像から一切変更しない。顔の形状、輪郭、目、眉、鼻、口、表情、視線、頭部の向き、顔の肌色と質感を参照画像のまま固定する。顔の再解釈、美化、補正、左右反転、若返り、表情差分を行わない。この顔固定は、選択された姿勢、撮影条件、身体、衣装の指示より優先する。','Do not change the face from the reference in any way. Lock the facial shape, contours, eyes, eyebrows, nose, mouth, expression, gaze, head orientation, facial skin tone and texture exactly to the reference. Do not reinterpret, beautify, retouch, mirror, rejuvenate or add any expression variation to the face. This face lock takes priority over selected posture, camera, physique and clothing instructions.'));
     if(usedCustom.size)warn('追加プリセットの自由文はそのまま使います。独自の指示同士の競合はプレビューで確認してください。','Custom text is used as written. Review the preview for conflicts between custom instructions.');
     return {text:parts.filter(Boolean).join('\n\n'),shots,warnings:[...new Set(warnings)],state:s};
   }
