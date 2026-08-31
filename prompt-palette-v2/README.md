@@ -1,8 +1,10 @@
-# Prompt Palette v24
+# Prompt Palette v25
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
 
-v24 retains state schema 17. KEEP omits face-specific generation, eye-focus, gaze, expression and per-take facial-change instructions without adding any face-lock or face-preservation wording. Existing expression selections remain saved and apply again outside KEEP. Non-KEEP behavior is unchanged.
+v25 retains state schema 17. A Subject identity axis adds an opt-in Look-alike mode, creating a distinct adult woman with an overall appearance close to the reference while retaining hairstyle, stature, skeleton and muscular-physique cues. Reference remains the default. WATER PARK is a setting-only built-in scene with water-aware lighting metadata.
+
+v24 keeps its omission-only KEEP behavior: face-specific generation, eye-focus, gaze, expression and per-take facial-change instructions are omitted without adding face-lock wording.
 
 v23 introduced an explicit reference-face lock for KEEP; v24 replaces it with omission-only behavior.
 
@@ -21,7 +23,7 @@ v18 preserved the reference time of day when no setting is selected and disabled
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=24`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=25`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 
