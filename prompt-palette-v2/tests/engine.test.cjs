@@ -126,7 +126,7 @@ test('new poses and overhead angle affect only their explicitly selected axes un
     const s=defaults();Object.assign(s,{language,variation:'keep',layout:'1',expression:'reference',poseIds:[poseId]});
     const r=E.compile(s),shot=r.shots[0];
     assert.equal(shot.poseId,poseId);assert.equal(shot.sceneId,'');assert.equal(shot.angle,'reference');assert.equal(shot.distance,'reference');assert.equal(shot.light,'reference');
-    if(['low-recline-side-turn','back-turn-look-over-shoulder'].includes(poseId))assert.match(shot.text,/顔と頭部の向きは参照画像のまま維持|Preserve the reference face and head orientation unchanged/);
+    if(['low-recline-side-turn','back-turn-look-over-shoulder'].includes(poseId))assert.doesNotMatch(shot.text,/顔|face|head orientation/i);
     else assert.ok(shot.text.includes(E.textOf(E.find(s,'poses',poseId),language)));
     s.angle='overhead';const overhead=E.compile(s).shots[0];
     assert.deepEqual({...overhead,text:'',angle:'reference'},{...shot,text:''});
@@ -182,13 +182,10 @@ test('camera modes preserve individual choices while free and blank omit resolve
     if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
   }
 });
-test('KEEP removes facial generation and expression prompts and ends with an absolute face lock',()=>{
+test('KEEP omits facial generation, expression and face-lock wording',()=>{
   for(const language of ['jp','en'])for(const expression of C.expressions.map(x=>x.id))for(const cameraMode of C.cameraModes.map(x=>x.id)){
     const s=defaults();Object.assign(s,{language,variation:'keep',layout:'2',expression,cameraMode,sceneIds:['city-night']});const r=E.compile(s);
-    const lock=language==='jp'?'顔は参照画像から一切変更しない。':'Do not change the face from the reference in any way.';
-    assert.ok(r.text.endsWith(language==='jp'?'この顔固定は、選択された姿勢、撮影条件、身体、衣装の指示より優先する。':'This face lock takes priority over selected posture, camera, physique and clothing instructions.'));
-    assert.ok(r.text.includes(lock));
-    assert.doesNotMatch(r.text,/瞳に的確にピント|Focus precisely on visible eyes|笑い終わり|end of a laugh|自然な微笑みを浮かべ|A natural small smile|視線を少し外した|A relaxed expression with a slight glance away/);
+    assert.doesNotMatch(r.text,/瞳に的確にピント|Focus precisely on visible eyes|笑い終わり|end of a laugh|自然な微笑みを浮かべ|A natural small smile|視線を少し外した|A relaxed expression with a slight glance away|顔は参照画像から一切変更しない|Do not change the face from the reference|顔固定|face lock|顔の形状|facial shape|顔の再解釈|reinterpret.*face/i);
     assert.ok(!r.text.includes(E.textOf(E.find(s,'expressions',expression),language))||expression==='auto');
     assert.doesNotMatch(r.text,/顔は自然な肌色に整える|balancing facial skin color naturally/);
     if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
