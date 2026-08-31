@@ -3,6 +3,10 @@
   'use strict';
   const row=(id,title,titleEn,text,textEn,extra={})=>({id,title,titleEn,text,textEn,...extra});
   const C={
+    identities:[
+      row('reference','参照ベース','Reference','参照画像の人物を基準にする。','Use the person in the reference as the basis.'),
+      row('lookalike','似た別人','Look-alike','参照画像によく似た顔立ちと全体の印象を持つ、別の成人女性として表現する。','Portray a different adult woman with facial features and an overall appearance closely resembling the reference.')
+    ],
     looks:[
       row('neutral','写真集','Photobook','人物を主役に、余韻のある洗練された写真集の仕上がり。','A refined, person-centered photobook with a quietly evocative finish.'),
       row('attack','表現的','Expressive','人物の存在感と光の奥行きを活かす、表現豊かなファッションエディトリアル。','An expressive fashion editorial emphasizing presence and depth of light.'),
@@ -18,6 +22,7 @@
       row('soft-interior','🪟 SOFT INTERIOR','🪟 SOFT INTERIOR','大きな窓、白いカーテン、柔らかな寝具、白いシーツ、クッション、木製家具のある静かな室内。','A quiet interior with large windows, white curtains, soft bedding, white sheets, cushions and wooden furniture.',{light:'window',setting:'indoor'}),
       row('washitsu','🎋 和室','🎋 Japanese room','畳、障子、木の柱、低い家具のある静かな和室。','A quiet Japanese room with tatami, shoji screens, timber pillars and low furniture.',{light:'window',setting:'indoor'}),
       row('pool','💧 プールサイド','💧 Poolside','水面とデッキ、端正な建築が見える屋外プールサイド。','An outdoor poolside with water, a deck and clean architectural lines.',{light:'water',setting:'water'}),
+      row('water-park','💦 ウォーターパーク','💦 WATER PARK','大型プール、ウォータースライダー、流れる水路、鮮やかな遊具を背景にした開放的なウォーターパーク。','An open water park with large pools, water slides, a lazy river and colorful attractions in the background.',{light:'water',setting:'water'}),
       row('city-night','🌃 街の夜景','🌃 City at night','ビルの灯り、ガラスの反射、歩道を背景とした夜の都市。','A city at night with illuminated buildings, glass reflections and pavement.',{light:'night',setting:'urban',fixedTime:true}),
       row('gym','🏋 ジム','🏋 Gym','トレーニング器具、マット、端正な壁面のある整ったジム。','A well-kept gym with training equipment, mats and clean wall surfaces.',{light:'window',setting:'sport'}),
       row('daily-interior','☕ 日常の室内','☕ Everyday interior','椅子、ソファ、テーブルと生活の気配がある落ち着いた室内。','A calm lived-in interior with a chair, sofa and table.',{light:'window',setting:'indoor'}),
