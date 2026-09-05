@@ -157,14 +157,13 @@
         light=s.lighting;
         if(light==='auto')light=scene?(scene.light||'reference'):(s.variation==='dynamic'?'session':'reference');
         if(light==='sunset'&&scene?.fixedTime){light='night';warn('夜景では夕方の光を使わず、夜の環境光を優先します。','Night scenes use ambient night light instead of evening daylight.');}
-        shot.push(light==='night'&&locked?t('街の環境光を活かし、露出と色調は参照画像に合わせる。','Use ambient city light while retaining the reference exposure and color balance.'):(lightText[light]?t(...lightText[light]):textOf(find(s,'lighting',light),s.language)));
+        shot.push(light==='night'&&locked?t('街の環境光を活かし、露出と色調は参照画像に合わせる。','Use ambient city light while retaining the reference exposure and color balance.'):light==='sunset'&&locked?t('夕方の低い斜光。','Low evening light.'):(lightText[light]?t(...lightText[light]):textOf(find(s,'lighting',light),s.language)));
       }
       if(!locked){
         if(s.expression==='reference')shot.push(textOf(find(s,'expressions','reference'),s.language));
         else if(expressions[s.expression])shot.push(t(...expressions[s.expression][k%expressions[s.expression].length]));
         else shot.push(k%2?t('視線を少し外した、落ち着いた表情。','A relaxed expression with a slight glance away.'):t('自然な微笑みを浮かべ、レンズへ視線を向ける。','A natural small smile with a gaze toward the lens.'));
       }
-      if(outfit&&!outfit.custom&&['bold','refined'].includes(outfit.id)&&scene?.setting==='water'&&scenes.every(x=>x.setting==='water')&&!coverage)shot.push(t('この場所に合うスイムウェアのスタイリング。','Swimwear styling appropriate to this setting.'));
       const heading=t(`${i+1}枚目${i===0?'（メイン）':''}：`,`Photograph ${i+1}${i===0?' (main)':''}: `);
       shots.push({index:i+1,sceneId:scene?.id||'',poseId:pose?.id||'',distance,angle,light,text:heading+shot.join(' ')});
     }
