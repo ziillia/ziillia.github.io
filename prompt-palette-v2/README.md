@@ -1,6 +1,8 @@
-# Prompt Palette v25
+# Prompt Palette v26
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
+
+v26 keeps state schema 17 and fixes three focused inconsistencies: KEEP evening light no longer emits face-color correction, water settings no longer inject swimwear from SCENE, and changing VARIATION immediately refreshes its conditional explanation.
 
 v25 retains state schema 17. A Subject identity axis adds an opt-in Look-alike mode, creating a distinct adult woman with an overall appearance close to the reference while retaining hairstyle, stature, skeleton and muscular-physique cues. Reference remains the default. WATER PARK is a setting-only built-in scene with water-aware lighting metadata.
 
@@ -23,7 +25,7 @@ v18 preserved the reference time of day when no setting is selected and disabled
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=25`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=26`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 
