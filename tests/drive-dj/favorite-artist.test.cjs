@@ -25,7 +25,9 @@ test('detail buttons offer individual credits and escape user supplied text',()=
 });
 test('register/unregister reuse favoriteArtists sync scope and update pressed state',()=>{
   const s=setup();s.ctx.toggleFavoriteArtist('AAA');assert.ok(s.ctx.favoriteArtistButtons({artist:'AAA'}).includes('aria-pressed="true"'));
+  assert.equal(s.state.page,3,'registering preserves current page');
   s.ctx.toggleFavoriteArtist('AAA');assert.ok(s.ctx.favoriteArtistButtons({artist:'AAA'}).includes('aria-pressed="false"'));
+  assert.equal(s.state.page,3,'unregistering preserves current page');
   assert.deepEqual(s.mutations,[['favoriteArtists','aaa',false],['favoriteArtists','aaa',true]]);
 });
 test('empty favorites yields no matches and both view templates include buttons',()=>{

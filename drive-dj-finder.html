@@ -472,7 +472,7 @@ function toggleFavoriteArtistsFilter(){state.favoriteArtistsOnly=!state.favorite
 function toggleFavoriteArtist(name){
   const key=favoriteArtistKey(name);if(!key)return;const removing=Boolean(favoriteArtists[key]);
   if(removing){delete favoriteArtists[key];showToast(`${name}をお気に入りartistから外しました`);}else{favoriteArtists[key]={name:String(name).trim(),savedAt:new Date().toISOString()};showToast(`${name}をお気に入りartistに登録しました`);}
-  recordSharedMutation('favoriteArtists',key,removing);updateFavoriteControls();state.page=1;renderArtistSearchSuggestions($('candidateSearch').value);render();
+  recordSharedMutation('favoriteArtists',key,removing);updateFavoriteControls();renderArtistSearchSuggestions($('candidateSearch').value);render();
 }
 function updateFavoriteControls(){
   const artistButton=$('favoriteArtistsOnly');if(artistButton){artistButton.classList.toggle('active',state.favoriteArtistsOnly);artistButton.setAttribute('aria-pressed',String(state.favoriteArtistsOnly));$('favoriteArtistCount').textContent=Object.keys(favoriteArtists).length;}
