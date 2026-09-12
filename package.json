@@ -1,0 +1,13 @@
+{
+  "name": "drive-dj-finder",
+  "version": "1.10.0",
+  "private": true,
+  "description": "Development checks for Drive DJ Finder; runtime assets remain standalone.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test:drive-dj": "node --test tests/drive-dj/*.test.cjs",
+    "test:prompt-palette": "node --test prompt-palette-v2/tests/*.test.cjs",
+    "test": "node --test tests/drive-dj/*.test.cjs prompt-palette-v2/tests/*.test.cjs",
+    "test:all": "npm test"
+  }
+}
