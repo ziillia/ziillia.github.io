@@ -1,6 +1,8 @@
-# Prompt Palette v26
+# Prompt Palette v27
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
+
+v27 restores detailed intent to the built-in Minimal and Refined outfit presets. Minimal now specifies light, structured editorial styling and controlled variation; Refined specifies polished fit, premium light materials, balanced garment forms and cohesive restraint. Both remain outfit-only and adapt to the selected setting without SCENE injecting clothing.
 
 v26 keeps state schema 17 and fixes three focused inconsistencies: KEEP evening light no longer emits face-color correction, water settings no longer inject swimwear from SCENE, and changing VARIATION immediately refreshes its conditional explanation.
 
@@ -25,7 +27,7 @@ v18 preserved the reference time of day when no setting is selected and disabled
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=26`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=27`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 
