@@ -1,6 +1,8 @@
-# Prompt Palette v27
+# Prompt Palette v28 work build
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
+
+v28 is a local rebuild work build based on v14's expressive intent and the current clean architecture. It adds an independent Composition axis, rewrites the common foundation so it does not choose wardrobe or composition, uses affirmative outfit descriptions, and keeps one exact selected outfit across all photographs. State schema remains 17; existing states default to Follow variation, while the former AI-decides camera mode maps to AI distinct composition when no composition value exists.
 
 v27 restores detailed intent to the built-in Minimal and Refined outfit presets. Minimal now specifies light, structured editorial styling and controlled variation; Refined specifies polished fit, premium light materials, balanced garment forms and cohesive restraint. Both remain outfit-only and adapt to the selected setting without SCENE injecting clothing.
 
@@ -27,7 +29,7 @@ v18 preserved the reference time of day when no setting is selected and disabled
 - `catalog.js`: bilingual presets, stable legacy IDs and single-axis metadata.
 - `engine.js`: pure state migration, normalization, conflict resolution and per-photo planning.
 - `app.js`: compact UI, storage, editor, import/export and clipboard.
-- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=27`.
+- `index.html` / `style.css`: accessible mobile-first UI. Active assets use `?v=28`.
 
 Older `data`, `overrides`, `extras`, `pre-*` and `post-*` files remain as historical source but are **not loaded**. Do not add new patches to the inactive chain.
 
