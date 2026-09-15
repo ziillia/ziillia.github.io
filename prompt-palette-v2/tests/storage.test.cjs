@@ -61,3 +61,8 @@ test('camera mode persists without discarding individual camera choices',async()
   const saved=b.data.get(KEY),s=JSON.parse(saved);assert.equal(s.cameraMode,'free-distinct');assert.equal(s.distance,'close');assert.equal(s.angle,'overhead');assert.equal(s.lighting,'sunset');
   const reloaded=boot(saved);assert.equal(JSON.parse(reloaded.data.get(KEY)).cameraMode,'free-distinct');await reloaded.click({path:'cameraMode',value:'blank'});const blank=JSON.parse(reloaded.data.get(KEY));assert.equal(blank.cameraMode,'blank');assert.equal(blank.distance,'close');assert.equal(blank.angle,'overhead');assert.equal(blank.lighting,'sunset');
 });
+test('composition selection persists independently and appears in the compact UI',async()=>{
+  const b=boot();assert.match(b.node('app').innerHTML,/data-path="composition" data-value="follow" aria-pressed="true"/);
+  await b.click({path:'composition',value:'ai-distinct'});const s=JSON.parse(b.data.get(KEY));assert.equal(s.composition,'ai-distinct');assert.equal(s.cameraMode,'planned');
+  const reloaded=boot(b.data.get(KEY));assert.match(reloaded.node('app').innerHTML,/data-path="composition" data-value="ai-distinct" aria-pressed="true"/);
+});
