@@ -22,6 +22,9 @@ test('migration preserves custom metadata, selections, IDs and resolves legacy a
 test('legacy default and optional outfit survive; malformed/future data is rejected',()=>{
   assert.equal(E.migrate({selectedMaster:'neutral',selectedOutfit:''}).state.outfitId,'');
   assert.equal(E.migrate({selectedMaster:'neutral'}).state.variation,'balanced');
+  assert.equal(E.migrate({schemaVersion:17,cameraMode:'free-distinct'}).state.composition,'ai-distinct');
+  assert.equal(E.migrate({schemaVersion:17,cameraMode:'free-distinct',composition:'reference'}).state.composition,'reference');
+  assert.equal(defaults().composition,'follow');
   for(const raw of [null,[],{},'string',{schemaVersion:18}])assert.throws(()=>E.migrate(raw));
 });
 test('strict EN omits missing or mixed custom English, while preserving source text',()=>{
@@ -153,7 +156,7 @@ test('pecs growth leaves shot planning and wardrobe selections untouched',()=>{
   const s=defaults();Object.assign(s,{variation:'dynamic',sceneIds:['beach','soft-interior'],poseIds:['standing','sitting'],expression:'partner-pov',outfitId:'refined',coverageId:'coverage-strong'});
   const base=E.compile(s);s.body.regions=['hypertrophy-pecs'];const pecs=E.compile(s);
   assert.deepEqual(pecs.shots,base.shots);assert.equal(pecs.state.outfitId,base.state.outfitId);assert.equal(pecs.state.coverageId,base.state.coverageId);
-  assert.match(pecs.text,/身体の調整を理由に衣装のカバー範囲や撮影距離を変えない/);
+  assert.match(pecs.text,/身体の調整は衣装設計と独立|Apply physique adjustments independently/);
 });
 test('multi-shot layouts forbid gaps between adjacent photographs',()=>{
   for(const language of ['jp','en'])for(const layout of ['2','3','4','5']){
@@ -164,7 +167,7 @@ test('multi-shot layouts forbid gaps between adjacent photographs',()=>{
   }
   const one=defaults();one.layout='1';assert.doesNotMatch(E.compile(one).text,/写真同士の間に白い余白/);
 });
-test('camera modes preserve individual choices while free and blank omit resolved camera axes',()=>{
+test('camera modes preserve individual choices while remaining independent from composition',()=>{
   for(const language of ['jp','en'])for(const variation of ['keep','balanced','dynamic'])for(const cameraMode of ['free-distinct','blank']){
     const s=defaults();Object.assign(s,{language,variation,cameraMode,distance:'close',angle:'overhead',lighting:'sunset',expression:'partner-pov'});Object.assign(s.body,{mass:'hypertrophy-direct',vascularity:'vascularity-extreme'});
     const r=E.compile(s);
@@ -172,11 +175,9 @@ test('camera modes preserve individual choices while free and blank omit resolve
     assert.ok(r.shots.every(x=>x.distance===''&&x.angle===''&&x.light===''));
     assert.doesNotMatch(r.text,/身体の調整を理由に衣装のカバー範囲や撮影距離|Physical adjustments must not change clothing coverage or camera distance/);
     assert.doesNotMatch(r.text,/姿勢、撮影距離、衣装|posture, camera distance or clothing/);
-    if(cameraMode==='free-distinct'){
-      assert.match(r.text,/必ず明確に異なる構図|must use a composition clearly distinct/);
-      assert.match(r.text,/同じトリミング、人物サイズ、カメラ位置を繰り返さない|Do not repeat the same crop, subject scale or camera position/);
-    }else{
-      assert.doesNotMatch(r.text,/必ず明確に異なる構図|must use a composition clearly distinct/);
+    if(cameraMode==='free-distinct')assert.match(r.text,/撮影距離、画角、カメラの高さ・角度、光の方向と質は具体的に指定せず|Do not prescribe camera distance, field of view, camera height or angle/);
+    else{
+      assert.doesNotMatch(r.text,/撮影距離、画角、カメラの高さ・角度、光の方向と質は具体的に指定せず|Do not prescribe camera distance, field of view, camera height or angle/);
       for(const item of [...C.distances,...C.angles,...C.lighting])assert.ok(!r.shots.some(x=>x.text.includes(E.textOf(item,language))));
     }
     if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
@@ -191,5 +192,30 @@ test('KEEP omits facial generation, expression and face-lock wording',()=>{
     if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
   }
   const balanced=defaults();balanced.variation='balanced';balanced.expression='partner-pov';const text=E.compile(balanced).text;
-  assert.match(text,/瞳に的確にピント|Focus precisely on visible eyes/);assert.match(text,/視線の方向|Capture gaze direction/);
+  assert.match(text,/顔立ち、髪型|facial features, hairstyle/);assert.match(text,/視線の方向|Capture gaze direction/);
+});
+
+test('composition is independent, migration-safe and controls only composition copy',()=>{
+  const markers={reference:/写真内の人物サイズ|Match the reference subject scale/,cohesive:/自然につながる構図差|modest compositional differences/,distinct:/各写真を明確に異なる構図|every photograph a clearly distinct composition/,'ai-distinct':/具体的な構図は指定せず|Do not prescribe an exact composition/};
+  for(const language of ['jp','en'])for(const composition of C.compositions.map(x=>x.id)){
+    const s=defaults();Object.assign(s,{language,composition,variation:'dynamic',layout:'3',poseIds:['sitting'],sceneIds:['water-park'],outfitId:'bold'});
+    const r=E.compile(s);assert.equal(r.state.composition,composition);assert.equal(r.shots.length,3);assert.ok(r.shots.every(x=>x.poseId==='sitting'&&x.sceneId==='water-park'));
+    if(markers[composition])assert.match(r.text,markers[composition]);
+    if(composition==='omit')for(const re of Object.values(markers))assert.doesNotMatch(r.text,re);
+    if(language==='en')assert.doesNotMatch(r.text,/[぀-ヿ㐀-鿿]/u);
+  }
+  const keep=defaults();keep.variation='keep';assert.match(E.compile(keep).text,markers.reference);
+  const balanced=defaults();assert.match(E.compile(balanced).text,markers.cohesive);
+  const dynamic=defaults();dynamic.variation='dynamic';assert.match(E.compile(dynamic).text,markers.distinct);
+});
+
+test('selected outfit uses affirmative design copy and one exact garment across all shots',()=>{
+  for(const language of ['jp','en'])for(const outfit of C.outfits){
+    const s=defaults();Object.assign(s,{language,outfitId:outfit.id,layout:'5',sceneIds:['water-park','daily-interior']});const r=E.compile(s);
+    assert.match(r.text,/すべての写真で同じ形、色、素材、ストラップ、カッティング、ディテール|retain exactly the same shape, color, material, straps, cutting and details/);
+    assert.doesNotMatch(r.text,/カットごとの変化|between photographs rather than repeating|大胆すぎるカッティング|overly bold cutting/);
+    if(language==='en')assert.doesNotMatch(r.text,/[぀-ヿ㐀-鿿]/u);
+  }
+  const minimal=defaults();minimal.outfitId='bold';const text=E.compile(minimal).text;
+  assert.match(text,/細いストラップ/);assert.match(text,/必要最小限の直線と曲線/);assert.doesNotMatch(text,/布面積を明確に増やす/);
 });
