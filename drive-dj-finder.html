@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#10182c">
+  <meta name="theme-color" content="#111615">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Drive DJ">
@@ -97,10 +97,11 @@ input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appeara
 /* 横幅競合時はartistを保持し、genre / sceneタグ側を先に縮める。 */
 .compact-subline{overflow:hidden}.compact-artist{flex:0 0 auto;max-width:100%}.compact-tag{flex:0 1 auto;min-width:0}
   </style>
+  <link rel="stylesheet" href="drive-dj-design.css?v=20261001">
 </head>
 <body>
 <main>
-  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ LAB <span class="version-badge">v1.10.0 K-POP AUTO CLASSIFICATION</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">Spotify画面を主情報として読み取り、MusicBrainzは一意な曲名・artist補完だけに使います。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
+  <header class="hero"><div class="hero-inner"><div><p class="eyebrow"><span class="live-dot"></span> DRIVE DJ FINDER <span class="version-badge">v1.10.0</span></p><h1>次の1曲を、<br><em>気持ちよく。</em></h1><p class="lead">キーとテンポでつながる、次の1曲を見つけよう。</p></div><div class="hero-meter"><strong id="totalTracks">10,781</strong><span>UNIQUE TRACKS</span><small id="mixReadyLabel">1,569 / 1,848 MIX READY</small></div></div><div class="road-line"></div></header>
   <div class="shell">
     <nav id="djFocusBar" class="dj-focus-bar" aria-label="DJフォーカスバー">
       <div class="focus-now"><span>NOW PLAYING</span><b id="focusTrack">手動入力</b></div>
