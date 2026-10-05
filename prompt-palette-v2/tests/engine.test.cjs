@@ -1,6 +1,55 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const E=require('../engine.js'),C=require('../catalog.js');
 const defaults=E.defaults;
+test('v30 main-option matrix: 2160 bilingual combinations preserve every selected condition',()=>{
+  let checked=0;
+  for(const language of ['jp','en'])for(const look of C.looks)for(const variation of ['keep','balanced','dynamic'])for(const layout of ['1','2','3','4','5'])for(const mass of C.masses)for(const vascularity of C.vascularity)for(const bust of [false,true]){
+    const s=defaults();Object.assign(s,{language,look:look.id,variation,layout});Object.assign(s.body,{mass:mass.id,vascularity:vascularity.id,bust});
+    const saved=JSON.stringify(s),r=E.compile(s),en=language==='en',n=Number(layout);
+    assert.equal(JSON.stringify(s),saved);assert.equal(r.warnings.length,0);assert.equal(r.shots.length,n);assert.deepEqual(r.state,E.normalize(s));
+    assert.ok(r.text.includes(E.textOf(look,language)));assert.ok(r.text.includes(en?'adult professional female fitness model':'成人女性のプロフェッショナルなフィットネスモデル1人'));
+    assert.match(r.text,en?/Match skin color, brightness and grading to the reference/:/肌色・明度・色調は参照画像に合わせ/);
+    assert.ok(r.text.includes(en?'Use exactly '+n+' photograph':'写真は正確に'+n+'枚'));
+    assert.equal((r.text.match(en?/large bust/g:/大きなバスト/g)||[]).length,bust?1:0);
+    assert.doesNotMatch(r.text,/Increase bust volume|バストのボリュームを増やす|【|\[(?:MASTER|BODY)\]/);
+    if(mass.id==='reference')assert.match(r.text,/参照画像の筋肉量|Maintain reference muscular mass/);
+    else {assert.ok(r.text.includes(E.textOf(mass,language)));assert.doesNotMatch(r.text,/参照画像の筋肉量|Maintain reference muscular mass/);}
+    if(vascularity.id==='reference')assert.match(r.text,/参照画像の自然な血管|Preserve reference natural vascularity/);
+    else{
+      const copy=E.textOf(vascularity,language).replace(en?'Match skin color and texture to the reference.':'肌色と肌のきめは参照画像に合わせる。','');
+      assert.ok(r.text.includes(copy));assert.doesNotMatch(r.text,/参照画像の自然な血管|Preserve reference natural vascularity/);
+    }
+    if(n===1)assert.doesNotMatch(r.text,/綴じ目|横長デジタル誌面|\d枚目|pre-publication digital layout|binding|Photograph 1:/);
+    else assert.match(r.text,/隣接する写真枠を互いに接して|Make adjacent image frames touch/);
+    if(variation==='keep'){
+      assert.doesNotMatch(r.text,/顔立ち|facial features|generator devise|生成側が写真ごと|同じポーズを繰り返さない|without repeating the same pose/);
+      assert.ok(r.shots.every(x=>x.angle==='reference'&&x.distance==='reference'&&x.light==='reference'&&!x.poseId));
+      assert.equal((r.text.match(en?/Retain the reference posture/g:/参照画像の姿勢・身体の向き/g)||[]).length,1);
+    }else{
+      assert.match(r.text,/生成側が写真ごと|generator devise/);
+      assert.match(r.text,variation==='balanced'?/小さな変化|modest changes/:/大胆な差分|bold changes/);
+      if(n>1)assert.match(r.text,/変化量の範囲で|within the chosen variation level/);
+    }
+    if(en)assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
+    checked++;
+  }
+  assert.equal(checked,2160);
+});
+test('v30 compaction hoists shared instructions without losing custom prose or shot-specific choices',()=>{
+  for(const language of ['jp','en']){
+    const s=defaults();Object.assign(s,{language,variation:'keep',layout:'3',cameraMode:'planned'});
+    const copy=E.textOf(C.distances.find(x=>x.id==='reference'),language);
+    s.custom.scenes=[{id:'custom-scene',title:'Custom',text:copy,textEn:copy,custom:true}];s.sceneIds=['custom-scene'];
+    const before=JSON.stringify(s),r=E.compile(s);assert.ok(r.text.includes(copy));assert.equal(JSON.stringify(s),before);
+    s.custom.scenes=[{id:'custom-scene',title:'Custom',text:'独自の環境。改行も\nそのまま。',textEn:'Custom setting. Keep\nits line break.',custom:true}];
+    s.poseIds=['standing','sitting'];const varied=E.compile(s);
+    assert.ok(varied.text.includes(E.textOf(s.custom.scenes[0],language)));
+    assert.ok(varied.text.includes(E.textOf(C.poses.find(x=>x.id==='standing'),language)));
+    assert.ok(varied.text.includes(E.textOf(C.poses.find(x=>x.id==='sitting'),language)));
+    const pure=defaults();pure.language=language;pure.variation='keep';pure.layout='5';const compact=E.compile(pure);
+    assert.doesNotMatch(compact.text,/\d枚目：|Photograph \d:/);
+  }
+});
 test('v29 large bust is a common condition, independent from identity and muscle changes',()=>{
   for(const language of ['jp','en'])for(const identity of ['reference','lookalike'])for(const variation of ['keep','balanced','dynamic']){
     const s=defaults();Object.assign(s,{language,identity,variation});s.body.bust=true;s.body.mass='lean-muscle';s.body.regions=['hypertrophy-pecs'];
@@ -97,7 +146,7 @@ test('one scene and posture per shot; fixed count; overflow rotates deterministi
   for(let n=1;n<=5;n++){
     const s=defaults();s.layout=String(n);s.sceneIds=C.scenes.map(x=>x.id);s.poseIds=C.poses.map(x=>x.id);
     const before=JSON.stringify(s),r=E.compile(s);assert.equal(r.shots.length,n);assert.equal(JSON.stringify(s),before);
-    assert.equal((r.text.match(/\d枚目/g)||[]).length,n+ (n>1?1:0));
+    assert.equal((r.text.match(/\d枚目/g)||[]).length,n>1?n+1:0);
     assert.deepEqual(r,E.compile(s));s.take=1;assert.notEqual(E.compile(s).shots[0].sceneId,r.shots[0].sceneId);
   }
 });
@@ -202,7 +251,7 @@ test('multi-shot layouts forbid gaps between adjacent photographs',()=>{
   for(const language of ['jp','en'])for(const layout of ['2','3','4','5']){
     const s=defaults();s.language=language;s.layout=layout;const text=E.compile(s).text;
     assert.match(text,/写真同士の間に白い余白|Do not place white gaps/);
-    assert.match(text,/隣接する写真枠を互いに接して|make adjacent image frames touch/);
+    assert.match(text,/隣接する写真枠を互いに接して|Make adjacent image frames touch/);
     assert.match(text,/写真内のネガティブスペース|within the photographs/);
   }
   const one=defaults();one.layout='1';assert.doesNotMatch(E.compile(one).text,/写真同士の間に白い余白/);
