@@ -1,4 +1,6 @@
-# Prompt Palette v28 work build
+# Prompt Palette v29
+
+v29 moves the selected large-bust attribute into the common subject conditions without an incremental bust-growth instruction. Explicit physical conditions override reference preservation only for their own attributes. LEAN MUSCLE is a new exclusive overall-mass option, combinable with regional growth. ATHLETE and EXTREME vascularity use self-contained post-exercise anatomical descriptions. With no pose selected, the generator devises one pose per photograph and distinct poses for multiple photographs; KEEP and explicit pose choices remain authoritative. State schema and existing IDs remain unchanged.
 
 Static GitHub Pages app. No build step, external scripts, network API, or image upload.
 
