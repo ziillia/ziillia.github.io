@@ -76,7 +76,14 @@
     const coverage=find(s,'coverages',s.coverageId),n=Number(s.layout),locked=s.variation==='keep',cameraPlanned=s.cameraMode==='planned',cameraFree=s.cameraMode==='free-distinct',compositionFollows=s.composition==='follow';
     if(scenes.length>n||poses.length>n)warn('写真数を超える候補があります。「別カット」で採用する候補を切り替えられます。','More choices than photographs. Use “New take” to rotate the chosen candidates.');
     parts.push(t('成人女性のプロフェッショナルなフィットネスモデル1人を主役にした、ハイエンドな人物写真集。鍛えられた身体の立体感、現実的な人体構造、自然な肌のきめ、髪と布の細部、ハイライトの質感、影の奥行きを丁寧に描写する。人工的なテカリ、極端なHDR、過剰なシャープネス、均一な美肌加工を加えず、人物中心の写真表現として仕上げる。参照画像の明るく均一で透明感のある肌色を全カットで一貫させる。光による自然な陰影は残しながら、ページや身体調整に伴う日焼け、ブロンズ化、暗色化、オレンジ寄りの色調変化を加えない。この写真品質の指定だけを理由に、衣装、姿勢、構図、撮影距離、環境を変更しない。','A high-end, person-centered photobook featuring one adult professional female fitness model. Carefully render the three-dimensional form of the trained physique, realistic anatomy, natural skin texture, fine hair and fabric detail, textured highlights and depth in the shadows. Finish it as professional portrait photography without artificial gloss, extreme HDR, excessive sharpening or uniform skin smoothing. Keep the reference image’s bright, even and translucent complexion consistent across every photograph. Retain natural shading from the light without adding tanning, bronzing, darkening or an orange shift from page progression or physique adjustments. Photographic-quality instructions alone must not change the outfit, posture, composition, camera distance or setting.'));
+    if(s.body.bust&&s.identity==='reference'){
+      parts.push(textOf(C.bodies[0],s.language));
+      parts.push(locked?t('各写真は参照画像と同じ人物として扱う。','Use the same subject as the reference in each photograph.'):t('各写真は参照画像と同じ人物として扱い、顔立ちを一貫させる。','Use the same subject as the reference in each photograph, with consistent facial features.'));
+    }else{
     parts.push(s.identity==='lookalike'?t('各写真の被写体は、参照画像によく似た別の成人女性1人。顔立ちは参照画像に近い目鼻立ち、輪郭、全体の印象を持たせつつ、同一人物の完全再現ではない自然な個人差を加える。髪型、骨格、身長感、筋肉質な体型の特徴を受け継ぎ、手足、関節、人体の比率は現実的に保つ。','Each photograph features one adult woman who closely resembles the reference while remaining a distinct person. Give her similar facial proportions, contours and overall impression, with natural individual differences rather than an exact identity match. Carry over the hairstyle, skeletal proportions, perceived height and muscular physique, keeping hands, limbs, joints and anatomical proportions realistic.'):locked?t('各写真の被写体は参照画像と同じ成人女性1人。髪型、骨格、身長感、筋肉質な体型の特徴を一貫させる。','Each photograph features one adult woman: the same subject as the reference. Keep her hairstyle, skeletal proportions, perceived height and characteristic muscular physique consistent.'):t('各写真の被写体は参照画像と同じ成人女性1人。顔立ち、髪型、骨格、身長感、筋肉質な体型の特徴を一貫させる。','Each photograph features one adult woman: the same subject as the reference. Keep her facial features, hairstyle, skeletal proportions, perceived height and characteristic muscular physique consistent.'));
+      if(s.body.bust)parts.push(textOf(C.bodies[0],s.language));
+    }
+    if(s.body.bust||s.body.mass!=='reference'||s.body.regions.length||s.body.vascularity!=='reference'||customBody.length)parts.push(t('明示された身体条件は、その部位・要素について参照の体型を維持する指示より優先する。指定のない身体要素は参照画像に合わせる。','Explicit physical conditions take priority over reference-physique preservation for their specified regions and attributes. Match unspecified physical attributes to the reference.'));
     parts.push(textOf(find(s,'looks',s.look),s.language));
     const body=[];
     if(s.body.mass!=='reference')body.push(textOf(find(s,'masses',s.body.mass),s.language));
@@ -90,11 +97,10 @@
       body.push(t('大胸筋の筋組織を発達させ、胸郭と骨格の大きさは維持する。','Develop the muscle tissue of the pectoralis major while preserving rib-cage and skeletal dimensions.'));
       if(!s.body.bust&&!customBody.length)body.push(t('乳房組織自体のボリュームは参照画像のまま保つ。','Retain the reference volume of the breast tissue itself.'));
     }
-    if(s.body.bust)body.push(textOf(C.bodies[0],s.language));
     body.push(...customBody.map(x=>textOf(x,s.language)));
     if(s.body.vascularity!=='reference'||s.body.mass!=='reference'||s.body.regions.length)body.push(t('身体の調整は衣装設計と独立して適用する。','Apply physique adjustments independently of wardrobe design.'));
     const bodySections=[body.join(' ')].filter(Boolean);
-    if(s.body.mass!=='reference'||s.body.regions.length||s.body.vascularity!=='reference')bodySections.push(t('身体の差分で明示された筋量、部位、vascularityだけを変更する。肌の明度、色相、アンダートーン、ホワイトバランス、カラーグレーディングは参照画像と同じ状態に固定し、すべての写真で一貫させる。競技コンディショニングを理由に日焼け、ブロンズ化、オレンジ寄りの色かぶりを加えない。','Change only the explicitly selected muscle mass, regions and vascularity. Lock complexion brightness, hue, undertone, white balance and color grading to the reference across every photograph. Athletic conditioning must not introduce tanning, bronzing or an orange color cast.'));
+    if(s.body.mass!=='reference'||s.body.regions.length||s.body.vascularity!=='reference')bodySections.push(t('身体の調整は、明示された身体条件の部位・要素に適用する。肌の明度、色相、アンダートーン、ホワイトバランス、カラーグレーディングは参照画像と同じ状態に固定し、すべての写真で一貫させる。競技コンディショニングを理由に日焼け、ブロンズ化、オレンジ寄りの色かぶりを加えない。','Apply physique adjustments to the regions and attributes specified by the selected physical conditions. Lock complexion brightness, hue, undertone, white balance and color grading to the reference across every photograph. Athletic conditioning must not introduce tanning, bronzing or an orange color cast.'));
     const framingLocked=cameraPlanned&&(s.distance==='reference'||(s.distance==='auto'&&locked));
     let layout=t(`写真は正確に${n}枚。`,`Use exactly ${n} photograph${n===1?'':'s'}. `);
     if(n===1)layout+=t('1枚の写真枠をキャンバスの主役として配置する。','Place one photograph frame as the primary element on the canvas.');
@@ -104,10 +110,11 @@
       const axes=t(cameraPlanned?'姿勢、身体の向き、撮影位置、距離、画角、背景、光の方向':'姿勢、身体の向き、背景',cameraPlanned?'posture, body orientation, camera position, distance, field of view, background and light direction':'posture, body orientation and background');
       parts.push(t(`以下で具体的に変更する要素以外は、参照画像の${axes}${compositionFollows?'、写真内の構図':''}を固定する。写真枠の配置だけでは撮影条件を変えない。`,`Lock the reference ${axes}${compositionFollows?', and composition within photographs':''}, except for the specific changes stated below. Page arrangement alone does not change the photographic setup.`));
     }else if(s.variation==='balanced'){
-      parts.push(t(`同じ撮影セッションの近い別テイクとしてまとめる。指定のない姿勢や背景${compositionFollows?'、写真内の構図':''}には小さな変化だけを加える。`,`Keep the photographs as closely related takes from one session, with only small changes to unspecified posture, background${compositionFollows?' and composition within photographs':''}.`));
+      parts.push(t(`同じ撮影セッションの近い別テイクとしてまとめる。指定のない背景${compositionFollows?'、写真内の構図':''}には小さな変化だけを加える。`,`Keep the photographs as closely related takes from one session, with only small changes to unspecified background${compositionFollows?' and composition within photographs':''}.`));
     }else{
       parts.push(t(`同じ女性としての一貫性を保ち、指定のない姿勢、背景${cameraPlanned?'、撮影条件':''}${compositionFollows?'、写真内の構図':''}には明確な変化をつける。場所の指定がなければ、参照画像と自然につながる撮影場所の別の一角を使う。`,`Keep the same woman consistent while making distinct changes to unspecified posture, background${cameraPlanned?', photographic conditions':''}${compositionFollows?' and composition within photographs':''}. Without a specified location, use another part of a setting that naturally connects to the reference.`));
     }
+    if(!poses.length&&!locked)parts.push(t('各写真の姿勢・動作・身体の向きは、生成側が写真ごとに一つのまとまりとして考える。'+(n>1?'複数写真では、姿勢・動作・身体の向きに明確な差分を持たせ、同じポーズを繰り返さない。':'')+'各写真には一つの姿勢だけを採用し、異なる姿勢を同じ身体に混在させない。撮影距離・角度・光・誌面配置は、それぞれ選択された条件に従う。','Let the generator devise one coherent posture, action and body orientation for each photograph. '+(n>1?'Give the photographs clearly different postures, actions and body orientations without repeating the same pose. ':'')+'Use only one posture per photograph; do not combine incompatible postures in one body. Camera distance, angle, light and page arrangement follow their respective selected conditions.'));
     parts.push(layout);
     let compositionText='';
     if(compositionFollows){
@@ -156,8 +163,7 @@
         else shot.push(textOf(pose,s.language));
       }
       else if(locked)shot.push(t('参照画像と同じ姿勢と身体の向き。','The same posture and body orientation as the reference.'));
-      else if(s.variation==='balanced')shot.push(t('参照の姿勢を基調に、重心や手の位置だけをわずかに変えた別テイク。','A related take based on the reference posture, with slight changes in weight or hand position.'));
-      else shot.push(textOf(C.poses[k%3],s.language));
+      else shot.push(t('この写真に適した一つの姿勢・動作・身体の向きを生成側が決める。','Let the generator choose one coherent posture, action and body orientation suitable for this photograph.'));
       let distance='',angle='',light='';
       if(cameraPlanned){
         distance=s.distance==='auto'?(locked?'reference':s.variation==='balanced'?'relative':distanceAuto[k%5]):s.distance;
