@@ -1,4 +1,6 @@
-# Prompt Palette v29
+# Prompt Palette v30
+
+v30 compacts the final prompt without changing state schema, preset IDs or resolved shot planning. Common photographic and subject conditions are grouped, skin-color preservation appears once, and shared shot instructions are hoisted rather than repeated. Single photographs omit spread/booklet instructions and shot headings. KEEP locks only unselected axes; explicit scene, pose and camera choices remain authoritative. Unselected poses are generator-devised within the variation level. Custom prose is preserved, including line breaks. The six main option axes are tested across all 2,160 JP/EN combinations.
 
 v29 moves the selected large-bust attribute into the common subject conditions without an incremental bust-growth instruction. Explicit physical conditions override reference preservation only for their own attributes. LEAN MUSCLE is a new exclusive overall-mass option, combinable with regional growth. ATHLETE and EXTREME vascularity use self-contained post-exercise anatomical descriptions. With no pose selected, the generator devises one pose per photograph and distinct poses for multiple photographs; KEEP and explicit pose choices remain authoritative. State schema and existing IDs remain unchanged.
 
