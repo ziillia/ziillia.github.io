@@ -1,6 +1,46 @@
 const test=require('node:test'),assert=require('node:assert/strict');
 const E=require('../engine.js'),C=require('../catalog.js');
 const defaults=E.defaults;
+test('v29 large bust is a common condition, independent from identity and muscle changes',()=>{
+  for(const language of ['jp','en'])for(const identity of ['reference','lookalike'])for(const variation of ['keep','balanced','dynamic']){
+    const s=defaults();Object.assign(s,{language,identity,variation});s.body.bust=true;s.body.mass='lean-muscle';s.body.regions=['hypertrophy-pecs'];
+    const before=JSON.stringify(s),r=E.compile(s),condition=E.textOf(C.bodies[0],language);
+    assert.equal(r.text.split(condition).length,2);assert.ok(r.text.indexOf(condition)<r.text.indexOf(E.textOf(C.masses.find(x=>x.id==='lean-muscle'),language)));
+    assert.doesNotMatch(r.text,/Increase bust volume|バストのボリュームを増やす|Retain the reference volume of the breast tissue|乳房組織自体のボリュームは参照/);
+    assert.match(r.text,/明示された身体条件は|Explicit physical conditions take priority/);assert.equal(JSON.stringify(s),before);
+    if(variation==='keep'&&identity==='reference')assert.doesNotMatch(r.text,/顔立ち|facial features/);
+    if(identity==='lookalike')assert.match(r.text,/別の成人女性|distinct person/);
+    if(language==='en')assert.doesNotMatch(r.text,/[\u3040-\u30ff\u3400-\u9fff]/u);
+    s.body.bust=false;assert.ok(!E.compile(s).text.includes(condition));
+  }
+});
+test('v29 lean muscle and vascularity descriptions are self-contained and saved IDs survive',()=>{
+  const s=defaults();s.body.mass='lean-muscle';s.body.regions=['hypertrophy-delts'];s.body.vascularity='vascularity-extreme';
+  assert.equal(E.migrate(s).state.body.mass,'lean-muscle');assert.deepEqual(E.compile(s).state.body.regions,s.body.regions);
+  for(const language of ['jp','en']){
+    s.language=language;const text=E.compile(s).text;
+    assert.match(text,/すらりとした四肢|slender limb contours/);assert.match(text,/全身の筋量増加に加え|In addition to overall growth/);
+    for(const id of ['vascularity-athlete','vascularity-extreme']){
+      const copy=E.textOf(C.vascularity.find(x=>x.id===id),language);
+      assert.doesNotMatch(copy,/控えめ|穏やか|ATHLETEより|very low body fat|低体脂肪|dehydration|脱水/);
+      assert.match(copy,/表在血管|superficial veins/);
+    }
+  }
+});
+test('v29 no-pose planning is delegated without implicit preset assignment; KEEP and explicit choices win',()=>{
+  for(const language of ['jp','en'])for(const variation of ['keep','balanced','dynamic'])for(const layout of ['1','3']){
+    const s=defaults();Object.assign(s,{language,variation,layout,cameraMode:'blank',composition:'omit'});const r=E.compile(s);
+    assert.equal(r.shots.length,Number(layout));assert.ok(r.shots.every(x=>x.poseId===''));
+    if(variation==='keep')assert.doesNotMatch(r.text,/生成側が写真ごと|generator devise/);
+    else{
+      assert.match(r.text,/生成側が写真ごと|generator devise/);
+      for(const item of C.poses)assert.ok(!r.shots.some(x=>x.text.includes(E.textOf(item,language))));
+      if(layout==='1')assert.doesNotMatch(r.text,/同じポーズを繰り返さない|without repeating the same pose/);
+      else assert.match(r.text,/同じポーズを繰り返さない|without repeating the same pose/);
+    }
+    s.poseIds=['sitting'];const chosen=E.compile(s);assert.ok(chosen.shots.every(x=>x.poseId==='sitting'));assert.doesNotMatch(chosen.text,/生成側が写真ごと|generator devise/);
+  }
+});
 test('every built-in has JP/EN; public labels and output avoid legacy location words',()=>{
   for(const rows of Object.values(C))for(const row of rows){
     assert.ok(row.text&&row.textEn,row.id);assert.ok(row.title&&row.titleEn,row.id);
@@ -144,7 +184,7 @@ test('pecs growth is independent from bust volume at every global muscle strengt
     assert.match(r.text,/大胸筋の筋組織|muscle tissue of the pectoralis major/);
     assert.match(r.text,/三角筋前部|anterior, lateral and posterior deltoid/);
     assert.equal(JSON.stringify(s),before);assert.equal(r.state.body.bust,bust);
-    if(bust){assert.match(r.text,/バストのボリュームを増やす|Increase bust volume/);assert.doesNotMatch(r.text,/乳房組織自体のボリュームは参照|Retain the reference volume of the breast tissue/);}
+    if(bust){assert.match(r.text,/大きなバスト|large bust/);assert.doesNotMatch(r.text,/バストのボリュームを増やす|Increase bust volume|乳房組織自体のボリュームは参照|Retain the reference volume of the breast tissue/);}
     else {assert.match(r.text,/乳房組織自体のボリュームは参照|Retain the reference volume of the breast tissue/);assert.doesNotMatch(r.text,/バストのボリュームを増やす|Increase bust volume/);}
     if(mass.id==='reference')assert.match(r.text,/指定部位以外の筋量は参照|Retain reference muscular mass outside/);
     else assert.match(r.text,/全身の筋量増加に加え|In addition to overall growth/);
