@@ -75,7 +75,7 @@
     const outfit=s.outfitId?chosen('outfits',[s.outfitId])[0]:null;
     const coverage=find(s,'coverages',s.coverageId),n=Number(s.layout),locked=s.variation==='keep',cameraPlanned=s.cameraMode==='planned',cameraFree=s.cameraMode==='free-distinct',compositionFollows=s.composition==='follow';
     if(scenes.length>n||poses.length>n)warn('写真数を超える候補があります。「別カット」で採用する候補を切り替えられます。','More choices than photographs. Use “New take” to rotate the chosen candidates.');
-    parts.push(t('成人女性のプロフェッショナルなフィットネスモデル1人を主役にした、ハイエンドな人物写真集。鍛えられた身体の立体感、現実的な人体構造、自然な肌のきめ、髪と布の細部、ハイライトの質感、影の奥行きを丁寧に描写する。人工的なテカリ、極端なHDR、過剰なシャープネス、均一な美肌加工を加えず、人物中心の写真表現として仕上げる。参照画像の明るく均一で透明感のある肌色を全カットで一貫させる。光による自然な陰影は残しながら、ページや身体調整に伴う日焼け、ブロンズ化、暗色化、オレンジ寄りの色調変化を加えない。この写真品質の指定だけを理由に、衣装、姿勢、構図、撮影距離、環境を変更しない。','A high-end, person-centered photobook featuring one adult professional female fitness model. Carefully render the three-dimensional form of the trained physique, realistic anatomy, natural skin texture, fine hair and fabric detail, textured highlights and depth in the shadows. Finish it as professional portrait photography without artificial gloss, extreme HDR, excessive sharpening or uniform skin smoothing. Keep the reference image’s bright, even and translucent complexion consistent across every photograph. Retain natural shading from the light without adding tanning, bronzing, darkening or an orange shift from page progression or physique adjustments. Photographic-quality instructions alone must not change the outfit, posture, composition, camera distance or setting.'));
+    parts.push(t('成人女性のプロフェッショナルなフィットネスモデル1人を主役にした高品質な人物写真。現実的な人体と比率、自然な肌のきめ、髪と布の細部、ハイライトの質感と影の奥行きを描写する。肌色・明度・色調は参照画像に合わせ、日焼け・ブロンズ化・オレンジ化を加えない。人工的なテカリ、極端なHDR、過剰なシャープネスや肌の均一化を避ける。','High-quality portrait photography of one adult professional female fitness model. Render realistic anatomy and proportions, natural skin texture, hair and fabric detail, textured highlights and deep shadows. Match skin color, brightness and grading to the reference without tanning, bronzing or an orange shift. Avoid artificial gloss, extreme HDR, excessive sharpening and uniform skin smoothing.'));
     if(s.body.bust&&s.identity==='reference'){
       parts.push(textOf(C.bodies[0],s.language));
       parts.push(locked?t('各写真は参照画像と同じ人物として扱う。','Use the same subject as the reference in each photograph.'):t('各写真は参照画像と同じ人物として扱い、顔立ちを一貫させる。','Use the same subject as the reference in each photograph, with consistent facial features.'));
@@ -83,15 +83,17 @@
     parts.push(s.identity==='lookalike'?t('各写真の被写体は、参照画像によく似た別の成人女性1人。顔立ちは参照画像に近い目鼻立ち、輪郭、全体の印象を持たせつつ、同一人物の完全再現ではない自然な個人差を加える。髪型、骨格、身長感、筋肉質な体型の特徴を受け継ぎ、手足、関節、人体の比率は現実的に保つ。','Each photograph features one adult woman who closely resembles the reference while remaining a distinct person. Give her similar facial proportions, contours and overall impression, with natural individual differences rather than an exact identity match. Carry over the hairstyle, skeletal proportions, perceived height and muscular physique, keeping hands, limbs, joints and anatomical proportions realistic.'):locked?t('各写真の被写体は参照画像と同じ成人女性1人。髪型、骨格、身長感、筋肉質な体型の特徴を一貫させる。','Each photograph features one adult woman: the same subject as the reference. Keep her hairstyle, skeletal proportions, perceived height and characteristic muscular physique consistent.'):t('各写真の被写体は参照画像と同じ成人女性1人。顔立ち、髪型、骨格、身長感、筋肉質な体型の特徴を一貫させる。','Each photograph features one adult woman: the same subject as the reference. Keep her facial features, hairstyle, skeletal proportions, perceived height and characteristic muscular physique consistent.'));
       if(s.body.bust)parts.push(textOf(C.bodies[0],s.language));
     }
-    if(s.body.bust||s.body.mass!=='reference'||s.body.regions.length||s.body.vascularity!=='reference'||customBody.length)parts.push(t('明示された身体条件は、その部位・要素について参照の体型を維持する指示より優先する。指定のない身体要素は参照画像に合わせる。','Explicit physical conditions take priority over reference-physique preservation for their specified regions and attributes. Match unspecified physical attributes to the reference.'));
+    if(s.body.bust||s.body.mass!=='reference'||s.body.regions.length||s.body.vascularity!=='reference'||customBody.length)parts.push(t('明示された身体条件は該当要素に適用し、未指定の身体要素は参照に合わせる。','Explicit physical conditions take priority for their specified attributes; match unspecified physical attributes to the reference.'));
     parts.push(textOf(find(s,'looks',s.look),s.language));
+    // Keep the common subject and photographic conditions in one compact paragraph.
+    const foundation=parts.join(' ');parts.length=0;parts.push(foundation);
     const body=[];
     if(s.body.mass!=='reference')body.push(textOf(find(s,'masses',s.body.mass),s.language));
     if(s.body.regions.length){
       body.push(t(s.body.mass==='reference'?'次の部位を重点的に発達させる：':'全身の筋量増加に加え、次の部位をさらに重点的に発達させる：',s.body.mass==='reference'?'Develop the following regions with emphasis on ':'In addition to overall growth, further develop the following regions with emphasis on ')+s.body.regions.map(id=>textOf(find(s,'regions',id),s.language)).join(t('、','; '))+t('。','.'));
       if(s.body.mass==='reference'&&!customBody.length)body.push(t('指定部位以外の筋量は参照画像のまま保つ。','Retain reference muscular mass outside these regions.'));
     }else if(s.body.mass==='reference'&&!customBody.length)body.push(t('参照画像の筋肉量とセパレーション、全身のバランスを維持し、身体的特徴を不必要に弱めない。','Maintain reference muscular mass, separation and overall balance without unnecessarily diminishing physical characteristics.'));
-    if(s.body.vascularity!=='reference')body.push(textOf(find(s,'vascularity',s.body.vascularity),s.language));
+    if(s.body.vascularity!=='reference')body.push(textOf(find(s,'vascularity',s.body.vascularity),s.language).replace(t('肌色と肌のきめは参照画像に合わせる。','Match skin color and texture to the reference.'),''));
     else if(!customBody.length)body.push(t('腹部・大腿部を含め、参照画像の自然な血管の見え方を維持する。','Preserve reference natural vascularity, including the abdomen and thighs.'));
     if(s.body.regions.includes('hypertrophy-pecs')){
       body.push(t('大胸筋の筋組織を発達させ、胸郭と骨格の大きさは維持する。','Develop the muscle tissue of the pectoralis major while preserving rib-cage and skeletal dimensions.'));
@@ -100,25 +102,31 @@
     body.push(...customBody.map(x=>textOf(x,s.language)));
     if(s.body.vascularity!=='reference'||s.body.mass!=='reference'||s.body.regions.length)body.push(t('身体の調整は衣装設計と独立して適用する。','Apply physique adjustments independently of wardrobe design.'));
     const bodySections=[body.join(' ')].filter(Boolean);
-    if(s.body.mass!=='reference'||s.body.regions.length||s.body.vascularity!=='reference')bodySections.push(t('身体の調整は、明示された身体条件の部位・要素に適用する。肌の明度、色相、アンダートーン、ホワイトバランス、カラーグレーディングは参照画像と同じ状態に固定し、すべての写真で一貫させる。競技コンディショニングを理由に日焼け、ブロンズ化、オレンジ寄りの色かぶりを加えない。','Apply physique adjustments to the regions and attributes specified by the selected physical conditions. Lock complexion brightness, hue, undertone, white balance and color grading to the reference across every photograph. Athletic conditioning must not introduce tanning, bronzing or an orange color cast.'));
+
     const framingLocked=cameraPlanned&&(s.distance==='reference'||(s.distance==='auto'&&locked));
     let layout=t(`写真は正確に${n}枚。`,`Use exactly ${n} photograph${n===1?'':'s'}. `);
-    if(n===1)layout+=t('1枚の写真枠をキャンバスの主役として配置する。','Place one photograph frame as the primary element on the canvas.');
-    else layout+=t(`1枚目を大きな主役、残り${n-1}枚を補助写真として人物を見やすく配置する。写真同士の間に白い余白、背景色の帯、ガターを入れず、隣接する写真枠を互いに接してキャンバスを埋める。写真間の境界は画像が直接切り替わるだけとし、境界線や枠線も入れない。写真群の周囲にも大きな空白を残さない。余白が必要な場合は、写真枠の外ではなく写真内のネガティブスペースとして設ける。`,`Make photograph 1 the large main image and the remaining ${n-1} supporting images, keeping the subject clearly visible. Do not place white gaps, background-colored bands or gutters between photographs; make adjacent image frames touch and fill the canvas. Let one image transition directly into the next at each boundary, with no divider or frame line. Do not leave large empty bands around the image group. If negative space is needed, create it within the photographs rather than outside their frames.`);
-    layout+=' '+t('出版前のフラットなデジタル誌面、1枚の連続した横長キャンバスとして仕上げる。中央の綴じ目、ノド、折り目、中央の影、紙の湾曲や厚み、冊子の立体感は描かない。中央で背景を物理的に分断しない。文字は最小限。','Finish as a flat pre-publication digital layout on one continuous wide canvas. No binding, gutter, fold, center shadow, paper curvature, thickness or physical booklet. Do not physically split the background at the center. Keep typography minimal.');
+    if(n>1)layout+=t(`1枚目を大きな主役、残り${n-1}枚を補助写真として配置する。隣接する写真枠を互いに接して埋め、写真同士の間に白い余白・帯・枠線を入れない。余白は写真内のネガティブスペースとして使う。出版前のフラットな横長デジタル誌面とし、綴じ目・折り目・中央の影・紙の立体感を入れない。`,`Make photograph 1 the large main image and the remaining ${n-1} supporting images. Make adjacent image frames touch and fill the canvas. Do not place white gaps, bands or frame lines between images; keep negative space within the photographs. Use a flat, wide pre-publication digital layout with no binding, folds, center shadow or three-dimensional paper.`);
+    layout+=' '+t('文字は入れない。','No text.');
     if(locked){
-      const axes=t(cameraPlanned?'姿勢、身体の向き、撮影位置、距離、画角、背景、光の方向':'姿勢、身体の向き、背景',cameraPlanned?'posture, body orientation, camera position, distance, field of view, background and light direction':'posture, body orientation and background');
-      parts.push(t(`以下で具体的に変更する要素以外は、参照画像の${axes}${compositionFollows?'、写真内の構図':''}を固定する。写真枠の配置だけでは撮影条件を変えない。`,`Lock the reference ${axes}${compositionFollows?', and composition within photographs':''}, except for the specific changes stated below. Page arrangement alone does not change the photographic setup.`));
+      const axes=[];
+      if(!poses.length)axes.push(t('姿勢・身体の向き','posture and body orientation'));
+      if(!scenes.length)axes.push(t('背景','background'));
+      if(cameraPlanned){
+        if(['auto','reference'].includes(s.distance))axes.push(t('撮影距離・画角','camera distance and framing'));
+        if(['auto','reference'].includes(s.angle))axes.push(t('撮影位置・角度','camera position and angle'));
+        if(s.lighting==='reference'||(s.lighting==='auto'&&!scenes.length))axes.push(t('照明','lighting'));
+      }
+      if(axes.length)parts.push(t(`参照画像の${axes.join('、')}を維持する。`,`Retain the reference ${axes.join(', ')}.`));
     }else if(s.variation==='balanced'){
-      parts.push(t(`同じ撮影セッションの近い別テイクとしてまとめる。指定のない背景${compositionFollows?'、写真内の構図':''}には小さな変化だけを加える。`,`Keep the photographs as closely related takes from one session, with only small changes to unspecified background${compositionFollows?' and composition within photographs':''}.`));
+      parts.push(t('同じ撮影セッションの近い別カットとして、未指定の姿勢・背景'+(cameraPlanned?'・撮影条件':'')+'に小さな変化をつける。','Create closely related takes from the same session, with modest changes to unspecified posture and background'+(cameraPlanned?' and camera conditions':'')+'.'));
     }else{
-      parts.push(t(`同じ女性としての一貫性を保ち、指定のない姿勢、背景${cameraPlanned?'、撮影条件':''}${compositionFollows?'、写真内の構図':''}には明確な変化をつける。場所の指定がなければ、参照画像と自然につながる撮影場所の別の一角を使う。`,`Keep the same woman consistent while making distinct changes to unspecified posture, background${cameraPlanned?', photographic conditions':''}${compositionFollows?' and composition within photographs':''}. Without a specified location, use another part of a setting that naturally connects to the reference.`));
+      parts.push(t('未指定の姿勢・背景'+(cameraPlanned?'・撮影条件':'')+'に大胆な差分を加え、参照とは明確に異なるカットにする。場所の指定がなければ同じ撮影場所の別の一角を使う。','Make bold changes to unspecified posture and background'+(cameraPlanned?' and camera conditions':'')+' for distinctly new takes from the reference. Without a selected setting, use another part of the same location.'));
     }
-    if(!poses.length&&!locked)parts.push(t('各写真の姿勢・動作・身体の向きは、生成側が写真ごとに一つのまとまりとして考える。'+(n>1?'複数写真では、姿勢・動作・身体の向きに明確な差分を持たせ、同じポーズを繰り返さない。':'')+'各写真には一つの姿勢だけを採用し、異なる姿勢を同じ身体に混在させない。撮影距離・角度・光・誌面配置は、それぞれ選択された条件に従う。','Let the generator devise one coherent posture, action and body orientation for each photograph. '+(n>1?'Give the photographs clearly different postures, actions and body orientations without repeating the same pose. ':'')+'Use only one posture per photograph; do not combine incompatible postures in one body. Camera distance, angle, light and page arrangement follow their respective selected conditions.'));
+    if(!poses.length&&!locked)parts.push(t('生成側が写真ごとに一つの姿勢・動作・身体の向きを考える。'+(n>1?'変化量の範囲でカット間に差分を持たせ、同じポーズを繰り返さない。':'')+'撮影条件は別の指定に従う。','Let the generator devise one coherent posture, action and body orientation per photograph. '+(n>1?'Vary poses between photographs within the chosen variation level, without repeating the same pose. ':'')+'Follow the separate camera conditions.'));
     parts.push(layout);
     let compositionText='';
     if(compositionFollows){
-      if(n===1&&!framingLocked&&!locked)compositionText=t('縦位置または縦長寄りの人物写真を主役にし、人物を大きく見せる。横の余りは背景の自然な延長や写真内のネガティブスペースに使い、極端な横長の引き構図にしない。','Prioritize a portrait-oriented or vertically dominant photograph with the model prominent. Use extra horizontal space for natural background continuation or negative space within the photograph, not an extreme landscape establishing shot.');
+      if(n===1&&!framingLocked&&!locked)compositionText=t('縦長寄りの人物中心の構図で、人物を大きく見せる。','Use a vertically dominant, person-centered composition with the model prominent.');
       else compositionText=textOf(find(s,'compositions',locked||framingLocked?'reference':s.variation==='balanced'?'cohesive':'distinct'),s.language);
     }else if(s.composition!=='omit')compositionText=textOf(find(s,'compositions',s.composition),s.language);
     if(compositionText)parts.push(compositionText);
@@ -126,7 +134,7 @@
     if(cameraFree)parts.push(t('撮影距離、画角、カメラの高さ・角度、光の方向と質は具体的に指定せず、生成側が各カットに適した条件を決める。','Do not prescribe camera distance, field of view, camera height or angle, or the direction and quality of light; let the generator choose suitable conditions for each photograph.'));
     if(!locked&&s.expression==='partner-pov')parts.push(textOf(find(s,'expressions',s.expression),s.language)+' '+(cameraPlanned?t('変更対象は視線と表情のみ。姿勢、撮影距離、衣装はこの指定を理由に変更しない。','Apply this adjustment only to gaze and expression. It must not change posture, camera distance or clothing.'):t('変更対象は視線と表情のみ。姿勢と衣装はこの指定を理由に変更しない。','Apply this adjustment only to gaze and expression. It must not change posture or clothing.')));
     else if(!locked&&s.expression==='candid-close')parts.push(textOf(find(s,'expressions',s.expression),s.language)+' '+(cameraPlanned?t('感情は視線、微笑み、間合いで伝える。姿勢、撮影距離、衣装をそれだけの理由で変更しない。','Convey emotion through gaze, smiles and timing without using it to change posture, camera distance or clothing.'):t('感情は視線、微笑み、間合いで伝える。姿勢と衣装をそれだけの理由で変更しない。','Convey emotion through gaze, smiles and timing without using it to change posture or clothing.')));
-    if(outfit)parts.push(textOf(outfit,s.language)+' '+t('最初に衣装を一着として確定し、すべての写真で同じ形、色、素材、ストラップ、カッティング、ディテールを維持する。環境、姿勢、写真数、構図、身体の調整を理由に別の衣装へ変更しない。','Establish one specific outfit before composing the photographs and retain exactly the same shape, color, material, straps, cutting and details in every image. Do not change to another outfit because of setting, posture, photograph count, composition or physique adjustments.'));
+    if(outfit)parts.push(textOf(outfit,s.language)+(n>1?' '+t('最初に衣装を一着として確定し、すべての写真で同じ形、色、素材、ストラップ、カッティング、ディテールを維持する。環境、姿勢、写真数、構図、身体の調整を理由に別の衣装へ変更しない。','Establish one specific outfit before composing the photographs and retain exactly the same shape, color, material, straps, cutting and details in every image. Do not change to another outfit because of setting, posture, photograph count, composition or physique adjustments.') : ''));
     else if(!coverage)parts.push(t('参照画像の衣装を維持する。','Retain the reference clothing.'));
     if(coverage)parts.push((outfit?t('選んだ衣装の色と素材を活かし、','Retain the chosen outfit’s colors and materials; '):t('参照衣装の色と素材を活かし、','Retain the reference outfit’s colors and materials; '))+textOf(coverage,s.language)+' '+t('カバー範囲はこの指定を優先し、衣装の別の指示や筋肉表現を理由に布面積を減らさない。','This coverage requirement takes priority; do not reduce fabric to satisfy other styling or muscle-definition instructions.'));
     const distanceAuto=['medium','close','full','medium','full'];
@@ -150,7 +158,7 @@
       night:['街の環境光を活かし、顔は自然な肌色に整える。','Use ambient city light while balancing facial skin color naturally.'],
       hall:['屋内の環境光を柔らかく整え、自然な陰影を作る。','Shape the indoor ambient light softly for natural shading.']
     };
-    const shots=[];
+    const shots=[],shotFragments=[];
     for(let i=0;i<n;i++){
       const k=i+s.take,scene=scenes.length?scenes[k%scenes.length]:null;
       const pose=poses.length?poses[(i+Math.floor(s.take/Math.max(scenes.length,1)))%poses.length]:null;
@@ -187,13 +195,30 @@
         else shot.push(k%2?t('視線を少し外した、落ち着いた表情。','A relaxed expression with a slight glance away.'):t('自然な微笑みを浮かべ、レンズへ視線を向ける。','A natural small smile with a gaze toward the lens.'));
       }
       const heading=t(`${i+1}枚目${i===0?'（メイン）':''}：`,`Photograph ${i+1}${i===0?' (main)':''}: `);
+      shotFragments.push(shot);
       shots.push({index:i+1,sceneId:scene?.id||'',poseId:pose?.id||'',distance,angle,light,text:heading+shot.join(' ')});
     }
     if(outfit&&scenes.some(x=>x.setting==='water')&&scenes.some(x=>x.setting!=='water')){
       // A single shared wardrobe avoids simultaneous incompatible styles across environments.
       parts.push(t('異なる場所でも自然につながる共通の衣装を選ぶ。','Choose one shared outfit that works naturally across the different settings.'));
     }
-    parts.push(shots.map(x=>x.text).join('\n\n'));
+    // Render shared instructions once; preserve the resolved per-shot plan and custom prose.
+    const redundant=new Set([
+      ...(!scenes.length?[t('参照画像と同じ環境。','The same setting as the reference.'),t('参照画像と同じ撮影セッションにつながる環境。','A setting continuous with the reference session.')]:[]),
+      ...(!poses.length?[t('参照画像と同じ姿勢と身体の向き。','The same posture and body orientation as the reference.'),t('この写真に適した一つの姿勢・動作・身体の向きを生成側が決める。','Let the generator choose one coherent posture, action and body orientation suitable for this photograph.')]:[]),
+      ...(locked&&cameraPlanned?[
+        ...(['auto','reference'].includes(s.distance)?[textOf(find(s,'distances','reference'),s.language)]:[]),
+        ...(['auto','reference'].includes(s.angle)?[textOf(find(s,'angles','reference'),s.language)]:[]),
+        ...(s.lighting==='reference'||(s.lighting==='auto'&&!scenes.length)?[textOf(find(s,'lighting','reference'),s.language)]:[])
+      ]:[])
+    ]);
+    const customTexts=new Set([...scenes,...poses].filter(x=>x.custom).map(x=>textOf(x,s.language)));
+    const fragments=shotFragments.map(rows=>rows.filter(x=>x&&(customTexts.has(x)||!redundant.has(x))));
+    const shared=[...new Set(fragments[0]||[])].filter(x=>fragments.every(rows=>rows.includes(x)));
+    if(shared.length)parts.push(shared.join(' '));
+    const unique=fragments.map(rows=>rows.filter(x=>!shared.includes(x)).join(' '));
+    if(n===1){if(unique[0])parts.push(unique[0]);}
+    else if(unique.some(Boolean))parts.push(unique.map((text,i)=>t(`${i+1}枚目：`,`Photograph ${i+1}: `)+(text||t('共通条件に従う。','Follow the shared conditions.'))).join('\n\n'));
     if(usedCustom.size)warn('追加プリセットの自由文はそのまま使います。独自の指示同士の競合はプレビューで確認してください。','Custom text is used as written. Review the preview for conflicts between custom instructions.');
     return {text:parts.filter(Boolean).join('\n\n'),shots,warnings:[...new Set(warnings)],state:s};
   }
