@@ -1,4 +1,8 @@
-# Prompt Palette v30
+# Prompt Palette v31
+
+v31 adds an independent Simple page at `simple.html`, linked from the detailed app. It generates short JP/EN instructions for any combination of overall muscle growth, superficial veins and bust adjustment. Clothing design/material/state of wear, posture, composition, background and skin color follow the reference. All eight combinations are supported; muscle+bust avoids a contradictory muscle-preservation clause. The app does not predict image-generation acceptance.
+
+Simple mode uses only `promptPaletteSimpleV1` (schema 1). It stores selections, the exact draft, draft language/name, active favorite and timestamped favorites. Editing never mutates a favorite until Update or Save as new. Replacing unsaved text asks for confirmation. JSON export/import transfers exact favorite text and dates, adds records, and skips existing IDs. Invalid input, inaccessible storage and stale-tab conflicts do not overwrite stored data; the editor stays copyable. Existing detailed-mode storage is untouched. Run `node --test tests/*.test.cjs` for compiler, storage, and UI-event coverage.
 
 v30 compacts the final prompt without changing state schema, preset IDs or resolved shot planning. Common photographic and subject conditions are grouped, skin-color preservation appears once, and shared shot instructions are hoisted rather than repeated. Single photographs omit spread/booklet instructions and shot headings. KEEP locks only unselected axes; explicit scene, pose and camera choices remain authoritative. Unselected poses are generator-devised within the variation level. Custom prose is preserved, including line breaks. The six main option axes are tested across all 2,160 JP/EN combinations.
 
