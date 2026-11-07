@@ -4,15 +4,33 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#10141c"><meta name="description" content="必要な身体差分だけを短く生成。微調整した全文をお気に入りへ。">
 <title>Prompt Palette · シンプル</title>
-<link rel="stylesheet" href="./style.css?v=31"><link rel="stylesheet" href="./simple.css?v=31">
-<script defer src="./simple-core.js?v=31"></script><script defer src="./simple-app.js?v=31"></script>
+<link rel="stylesheet" href="./style.css?v=32"><link rel="stylesheet" href="./simple.css?v=32">
+<script defer src="./simple-core.js?v=32"></script><script defer src="./simple-app.js?v=32"></script>
 </head>
 <body>
-<header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">P</span><div><h1>Prompt Palette <small>v31</small></h1><p>Simple fitness prompts</p></div></div><a class="mode-link" href="./index.html?v=31">詳細版へ</a></header>
-<div class="intro"><p>短く作って、自分で仕上げる。</p><span>成人モデルのフィットネス写真。衣装・姿勢・構図を参照に合わせます。</span></div>
+<header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">P</span><div><h1>Prompt Palette <small>v32</small></h1><p>Simple fitness prompts</p></div></div><a class="mode-link" href="./index.html?v=32">詳細版へ</a></header>
+<div class="intro"><p>お気に入りから、すぐ使う。</p><span>全文を呼び出して、コピー。必要なときだけ編集・生成。</span></div>
 <main class="simple-main">
 <div id="storageNotice" class="notice" role="alert" hidden></div>
-<section class="simple-panel" aria-labelledby="generateTitle">
+<section class="simple-panel favorites-panel" aria-labelledby="favoritesTitle">
+<div class="panel-heading"><h2 id="favoritesTitle">お気に入り</h2><span id="favoriteCount" class="hint"></span></div>
+<label class="sort-field" for="favoriteSort">並び順<select id="favoriteSort"><option value="name-asc">名前順 ↑</option><option value="name-desc">名前順 ↓</option><option value="saved">登録順</option></select></label>
+<div id="favorites"></div>
+<details class="backup"><summary>書き出し・読み込み</summary><p class="help">このブラウザに保存されます。端末を移す前に書き出してください。</p><button id="export" class="button">全件を書き出す</button><label class="field">お気に入りJSONを追加で読み込む<input id="import" type="file" accept=".json,application/json"></label></details>
+</section>
+
+<section class="simple-panel editor-panel" aria-labelledby="editorTitle">
+<div class="panel-heading"><h2 id="editorTitle">全文を編集</h2><span id="draftStatus" class="hint"></span></div>
+<div class="editor-tools" role="group" aria-label="全文の操作"><button class="button quiet" id="editorClear">文字クリア</button><button class="button" id="editorCopy">コピー</button><button class="button" id="editorPaste">ペースト</button></div>
+<label class="field" for="draft">生成後も自由に書き換えられます</label>
+<textarea id="draft" spellcheck="false" placeholder="差分を選んで生成するか、お気に入りを開いてください。"></textarea>
+<div class="editor-meta"><label class="field" for="draftLanguage">この全文の言語<select id="draftLanguage"><option value="jp">JP</option><option value="en">EN</option></select></label><span id="charCount" class="hint"></span></div>
+<label class="field" for="draftName">お気に入りの名前<input id="draftName" placeholder="例：筋量＋血管・参照維持"></label>
+<div class="simple-actions"><button class="button" id="saveNew">☆ 別名で保存</button><button class="button" id="saveUpdate" disabled>更新保存</button></div>
+<p id="saveHelp" class="description">保存するのは、この欄の全文です。</p>
+</section>
+
+<section class="simple-panel generator-panel" aria-labelledby="generateTitle">
 <h2 id="generateTitle">必要な差分</h2>
 <label class="field" for="language">生成する言語<select id="language"><option value="jp">日本語 / JP</option><option value="en">English / EN</option></select></label>
 <div class="toggle-list">
@@ -23,22 +41,9 @@
 <p class="help">選んだ差分だけを追加。写真は1枚、文字なし。</p>
 <button class="button primary wide" id="generate">プロンプトを生成</button>
 </section>
-<section class="simple-panel editor-panel" aria-labelledby="editorTitle">
-<div class="panel-heading"><h2 id="editorTitle">全文を編集</h2><span id="draftStatus" class="hint"></span></div>
-<label class="field" for="draft">生成後も自由に書き換えられます</label>
-<textarea id="draft" spellcheck="false" placeholder="差分を選んで生成するか、お気に入りを開いてください。"></textarea>
-<div class="editor-meta"><label class="field" for="draftLanguage">この全文の言語<select id="draftLanguage"><option value="jp">JP</option><option value="en">EN</option></select></label><span id="charCount" class="hint"></span></div>
-<label class="field" for="draftName">お気に入りの名前<input id="draftName" placeholder="例：筋量＋血管・参照維持"></label>
-<div class="simple-actions"><button class="button" id="saveNew">☆ 別名で保存</button><button class="button" id="saveUpdate" disabled>更新保存</button></div>
-<p id="saveHelp" class="description">保存するのは、この欄の全文です。</p>
-</section>
-<section class="simple-panel favorites-panel" aria-labelledby="favoritesTitle">
-<div class="panel-heading"><h2 id="favoritesTitle">お気に入り</h2><span id="favoriteCount" class="hint"></span></div>
-<div id="favorites"></div>
-<details class="backup"><summary>書き出し・読み込み</summary><p class="help">このブラウザに保存されます。端末を移す前に書き出してください。</p><button id="export" class="button">全件を書き出す</button><label class="field">お気に入りJSONを追加で読み込む<input id="import" type="file" accept=".json,application/json"></label></details>
-</section>
 </main>
-<footer class="simple-dock"><button id="copy" class="button primary">全文をコピー</button><a href="#favoritesTitle">お気に入りへ ↓</a></footer>
+<footer class="simple-dock"><button id="copy" class="button primary">全文をコピー</button><a href="#favoritesTitle">お気に入りへ ↑</a></footer>
+<dialog id="favoriteMenu" aria-labelledby="menuTitle"><div class="sheet-head"><h2 id="menuTitle"></h2><button class="icon-button" id="menuClose" aria-label="閉じる">×</button></div><div id="menuBody"></div></dialog>
 <div id="toast" role="status" aria-live="polite"></div>
 <noscript>JavaScriptを有効にしてください。</noscript>
 </body></html>
