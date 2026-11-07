@@ -3,7 +3,13 @@
   'use strict';
   const KEY='promptPaletteSimpleV1',FORMAT='prompt-palette-simple-favorites';
   const clone=x=>JSON.parse(JSON.stringify(x));
-  const defaults=()=>({version:1,selections:{language:'jp',muscle:false,vascularity:false,bust:false},draft:'',draftLanguage:'jp',draftName:'',activeId:null,favorites:[]});
+  const defaults=()=>({version:1,selections:{language:'jp',muscle:false,vascularity:false,bust:false},draft:'',draftLanguage:'jp',draftName:'',activeId:null,favoriteSort:'name-asc',favorites:[]});
+  function sortFavorites(rows,order='name-asc'){
+    const result=rows.slice();
+    if(order==='saved')return result;
+    const compare=new Intl.Collator('ja',{numeric:true,sensitivity:'base'}).compare;
+    return result.sort((a,b)=>(order==='name-desc'?-1:1)*compare(a.name,b.name));
+  }
   function compile(s){
     const t=(jp,en)=>s.language==='en'?en:jp;
     const p=[t('参照画像の成人女性を被写体にした、非性的なフィットネス写真を1枚制作する。','Create one non-sexual fitness photograph of the adult woman in the reference image.')];
@@ -28,7 +34,7 @@
   }
   function validate(x){
     if(!object(x)||x.version!==1||!object(x.selections)||!language(x.selections.language)||!['muscle','vascularity','bust'].every(k=>typeof x.selections[k]==='boolean')||typeof x.draft!=='string'||!language(x.draftLanguage)||typeof x.draftName!=='string'||!(x.activeId===null||typeof x.activeId==='string'))throw Error('保存データを読み取れません。元データの上書きを停止しました。');
-    const s=defaults();s.selections=clone(x.selections);s.draft=x.draft;s.draftLanguage=x.draftLanguage;s.draftName=x.draftName;s.favorites=favorites(x.favorites);s.activeId=s.favorites.some(f=>f.id===x.activeId)?x.activeId:null;return s;
+    const s=defaults();s.selections=clone(x.selections);s.draft=x.draft;s.draftLanguage=x.draftLanguage;s.draftName=x.draftName;s.favorites=favorites(x.favorites);s.activeId=s.favorites.some(f=>f.id===x.activeId)?x.activeId:null;s.favoriteSort=['name-asc','name-desc','saved'].includes(x.favoriteSort)?x.favoriteSort:'name-asc';return s;
   }
   function exportFavorites(state){return JSON.stringify({format:FORMAT,version:1,favorites:state.favorites},null,2);}
   function mergeFavorites(state,text){
@@ -51,6 +57,6 @@
       const raw=JSON.stringify(checked);this.storage.setItem(KEY,raw);this.raw=raw;this.state=checked;return clone(checked);
     }
   }
-  const api={KEY,FORMAT,defaults,compile,clone,validate,exportFavorites,mergeFavorites,Store};
+  const api={KEY,FORMAT,defaults,compile,clone,validate,exportFavorites,mergeFavorites,sortFavorites,Store};
   root.PPSimple=api;if(typeof module==='object'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
