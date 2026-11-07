@@ -1,4 +1,6 @@
-# Prompt Palette v31
+# Prompt Palette v32
+
+v32 makes favorites the first section of Simple mode. Each compact row has a single-line name and exactly Copy / Open / More actions; More opens Rename and Delete. Name sorting uses Japanese locale comparison with numeric ordering (ascending/descending), with saved order also available. Only the display is sorted; stored favorite records and exact text remain intact. The sort preference is an additive schema-1 field with a name-ascending default for older saves. The editor adds confirmed Clear, Copy and Paste controls. Paste replaces the selected range or inserts at the caret, leaves saved favorites unchanged, and offers manual-paste guidance if clipboard access is denied.
 
 v31 adds an independent Simple page at `simple.html`, linked from the detailed app. It generates short JP/EN instructions for any combination of overall muscle growth, superficial veins and bust adjustment. Clothing design/material/state of wear, posture, composition, background and skin color follow the reference. All eight combinations are supported; muscle+bust avoids a contradictory muscle-preservation clause. The app does not predict image-generation acceptance.
 
